@@ -7,8 +7,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.KeyEvent;
 
+import com.facebook.common.references.SharedReference;
 import com.facebook.react.ReactActivity;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.thudo.HotUpdateManager;
 
 class UpdateTask implements Runnable {
@@ -37,7 +40,7 @@ public class MainActivity extends ReactActivity {
 
         super.onCreate(savedInstanceState);
 
-        HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager());
+        HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager(this));
 
     }
     /**
