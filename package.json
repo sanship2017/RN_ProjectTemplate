@@ -1,0 +1,33 @@
+{
+  "name": "ProjectTemplate",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "react": "15.2.1",
+    "react-native": "git+https://github.com/InnerPeace080/react-native.git#RN-0.30",
+    "react-native-android-statusbar": "git+https://github.com/InnerPeace080/react-native-android-statusbar.git",
+    "react-native-animatable": "^0.6.1",
+    "react-native-device-info": "git+https://github.com/InnerPeace080/react-native-device-info.git",
+    "react-native-extra-dimensions-android": "^0.17.0",
+    "react-native-fbsdk": "^0.3.0",
+    "react-native-fs": "git+https://github.com/InnerPeace080/react-native-fs.git",
+    "react-native-gifted-spinner": "^0.1.0",
+    "react-native-restart": "0.0.1",
+    "react-native-router-flux": "git+https://github.com/InnerPeace080/react-native-router-flux.git",
+    "react-native-scrollable-tab-view": "git+https://github.com/InnerPeace080/react-native-scrollable-tab-view.git",
+    "react-native-sensor-manager": "git+https://github.com/InnerPeace080/react-native-sensor-manager.git",
+    "react-native-side-menu": "git+https://github.com/InnerPeace080/react-native-side-menu.git",
+    "react-native-slider": "git+https://github.com/InnerPeace080/react-native-slider.git",
+    "react-native-spinkit": "^0.1.2",
+    "react-native-swiper": "^1.4.6",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
+    "socket.io-client": "^1.4.8",
+    "timeout-callback": "^1.0.0"
+  }
+}

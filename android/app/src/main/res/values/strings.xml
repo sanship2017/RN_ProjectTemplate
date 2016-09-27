@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ProjectTemplate</string>
+    <string name="update_server">http://</string>
+</resources>
