@@ -57,14 +57,14 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     @Override
-    protected List<ReactPackage> getPackages() {
+    protected List<ReactPackage> getPackages(Activity activity) {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
               new RNBridgeReloaderPackage(),
               new RNFSPackage(),
               new RNDeviceInfo(),
               new StatusBarPackage(),
-              new ExtraDimensionsPackage(),
+              new ExtraDimensionsPackage(activity),
               new SensorManagerPackage(),
               new RNSpinkitPackage(),
               new RNIntentPackage()
