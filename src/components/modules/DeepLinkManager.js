@@ -13,8 +13,8 @@ var Include = require('../../Include');
 var {popupActions,popupConst} = require('../popups/Popup');
 var {globalVariableManager} = require('./GlobalVariableManager')
 
-var ChannelActions_MiddleWare = require('../../actions/ChannelActions_MiddleWare');
-var MovieActions_MiddleWare = require('../../actions/MovieActions_MiddleWare');
+// var ChannelActions_MiddleWare = require('../../actions/ChannelActions_MiddleWare');
+// var MovieActions_MiddleWare = require('../../actions/MovieActions_MiddleWare');
 
 //popup
 
@@ -68,86 +68,18 @@ class DeepLinkManager{
 
     self.linkList={
       screen:{
-        AccountInfosScreen:{
-          target:'AccountInfosScreen',
-          options:{
-          },
-          param:{},
+        // :{
+        //   target:'',
+        //   options:{
+        //     process:function(screenName,options,extra){
+        //       // return globalVariableManager.reduxManager.dispatch(ChannelActions_MiddleWare.listCatalog({option:'CATALOG_LIST_CHANNEL'}));
+        //     }
+        //   },
+        //   param:{},
+        // },
+                
         },
-        ChannelCatalogScreen:{
-          target:'ChannelCatalogScreen',
-          options:{
-            process:function(screenName,options,extra){
-              return globalVariableManager.reduxManager.dispatch(ChannelActions_MiddleWare.listCatalog({option:'CATALOG_LIST_CHANNEL'}));
-            }
-          },
-          param:{
-            catalogId:''
-          },
-        },
-        ChannelScreen:{
-          target:'ChannelScreen',
-          options:{
-            process:function(screenName,options,extra){
-              return globalVariableManager.reduxManager.dispatch(ChannelActions_MiddleWare.get({id: extra.channelId}));
-            }
-          },
-          param:{
-            channelId:'',
-          },
-        },
-        FilmDetailScreen:{
-          target:'FilmDetailScreen',
-          options:{
-            process:function(screenName,options,extra){
-              return new Promise((resolve,reject)=>{
-                globalVariableManager.reduxManager.dispatch(MovieActions_MiddleWare.get({id: extra.movieId}))
-                .then(()=>{
-                  globalVariableManager.reduxManager.dispatch(MovieActions_MiddleWare.getEp({id: extra.movieEpisodeId}))
-                  .then((res)=>{
-                    extra.epIndex=res.res.data.order-1;
-                    resolve();
-                  })
-                })
-              })
 
-
-
-            }
-          },
-          param:{
-            movieId:'',
-            movieEpisodeId:'',
-            startTime:0,
-            epIndex:0,
-          },
-        },
-        FilmsCatalogScreen:{
-          target:'FilmsCatalogScreen',
-          options:{
-          },
-          param:{
-            catalogId:'',
-          },
-        },
-        FilmsFavoriteScreen:{
-          target:'FilmsFavoriteScreen',
-          options:{
-          },
-          param:{},
-        },
-        LoginScreen:{
-          target:'LoginScreen',
-          options:{
-          },
-          param:{},
-        },
-        ServiceRegisterScreen:{
-          target:'ServiceRegisterScreen',
-          options:{
-          },
-          param:{},
-        },
       },
       popup:{
         Popup:{
