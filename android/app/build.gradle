@@ -167,6 +167,10 @@ dependencies {
     compile(project(':react-native-spinkit')) {
         exclude group: 'com.facebook.react', module: 'react-native'
     }
+    
+    compile(project(':react-native-orientation')) {
+        exclude group: 'com.facebook.react', module: 'react-native'
+    }
 
 }
 

@@ -16,6 +16,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.github.yamill.orientation.OrientationPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.rnfs.RNFSPackage;
@@ -66,6 +67,7 @@ public class MainApplication extends Application implements ReactApplication {
               new RNDeviceInfo(),
               new StatusBarPackage(),
               new ExtraDimensionsPackage(activity),
+              new OrientationPackage(activity),
               new SensorManagerPackage(),
               new RNSpinkitPackage(),
               new RNIntentPackage()
