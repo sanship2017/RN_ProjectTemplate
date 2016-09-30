@@ -3,6 +3,8 @@ var Define = require('../Define'); // var Include = require('../Include');
 var StyleConfig = require('./StyleConfig');
 import {Platform,PixelRatio} from 'react-native';
 
+var X = Define.constants.X;
+
 var Default ={
   init:function(){
     return (
@@ -101,6 +103,14 @@ var Default ={
   },
   image:{
 
+  },
+  factor:{
+    openSideMenuOffset:X*7.36,
+    refreshingColor:['#ed1c24', '#0095da', '#fff200' , '#4279bd'],
+    refreshingBackgroudColor:'#FFFFFF',
+    placeholderSearchTextColor:'#939393',
+    spinnerColor:'#1e8668',
+    backgroundColor:'#1b1b1b'
   },
 }
     )

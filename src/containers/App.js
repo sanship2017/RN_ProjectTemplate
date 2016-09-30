@@ -113,7 +113,7 @@ var App = React.createClass({
 
           {...current.sceneConfig}
 
-          bodyStyle={Themes.Current.screen.bodyViewWrap}
+          bodyStyle={Themes.current.screen.bodyViewWrap}
           rootView={self}
         />
       )

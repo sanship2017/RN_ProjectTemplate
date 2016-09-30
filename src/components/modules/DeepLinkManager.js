@@ -76,9 +76,7 @@ class DeepLinkManager{
         //     }
         //   },
         //   param:{},
-        // },
-                
-        },
+        // },                
 
       },
       popup:{
