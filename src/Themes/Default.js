@@ -10,6 +10,11 @@ var Default ={
     return (
       {
   screen:{
+    appBackground:{
+      flex:1,
+      // backgroundColor:'#1b1b1b',
+      // ...StyleConfig.shadownStyle,
+    },
     NavBar:{
       height:Define.constants.navBarHeight,
     },

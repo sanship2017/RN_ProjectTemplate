@@ -202,7 +202,9 @@ var App = React.createClass({
       content=<View/>
     }else{
       content = (
-        <RouterWithRedux navigationBarStyle={Themes.Current.screen.NavBar} >
+        <RouterWithRedux
+            sceneStyle={Themes.current.screen.appBackground}
+            navigationBarStyle={Themes.Current.screen.NavBar} >
           <Scene key="root">
             {self.screenList}
           </Scene>
