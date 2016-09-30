@@ -60,7 +60,7 @@ var  HomeScreen = React.createClass({
     renderRightButton: function(){
       return (
         <View style={Themes.Current.screen.rightButtonWrapNavBar}>
-          <Include.CustomText>Test</Include.CustomText>
+          <Include.Text>Test</Include.Text>
         </View>
         // <SCTVNotifyButton/>
       );
@@ -70,7 +70,7 @@ var  HomeScreen = React.createClass({
       return (
         <ButtonWrap onPress={()=>{Actions.SecondScreen()}}>
           <View style={Themes.Current.screen.leftButtonWrapNavBar}>
-            <Include.CustomImage style={{width:20,height:20 }} source={Define.assets.Home_screen.home_icon_menu}/>
+            <Include.Image style={{width:20,height:20 }} source={Define.assets.Home_screen.home_icon_menu}/>
           </View>
         </ButtonWrap>
       );
@@ -79,7 +79,7 @@ var  HomeScreen = React.createClass({
     renderTitle:function(scene){
       return(
         <View style={Themes.Current.screen.titleWrapNavBarCenter}>
-          <Include.CustomText style={Themes.Current.text.navBartitle}>{scene.title}</Include.CustomText>
+          <Include.Text style={Themes.Current.text.navBartitle}>{scene.title}</Include.Text>
         </View>
       )
     }

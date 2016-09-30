@@ -70,7 +70,7 @@ var  SecondScreen = React.createClass({
       return (
         <ButtonWrap onPress={()=>{scene.rootView.drawSideMenu();}}>
           <View style={Themes.Current.screen.leftButtonWrapNavBar}>
-            <Include.CustomImage style={{width:20,height:20 }} source={Define.assets.Home_screen.home_icon_menu}/>
+            <Include.Image style={{width:20,height:20 }} source={Define.assets.Home_screen.home_icon_menu}/>
           </View>
         </ButtonWrap>
       );
