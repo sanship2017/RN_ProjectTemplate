@@ -16,6 +16,7 @@
     "react-native-fbsdk": "^0.3.0",
     "react-native-fs": "git+https://github.com/InnerPeace080/react-native-fs.git",
     "react-native-gifted-spinner": "^0.1.0",
+    "react-native-orientation": "^1.17.0",
     "react-native-restart": "0.0.1",
     "react-native-router-flux": "git+https://github.com/InnerPeace080/react-native-router-flux.git",
     "react-native-scrollable-tab-view": "git+https://github.com/InnerPeace080/react-native-scrollable-tab-view.git",
