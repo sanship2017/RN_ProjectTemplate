@@ -1,20 +1,27 @@
-/**
-* @Author: Trần Quốc Phương <Anonymous080>
-* @Date:   2016-07-08T09:37:56+07:00
-* @Email:  tranphuong.080@gmail.com
-* @Last modified by:   Anonymous080
-* @Last modified time: 2016-07-11T10:20:01+07:00
-*/
 
 /*
  * action types
  */
 const ActionsTypes={
   //
+  SERVER_CONNECT:'SERVER_CONNECT',
+  SERVER_CONNECT_NET_INFO_CHANGE:'SERVER_CONNECT_NET_INFO_CHANGE',
+
+  //
+  STORE_SET:'STORE_SET',
+  STORE_GET:'STORE_GET',
+  STORE_REMOVE:'STORE_REMOVE',
+  //
   APP_STATE_SET: 'APP_STATE_SET',
+  APP_STATE_DIRECT_SET : 'APP_STATE_DIRECT_SET',
   APP_STATE_LIST:{
     LOADING:'LOADING',
     RUNNING:'RUNNING',
+  },
+  APP_STATE_DIRECT_LIST:{
+    PORTRAIT:'PORTRAIT',
+    LANDSCAPE:'LANDSCAPE',
+    UNKNOWN: 'UNKNOWN'
   },
   /** use for request to actions
   *
