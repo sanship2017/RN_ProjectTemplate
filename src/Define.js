@@ -15,8 +15,11 @@ var screenSizeByInch = Math.sqrt(Math.pow(widthScreen,2) + Math.pow(heightScreen
 
 var assets={
   Home_screen:{
-    home_icon_menu : require('../assets/02_Home_screen/home_icon_menu.png'),
-  }
+    home_icon_menu : require('../assets/Home/home_icon_menu.png'),
+  },
+  Menu:{
+    icon_back:  require('../assets/Menu/icon_back.png'),
+  },
 }
 
 var mapAssets={
