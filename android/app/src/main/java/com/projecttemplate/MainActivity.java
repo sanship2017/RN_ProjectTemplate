@@ -3,6 +3,7 @@ package com.projecttemplate;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,13 @@ public class MainActivity extends ReactActivity {
 
         HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager(this));
 
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
     }
     /**
      * Returns the name of the main component registered from JavaScript.
