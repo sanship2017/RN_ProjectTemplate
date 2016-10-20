@@ -17,6 +17,7 @@ var Debug = require('../Util/Debug');
    name:'AppStateActions',
    actionsList:{
      set:'APP_STATE_SET',
+     setDirect:'APP_STATE_DIRECT_SET',
    },
 
    init:function(){

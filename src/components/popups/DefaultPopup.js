@@ -82,7 +82,7 @@ var DefaultPopup = React.createClass({
         <ButtonWrap onPress={()=>{
               popupActions.popPopup(undefined,undefined,undefined,undefined,[popupConst.INFO_GROUP]);
             }}>
-          <View style={{position: 'absolute', top: 0, bottom: 0, justifyContent: 'center', alignSelf:'flex-end',padding:3}}>
+          <View style={{position: 'absolute', top: 0, bottom: 0,left:0,right:0, justifyContent: 'flex-end',padding:3}}>
             <Include.Image tintColor={'#000'} style={Themes.current.image.closeIcon} source={Define.assets.Home.close}/>
           </View>
         </ButtonWrap>
@@ -114,7 +114,7 @@ var DefaultPopup = React.createClass({
         <ButtonWrap onPress={()=>{
             onPressPopup();
           }}>
-          <View style={{backgroundColor:'#fff',padding:10,margin:5,borderRadius:4,...StyleConfig.shadownStyle,  ...self.props.style}}>
+          <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.shadownStyle,  ...self.props.style}}>
             <View style={[Themes.current.popup.titleWrap, {paddingLeft: 20, paddingRight: 20}]}>
               <Include.Text style={Themes.current.text.popupTitle}>{title}</Include.Text>
               {closeButton}
@@ -133,7 +133,8 @@ var DefaultPopup = React.createClass({
     }
     else{
       return(
-        <View style={{backgroundColor:'#fff',padding:10,margin:5,borderRadius:4,...StyleConfig.shadownStyle, ...self.props.style}}>
+        <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.shadownStyle, ...self.props.style}}>
+
           <View style={[Themes.current.popup.titleWrap, {paddingLeft: 20, paddingRight: 20}]}>
             <Include.Text style={Themes.current.text.popupTitle}>{title}</Include.Text>
             {closeButton}

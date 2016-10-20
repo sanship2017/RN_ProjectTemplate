@@ -59,6 +59,7 @@ var CustomImage= React.createClass({
 
     return(
       <Image
+          renderToHardwareTextureAndroid={true}
           onLoad={self.onLoad}
           onLoadEnd={self.onLoadEnd}
           {...self.props}>

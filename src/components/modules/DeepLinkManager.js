@@ -26,40 +26,40 @@ class DeepLinkManager{
   constructor(){
     var self = this;
     self.linkActions={
-      screen:function(screenName,options,extra){
+      screen:function(screenName,options,extras){
         if (globalVariableManager.rootView) {
           globalVariableManager.rootView.drawSideMenu(false);
         }
 
         if (options.process) {
-          options.process(screenName,options,extra)
+          options.process(screenName,options,extras)
           .then(()=>{
             popupActions.popAllPopup(1,true,popupConst.POPUP_GROUP);
-            Actions[screenName](extra);
+            Actions[screenName](extras);
           });
         }
         else{
           popupActions.popAllPopup(1,true,popupConst.POPUP_GROUP);
-          Actions[screenName](extra);
+          Actions[screenName](extras);
         }
       },
-      popup:function(Popup,options,extra){
+      popup:function(Popup,options,extras){
         // if (options.process) {
-        //   options.process(Popup,options,extra);
+        //   options.process(Popup,options,extras);
         // }
         // else{
         //   popupActions.popAllPopup(1,true,2);
         //   popupActions.popAllPopup(0,true,1);
         //   popupActions.setRenderContentAndShow(()=>{
-        //     return(<Popup {...extra} /> )
+        //     return(<Popup {...extras} /> )
         //   },
         //   options.style,
         //   options.conf)
         // }
       },
-      // page:function(popup,options,extra){
+      // page:function(popup,options,extras){
       // },
-      sideMenu:function(sideMenu,options,extra){
+      sideMenu:function(sideMenu,options,extras){
         popupActions.popAllPopup(1,true,popupConst.POPUP_GROUP);
         popupActions.popAllPopup(0,true,popupConst.VIDEO_GROUP);
         self.rootView.drawSideMenu(true);
@@ -134,20 +134,20 @@ class DeepLinkManager{
     var self = this;
     var argFormat = {
       link:'',
-      extra:{},
+      extras:{},
     };
     Object.keys(argFormat).forEach((key)=>{
       if (!deepLink.hasOwnProperty(key)) {
         deepLink[key] = argFormat[key];
       }
     })
-    var {link,extra} = deepLink;
-    if (!extra) {
-      extra={};
+    var {link,extras} = deepLink;
+    if (!extras) {
+      extras={};
     }
     // var reduxManager= globalVariableManager.reduxManager;
     var ret = self.checkLink(link);
-    Debug.log('Process DeepLink:'+ret+':'+link+':'+JSON.stringify(extra));
+    Debug.log('Process DeepLink:'+ret+':'+link+':'+JSON.stringify(extras));
     if (ret) {
       // try{
         // Debug.log('Check config avaiable');
@@ -157,11 +157,11 @@ class DeepLinkManager{
         //   Debug.log('link ' + link + ' is not enable ABORT, app_config = ' + JSON.stringify(reduxManager.state.News.config),Debug.level.ERROR);
         //   return;
         // }
-        Debug.log('Check extra');
+        Debug.log('Check extras');
         var countExtra = 0;
         var extraKey = undefined;
-        Object.keys(extra).forEach((key)=>{
-          if (extra.hasOwnProperty(key)) {
+        Object.keys(extras).forEach((key)=>{
+          if (extras.hasOwnProperty(key)) {
             countExtra++;
             extraKey=key
             if(!self.linkList[ret][link].param.hasOwnProperty( key)){
@@ -170,7 +170,7 @@ class DeepLinkManager{
           }
         })
 
-        var trueExtra = extra;
+        var trueExtra = extras;
         if(countExtra===1 ){
           // check if param has only one param
           var countParam = 0;
@@ -182,10 +182,10 @@ class DeepLinkManager{
             }
           })
           if (countParam ===1 ) {
-            // so nest extra and param
-            Debug.log('param has only one param => nest extra and param')
+            // so nest extras and param
+            Debug.log('param has only one param => nest extras and param')
             trueExtra ={};
-            trueExtra[paramKey] = extra[extraKey];
+            trueExtra[paramKey] = extras[extraKey];
           }
         }
         // protect undefined param

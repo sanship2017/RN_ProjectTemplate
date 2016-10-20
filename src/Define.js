@@ -1,10 +1,3 @@
-/**
-* @Author: Trần Quốc Phương <Anonymous080>
-* @Date:   2016-07-06T15:52:38+07:00
-* @Email:  tranphuong.080@gmail.com
-* @Last modified by:   Trần Quốc Phương
-* @Last modified time: 2016-07-12T16:44:02+07:00
-*/
 
 var ExtraDimensions = require('react-native-extra-dimensions-android');
 
@@ -29,7 +22,8 @@ var assets={
 var mapAssets={
 }
 
-const Define = {
+
+var Define = {
   assets: (__DEV__)? assets:PlatformConfig.default.processAsset(assets,mapAssets),
   constants:{
     hybridVersion: PlatformConfig.default.hybridVersion,
@@ -42,8 +36,8 @@ const Define = {
 
     imageThumbRate:(20/9),
     smallImageThumbRate:(9/6),
-    videoHeight:widthScreen,
-    videoWidth:heightScreen + 0,
+    videoHeight:widthScreen<heightScreen?widthScreen:heightScreen,
+    videoWidth:PlatformConfig.default.videoWidth,
 
     fontScale : Math.floor(4/PixelRatio.getFontScale()),
 
@@ -55,28 +49,29 @@ const Define = {
     // serverAddr:'http://123.30.235.201:34746',
     // serverAddr :'http://192.168.3.151:8080',
     getMsisdnAddr:'http://tv247.vn/getMsisdn',
-    font:'roboto-regular',
-    fontBold:'roboto-bold',
+    font:PlatformConfig.font,
+    fontBold:PlatformConfig.fontBold,
     dataBase:'database.db',
     // crashLog: RNFS.DocumentDirectoryPath + '/CrashLog.txt',
     // trackingLog: RNFS.DocumentDirectoryPath + '/TrackingLog.txt',
     alarmListTable:'AlarmList',
     footballTeamsTable:'FootballTeams',
     signoutBeforeDisconnect:true,
-    accoutTest:{
+    accountTest:{
       user:'',   // TODO : must = '' when release
       pass:'',
     },
     getMoreHeight:100,
     getMoreHeightMin:1,
+    timeoutToHideContent:5000,
+    timeoutToHideContent2:10000,
     elevation:3,
     periodOfAccelerometer:1000,
-    requestTimeout:30000,
-
-    debug:true,  // must false in release
+    requestTimeout:26000,
+    debug:false,  // must false in release
     debugStyle:false,
-    debugTrackerLogLength:66,
-    logLevel:0,  // must be 10 when release
+    debugTrackerLogLength:166,
+    logLevel:10,  // must be 10 when release
     funnyMode:false,
   },
   config:{
@@ -86,7 +81,41 @@ const Define = {
     },
     currentHybridVersion:0,
     ...PlatformConfig.token,
-  }
-}
+  },
+  init:function(){
+    var self = this;
+
+
+    if (self.constants.debug) {
+      self.assets = assets;
+    }
+
+    var assetsContent={};
+    if (Platform.OS === 'android') {
+      // get a list of files and directories in the main bundle
+      RNFS.readDir(RNFS.DocumentDirectoryPath+'/ASSETS')
+        .then((result) => {
+          result.forEach((current)=>{
+            try{
+              var fileNameArray = current.name.split('.');
+              assetsContent[fileNameArray[0]] = current;
+            }
+            catch(ex){}
+          })
+          self.assets = PlatformConfig.default.processAsset(assets,mapAssets,assetsContent);
+        })
+    } else if(Platform.OS === 'ios') {
+      const path = 'file://'+RNFS.DocumentDirectoryPath+'/assets';
+      RNFS.exists(path)
+        .then(isExist => {
+          if(isExist) {
+            self.assets = PlatformConfig.default.processAsset(assets,mapAssets, 'assets', true);
+          }
+        })
+    }
+
+    return self;
+  },
+}.init();
 
 module.exports = Define;

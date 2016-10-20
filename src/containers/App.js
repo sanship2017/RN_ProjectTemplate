@@ -15,16 +15,23 @@ import {
   AlertIOS,
   Platform,
   Dimensions,
-  InteractionManager
+  InteractionManager,
+  UIManager
 } from 'react-native';
+// UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
+import * as Animatable from 'react-native-animatable';
+import RNRestart from 'react-native-restart';
+import GiftedSpinner from 'react-native-gifted-spinner';
 import { connect } from 'react-redux'
 const SideMenu = require('react-native-side-menu');
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions} from 'react-native-router-flux'
 const RouterWithRedux = connect()(Router);
-
+var Orientation = require('react-native-orientation');
 var SensorManager = NativeModules.SensorManager;
 var Spinner = require('react-native-spinkit');
+var ExtraDimensions = require('react-native-extra-dimensions-android');
+var DismissKeyboard = require('dismissKeyboard');
 var StatusBarAndroid = require('react-native-android-statusbar');
 // var SQLite = require('react-native-sqlite-storage');
 // SQLite.DEBUG(true);
@@ -52,7 +59,11 @@ var Include = require('../Include');
 import ButtonWrap from '../components/elements/ButtonWrap'
 
 var {globalVariableManager} = require('../components/modules/GlobalVariableManager');
-var {Popup,popupActions} = require('../components/popups/Popup');
+var {Popup,popupActions,popupConst} = require('../components/popups/Popup');
+
+var LogoRotate = require('../components/elements/logoRotate.js')
+
+var SCTVFilmsSideMenu = require('../components/elements/SCTVFilmsSideMenu');
 // screens
 import HomeScreen from '../components/screens/HomeScreen'
 import SecondScreen from '../components/screens/SecondScreen'
@@ -62,19 +73,39 @@ var screenList=[
 ];
 //popups
 var DefaultPopup = require('../components/popups/DefaultPopup');
+var FadeDownDefaultPopup = require('../components/popups/FadeDownDefaultPopup');
 //variable
-var widthScreen = Dimensions.get('window').width;
-var heightScreen = Define.constants.availableHeightScreen;
 
 
 var App = React.createClass({
+  hideContentState:false,
+  hideContent:function(flag=true){
+    var self =this;
+    if (flag) {
+      // InteractionManager.runAfterInteractions(() => {
+        self.refs.contentView.transitionTo({opacity:0},200)
+      // })
+      // self.refs.tutorialView.transitionTo({opacity:0.8},1200)
+    }
+    else{
+      self.refs.contentView.transitionTo({opacity:1},200)
+      // self.refs.tutorialView.transitionTo({opacity:0},600)
+    }
+
+    self.hideContentState=flag;
+  },
   // renderSideMenu:function(){
   //   var self=this;
   //    return(
   //      <SideMenu rootView={self}/>
   //    )
   //  },
-
+   updateSideMenu: function() {
+     const self = this;
+     if(self._sideMenuContent) {
+       self._sideMenuContent.getWrappedInstance().forceUpdate();
+     }
+   },
   // drawSideMenu:function(flag=true){
   //   var self = this;
   //   if (self.sideMenu) {
@@ -86,6 +117,11 @@ var App = React.createClass({
     var self = this;
     const { dispatch,state,navigator } = this.props;
     Debug.log('handleAppStateChange ' + currentAppState , Debug.level.USER_TRACKER);
+    var widthScreen = Dimensions.get('window').width;
+    var heightScreen = Dimensions.get('window').height;
+
+    self.handleAppOrientation(widthScreen < heightScreen ? 'PORTRAIT':'LANDSCAPE')
+
     switch (currentAppState) {
       case 'active':{
         break;
@@ -110,7 +146,7 @@ var App = React.createClass({
           key={current.nameScreen}
           title={current.nameScreen}
           component={current}
-
+          //backButtonImage={Define.assets.Menu.icon_back}
           {...current.sceneConfig}
 
           bodyStyle={Themes.current.screen.bodyViewWrap}
@@ -120,6 +156,184 @@ var App = React.createClass({
     })
   },
 
+  processCrashDone:false,
+  processCrash:function(){
+    var self = this;
+    var {dispatch,user}= self.props;
+    if (self.processCrashDone) {
+      return;
+    }
+    self.processCrashDone = true;
+
+    var path = Define.constants.crashLog;
+
+    RNFS.readFile(path, 'utf8')
+    .then((content)=>{
+      if (content!=='SENDED') {
+        Debug.log('show popup crash');
+        popupActions.setRenderContentAndShow(
+          DefaultPopup,
+          {},
+          ()=>{
+            return(
+              <DefaultPopup
+                  disableClose={false}
+                  title={'Rất xin lỗi'}
+                  description={'Ứng dụng đã gặp lỗi trong phiên làm việc trước, xin vui lòng gửi thông tin chi tiết cho chúng tôi để hoàn thiện ứng dụng'}
+                  buttonTitle={'Đồng ý'}
+                  onPress={()=>{
+                    popupActions.popPopup(undefined,undefined,undefined,undefined,[popupConst.INFO_GROUP]);
+                    // show FeedBackPopup
+                    //popupActions.setRenderContentAndShow(
+                    //  FeedBackPopup,
+                    //  {
+                    //    infoText:content
+                    //  });
+                     // write 'SENDED' to crash file
+                     RNFS.writeFile(path, 'SENDED' , 'utf8');
+                  }}
+                  >
+                  <Include.Text style={{left:0,right:0,marginVertical:5,alignSelf:'center',color:'#000'}}>(Chi tiết lỗi đã được đính kèm với nội dung góp ý, bạn có thể để trống nội dung)</Include.Text>
+                </DefaultPopup>
+            )},
+            {
+              tapToExit:false
+            }
+        )
+
+        if (!Define.constants.debug) {
+          // write 'SENDED' to crash file
+          RNFS.writeFile(path, 'SENDED' , 'utf8')
+        }
+      }
+    })
+    .catch((ex)=>{
+    })
+
+  },
+  preProcessWhenStartDone:false,
+  preProcessWhenStart : function(){
+    Debug.log('preProcessWhenStart');
+    var self = this;
+    var {dispatch,user,movie}= self.props;
+
+    self.preProcessWhenStartDone = true;
+
+    GcmAndroid.requestPermissions();
+
+    RNHotUpdate.getCheckUpdateInfo()
+      .then((arg)=>{
+        Debug.log('getCheckUpdateInfo:done');
+        self.processUpdateInfo(arg);
+      })
+      .catch((err)=>{Debug.log2('getCheckUpdateInfo:err',err,Debug.level.ERROR);})
+
+
+    //  get config
+ //   dispatch(AppStateActions_MiddleWare.getConfig())
+ //   dispatch(AppStateActions_MiddleWare.getDistributors());
+    // processCrash
+    self.processCrash();
+
+
+
+    // auto login
+ //   dispatch(StoreActions_MiddleWare.get({key:'UserName'},false))
+ //   .then((data)=>{
+ //     var phoneNumber = data.res;
+ //     dispatch(StoreActions_MiddleWare.get({key:'Password'},false))
+ //     .then((data2)=>{
+ //       var password = data2.res;
+ //       dispatch(UserActions_MiddleWare.signin({
+ //           username:phoneNumber,
+ //           password:password,
+ //         }))
+ //     });
+ //   });
+
+    self.processDeepLinkFromNotify();
+
+  },
+  handleAppOrientation:function(specificOrientation){
+    var self = this;
+    var { dispatch,state,appState} = this.props;
+    Debug.log2('specificOrientation',specificOrientation,Debug.level.USER_TRACKER);
+    let shouldUpdateVideoPopup = true;
+    // iOS only
+    if(specificOrientation === 'PORTRAITUPSIDEDOWN') {
+      Debug.log2('currentDirect', appState.currentDirect);
+      if(appState.currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) {
+        specificOrientation = 'PORTRAIT';
+      } else if(appState.currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.UNKNOWN) {
+        if(Define.constants.widthScreen < Define.constants.heightScreen) {
+          return;
+        } else {
+          specificOrientation = 'PORTRAIT';
+        }
+      } else {
+        return;
+      }
+    } else if(specificOrientation === 'UNKNOWN') {
+      return;
+    }
+    // end iOS only
+
+    var newVideoState = '';
+
+    if ( (popupActions.getVideoPopupState()==='NORMAL' || popupActions.getVideoPopupState()==='FORCE_FULLSCREEN') &&
+      specificOrientation ==='LANDSCAPE' ) {
+      newVideoState='FULLSCREEN';
+    }
+
+    if (specificOrientation==='PORTRAIT' && Define.constants.widthScreen<Define.constants.heightScreen) {
+      if(Platform.OS === 'ios') {
+        shouldUpdateVideoPopup = false;
+      }
+    }else if(specificOrientation==='LANDSCAPE' && Define.constants.widthScreen>Define.constants.heightScreen){
+      if(Platform.OS === 'ios') {
+        shouldUpdateVideoPopup = false;
+      }
+    }else if(specificOrientation ==='UNKNOWN'){
+    } else {
+      let temp = Define.constants.widthScreen;
+      Define.constants.widthScreen=Define.constants.heightScreen;
+      Define.constants.heightScreen=temp;
+    }
+
+    Define.constants.availableHeightScreen = Platform.OS === 'ios' ? Define.constants.heightScreen : Define.constants.heightScreen- ExtraDimensions.get('STATUS_BAR_HEIGHT');
+    Themes.init();
+    if (specificOrientation !== appState.currentDirect) {
+      dispatch(AppStateActions.setDirectOnRequest(ActionsTypes.APP_STATE_DIRECT_LIST[specificOrientation]))
+    }
+
+
+    if(shouldUpdateVideoPopup) {
+      if (specificOrientation ==='PORTRAIT' && popupActions.getVideoPopupState() === 'FULLSCREEN') {
+        popupActions.setVideoPopupState('NORMAL');
+      }
+      else{
+        popupActions.setVideoPopupState(newVideoState);
+      }
+    }
+  },
+  processDeepLinkFromNotifyDone:false,
+  startDeepLink:'',
+  startExtras:{},
+  processDeepLinkFromNotify:function(){
+    var self =this;
+    // check intent (start from link or notify)
+    if (self.processDeepLinkFromNotifyDone) {
+      return;
+    }
+
+    Debug.log('Process deeplink when start app from notity')
+    globalVariableManager.deepLinkManager.processLink({
+              link:self.startDeepLink,
+              extras:self.startExtras,
+            });
+
+    self.processDeepLinkFromNotifyDone = true;
+  },
   componentWillMount : function(){
     var self = this;
     const { dispatch,state} = this.props;
@@ -133,56 +347,113 @@ var App = React.createClass({
       Debug.log('Connection state change: ' + connectionInfo,Debug.level.USER_TRACKER); // NONE , WIFI, MOBILE
     })
 
+    Orientation.addOrientationListener(self.handleAppOrientation)
+
     // update task
     DeviceEventEmitter.addListener('HotUpdateManager:checkUpdate', (ev) => {
       Debug.log2('HotUpdateManager:checkUpdate', ev,Debug.level.USER_TRACKER);
     });
     DeviceEventEmitter.addListener('HotUpdateManager:checkUpdateDone', (arg) => {
       Debug.log2('HotUpdateManager:checkUpdateDone', arg,Debug.level.USER_TRACKER);
-      // if (!self.processUpdateInfoDone ) {
-      //     self.processUpdateInfo(arg);
-      // }
     });
     DeviceEventEmitter.addListener('HotUpdateManager:download', (ev) => {
       Debug.log2('HotUpdateManager:download', ev,Debug.level.USER_TRACKER);
     });
+    var time2ShowToast = Date.now();
     DeviceEventEmitter.addListener('HotUpdateManager:downloading', (ev) => {
       Debug.log2('HotUpdateManager:downloading ', ev,Debug.level.USER_TRACKER);
+      if (Date.now() - time2ShowToast > 1000) {
+        if (Platform.OS==='android') {
+          ToastAndroid.show('Update downloading '+ (Math.floor(ev.byte/1024)).toString() + ' kb' , ToastAndroid.SHORT);
+        }
+        time2ShowToast = Date.now();
+      }
     });
     DeviceEventEmitter.addListener('HotUpdateManager:downloadDone', (ev) => {
       Debug.log2('HotUpdateManager:downloadDone', ev,Debug.level.USER_TRACKER);
     });
-    DeviceEventEmitter.addListener('HotUpdateManager:updateDone', (ev) => {
-      Debug.log2('HotUpdateManager:updateDone', ev,Debug.level.USER_TRACKER);
+    DeviceEventEmitter.addListener('HotUpdateManager:updateDone', (arg) => {
+      Debug.log2('HotUpdateManager:updateDone', arg,Debug.level.USER_TRACKER);
+      if (Platform.OS==='android') {
+        ToastAndroid.show('Update completed', ToastAndroid.SHORT)
+      }
+      if (!self.processUpdateInfoDone ) {
+          self.processUpdateInfo(arg);
+      }
     });
     //key
     BackAndroid.addEventListener('hardwareBackPress',
        () => {
-         if (popupActions.popPopup()) {
+         // must update
+         appState = self.props.appState;
+         var {navigator } = self.props;
+        //  clearTimeout(globalVariableManager.hideContentTimeput);
+         if (self.hideContentState) {
+           globalVariableManager.rootView.hideContent(false);
+         }
+
+         if (popupActions.popPopup(undefined,undefined,undefined,undefined,[popupConst.INFO_GROUP])) {
            return true;
          }
          else if(popupActions.getPopupStackSize(0)>0){
            popupActions.popPopup(0,true,0);
            return true;
          }
-        //  else if (self.sideMenu && self.sideMenu.isOpen) {
-        //    self.drawSideMenu(false);
-        //    return true;
-        //  }
-        //  else if (!self.splashScreen ) {
-        //    // must update
-        //    var {navigator } = self.props;
-        //     if(Actions.pop()) {
-        //       if (navigator.current === 'HomeScreen') {
-        //         RNIntent.moveTaskToBack();
-        //         return true;
-        //         // return false;
-        //       }
-        //        return true;
-        //      }
-        //   }
-          RNIntent.moveTaskToBack();
-          return true;
+         //else if (self.sideMenu && self.sideMenu.isOpen) {
+         //  self.drawSideMenu(false);
+         //  return true;
+         //}
+         else if (!(appState.currentState === ActionsTypes.APP_STATE_LIST.LOADING)) {
+           if (navigator.currentScreen.name !== 'HomeScreen') {
+             if(Actions.pop()) {
+               return true;
+             }else{
+              //  RNIntent.moveTaskToBack();
+              //  return true;
+              //dispatch(UserActions_MiddleWare.signout())
+              //.then(()=>{
+              //  RNIntent.exit();
+              //})
+              //.catch(()=>{
+                RNIntent.exit();
+              //})
+               return true;
+             }
+           }
+           else{
+             //if (globalVariableManager.SCTVScrollableTabBarContainer &&
+             //       globalVariableManager.SCTVScrollableTabBarContainer.tabFocus !== 1 &&
+             //       globalVariableManager.SCTVScrollableTabBarContainer.refs.ScrollableTabView
+             //     ) {
+             //   globalVariableManager.SCTVScrollableTabBarContainer.refs.ScrollableTabView.goToPage(1);
+             //   return true;
+             //}else{
+               //  RNIntent.moveTaskToBack();
+               //  return true;
+               //dispatch(UserActions_MiddleWare.signout())
+               //.then(()=>{
+               //  RNIntent.exit();
+               //})
+               //.catch(()=>{
+                 RNIntent.exit();
+               //})
+                return true;
+             //}
+            }
+          }
+          else{
+            //  RNIntent.moveTaskToBack();
+            //  return true;
+            //dispatch(UserActions_MiddleWare.signout())
+            //.then(()=>{
+            //  RNIntent.exit();
+            //})
+            //.catch(()=>{
+              RNIntent.exit();
+            //})
+             return true;
+          }
+
           // return false;
         }
       );

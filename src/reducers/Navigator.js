@@ -10,6 +10,7 @@ var Debug = require('../Util/Debug');
  * @returns {null} .
  */
 function Navigator(state ={
+      stack: [],
       currentScreen:{},
       navigating:false,
       dstScreenName:'',
@@ -23,13 +24,13 @@ function Navigator(state ={
       stateTemp.navigating = false;
       stateTemp.currentScreen = action.scene;
       Debug.log('Navigator:FOCUS : '+action.scene.name,Debug.level.USER_TRACKER);
-      Debug.log2('Data:', action.scene);
       return  stateTemp ;
     }
     case ActionConst.PUSH:{
       stateTemp = Object.assign({}, state);
       stateTemp.navigating = true;
       stateTemp.dstScreenName = action.key;
+      stateTemp.stack.push(action.key);
       Debug.log('Navigator:PUSH : '+action.key,Debug.level.USER_TRACKER);
       return  stateTemp ;
     }
@@ -53,6 +54,7 @@ function Navigator(state ={
     }
     case ActionConst.BACK_ACTION:{
       stateTemp = Object.assign({}, state);
+      stateTemp.stack.pop();
       Debug.log('Navigator:BACK_ACTION : '+action.key,Debug.level.USER_TRACKER);
       Debug.log2('Data:', action);
 

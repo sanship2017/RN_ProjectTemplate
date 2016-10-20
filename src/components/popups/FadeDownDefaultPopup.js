@@ -9,7 +9,7 @@ var {
 import { connect } from 'react-redux';
 
 //components
-// var Debug = require('../../Util/Debug');
+var Debug = require('../../Util/Debug');
 var Themes = require('../../Themes');
 var Define = require('../../Define');
 var Include = require('../../Include');
@@ -75,7 +75,7 @@ var FadeDownDefaultPopup = React.createClass({
   },
   render:function(){
     var self = this;
-    const {disableClose,description,buttonTitle,onPress,onPressPopup} = self.props;
+    const {disableClose,title,description,buttonTitle,onPress,onPressPopup} = self.props;
 
     var closeButton = null;
     if (!disableClose) {

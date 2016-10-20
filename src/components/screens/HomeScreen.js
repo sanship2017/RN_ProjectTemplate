@@ -1,10 +1,3 @@
-/**
-* @Author: Trần Quốc Phương <Anonymous080>
-* @Date:   2016-07-06T15:49:32+07:00
-* @Email:  tranphuong.080@gmail.com
-* @Last modified by:   Anonymous080
-* @Last modified time: 2016-07-11T15:29:18+07:00
-*/
 
 import React, { Component } from 'react';
 
@@ -16,6 +9,7 @@ var {
   Image,
   TouchableOpacity,
   Dimensions,
+  InteractionManager
 } = require('react-native');
 
 var Spinner = require('react-native-spinkit');

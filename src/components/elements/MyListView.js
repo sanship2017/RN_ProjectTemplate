@@ -142,7 +142,6 @@ var MyListView = React.createClass({
       'horizontal',
       'onLayout',
       'scrollEnabled',
-      'onLayout'
     ]
 
     var scrollProps ={
@@ -181,8 +180,8 @@ var MyListView = React.createClass({
         dataSource={self.state.ds}
         renderRow={self.props.renderRow?self.props.renderRow: self._renderRow}
         pageSize={6}
-        scrollRenderAheadDistance={260}
-        removeClippedSubviews={true}
+        scrollRenderAheadDistance={660}
+        removeClippedSubviews={self.props.removeClippedSubviews !== undefined ? self.props.removeClippedSubviews :  true}
       />
     )
   },

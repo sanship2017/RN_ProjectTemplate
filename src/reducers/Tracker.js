@@ -1,16 +1,9 @@
-/**
-* @Author: Trần Quốc Phương <Anonymous080>
-* @Date:   2016-07-08T08:38:52+07:00
-* @Email:  tranphuong.080@gmail.com
-* @Last modified by:   Trần Quốc Phương
-* @Last modified time: 2016-07-12T15:36:13+07:00
-*/
 
 // LIB
 var {
   Platform,
 } = require('react-native');
-
+var _ = require('lodash');
 var DeviceInfo = require('react-native-device-info');
 var RNFS = require('react-native-fs');
 // components
@@ -25,6 +18,7 @@ var {socketConnection} = require('../components/modules/ConnectionsManager');
 var ActionsTypes = require( '../actions/ActionsTypes');
 var {popupActions} = require('../components/popups/Popup');
 var DefaultPopup = require('../components/popups/DefaultPopup');
+var FadeDownDefaultPopup = require('../components/popups/FadeDownDefaultPopup');
 
 //var
 var {globalVariableManager} = require('../components/modules/GlobalVariableManager');
@@ -106,33 +100,20 @@ function Tracker(state ={} , action) {
   // if (info !== undefined) {
   //   var buttonTitle = undefined;
   //   var link='';
-  //   var extra={};
+  //   var extras={};
   //   if (info.acts && Array.isArray(info.acts)) {
   //     if (info.acts.length > 0) {
   //       buttonTitle = info.acts[0].label;
   //       link = info.acts[0].link;
-  //       extra = info.acts[0].extra;
+  //       extras = info.acts[0].extras;
   //     }
   //   }
-    // popupActions.setRenderContentAndShow(
-    //   DefaultPopup,
-    //   {
-    //     title={info.head}
-    //     description={info.body}
-    //     disableClose={true}
-    //     buttonTitle={buttonTitle}
-    //     onPress={()=>{
-    //       popupActions.popPopup();
-    //       globalVariableManager.deepLinkManager.processLink({link:link,extra:extra})
-    //     }}
-    //     onPressPopup={()=>{popupActions.popPopup()}}
-    //   },
-    //   null,
-    //   null,
-    //   {
-    //     group:3,
-    //   })
-  // }
+    popupActions.setRenderContentAndShow(
+      FadeDownDefaultPopup,
+      {
+        description:info
+      })
+  }
 
   //
   Debug.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',Debug.level.MARK);

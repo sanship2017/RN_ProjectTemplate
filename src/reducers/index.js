@@ -1,10 +1,3 @@
-/**
-* @Author: Trần Quốc Phương <Anonymous080>
-* @Date:   2016-07-08T08:38:52+07:00
-* @Email:  tranphuong.080@gmail.com
-* @Last modified by:   Anonymous080
-* @Last modified time: 2016-07-11T10:26:21+07:00
-*/
 
 // var Todo = require('./Todo');
 

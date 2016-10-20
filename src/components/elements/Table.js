@@ -111,8 +111,7 @@ var Table = React.createClass({
                       marginRight:columnRightMarginValue[colID],
                       alignItems:'center',
                       justifyContent:'center'},
-                    cellStyle,
-                    Debug.styles.border]}>
+                    cellStyle]}>
         <Include.Text style={textStyle}>{colData}</Include.Text>
       </View>
     )
@@ -151,7 +150,7 @@ var Table = React.createClass({
     var dataSource=ds.cloneWithRows(rowDataTemp);
     return (
       <ListView
-        style={[styles.content,self.props.rowStyle,Debug.styles.border]}
+        style={[styles.content,self.props.rowStyle ]}
         contentContainerStyle={styles.col}
         dataSource={dataSource}
         renderRow={(colData, sectionIDCol, colID, highlightRow)=>{return(self._renderColumn(colData, sectionIDCol, colID, highlightRow,rowID))}}

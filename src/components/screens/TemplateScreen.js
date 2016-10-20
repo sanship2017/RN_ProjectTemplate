@@ -74,7 +74,7 @@ var TemplateScreen = React.createClass({
     //       popupActions.popAllPopup(0,true,1);
     //       Actions.pop();
     //     }}>
-    //       <View style={[Themes.current.screen.leftButtonWrapNavBar,Debug.styles.border]}>
+    //       <View style={[Themes.current.screen.leftButtonWrapNavBar ]}>
     //         <Include.Image style={Themes.current.screen.leftButtonIcon} source={Define.assets.cate_content.back_icon}/>
     //       </View>
     //     </ButtonWrap>
@@ -143,7 +143,7 @@ var TemplateScreen = React.createClass({
         <View
             pointerEvents={'auto'}
             style={[Themes.current.screen.bodyView,self.bodyStyle,{justifyContent: 'center', alignItems: 'center'}]}>
-          <Spinner type={'ChasingDots'} color={Themes.current.factor.spinnerColor} style={{height: 50,width:50}} />
+          <Spinner type={'Wave'} color={Themes.current.factor.spinnerColor} />
         </View>
       ) ;
     }

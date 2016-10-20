@@ -78,7 +78,7 @@ var  TemplatePage = React.createClass({
       content =(
         <ScrollView
             style={{flex:1}}
-            removeClippedSubviews ={true}
+            removeClippedSubviews ={false}
             refreshControl ={
               <RefreshControl
                 refreshing={false? true:false}

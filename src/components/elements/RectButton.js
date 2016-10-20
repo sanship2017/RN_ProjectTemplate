@@ -39,7 +39,7 @@ var RectButton = React.createClass({
       <ButtonWrap onPress={self.props.onPress}>
         <View style={[{width:Define.constants.widthScreen*2.2/4,height:45,justifyContent:'center',backgroundColor:'#58a12b'},self.props.style]}>
           {self.props.backgroundImage?
-            <View style={[{position:'absolute',top:0,bottom:0,left:0,right:0},self.props.backgroundImageStyle,Debug.styles.border]}>
+            <View style={[{position:'absolute',top:0,bottom:0,left:0,right:0},self.props.backgroundImageStyle ]}>
               <Include.Image
                 resizeMode='stretch'
                 tintColor={self.props.backgroundImageColor}
@@ -57,7 +57,7 @@ var RectButton = React.createClass({
             :
             null
           }
-          <View  style={[{alignSelf:'flex-start',paddingHorizontal:5},self.props.contentStyle,Debug.styles.border]}>
+          <View  style={[{alignSelf:'flex-start',paddingHorizontal:5},self.props.contentStyle ]}>
             {self.props.children}
             <Include.Text numberOfLines={1} custom={true} style={[{color:'#FFF',marginLeft:5,fontSize:13},self.props.textStyle]}>{self.props.text}</Include.Text>
           </View>

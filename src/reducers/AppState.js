@@ -38,6 +38,18 @@ function AppState(state ={
       }
       break;
     }
+    case ActionsTypes.APP_STATE_DIRECT_SET:{
+      stateTemp = Object.assign({}, state);
+      switch (action.subtype) {
+        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:{
+          stateTemp.currentDirect = action.data;
+          break;
+        }
+        default:
+          break;
+      }
+      break;
+    }
     default:
       // Debug.log('ServerConnection:unknown type:'+action.type);
       break;
