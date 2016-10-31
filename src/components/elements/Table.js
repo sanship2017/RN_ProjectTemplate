@@ -21,7 +21,7 @@ var styles = StyleSheet.create({
     flexWrap: 'wrap'
   },
   row: {
-    flex:1,
+    // flex:1,
     // justifyContent: 'space-around',
     flexDirection: 'column',
     flexWrap: 'wrap'
@@ -150,7 +150,8 @@ var Table = React.createClass({
     var dataSource=ds.cloneWithRows(rowDataTemp);
     return (
       <ListView
-        style={[styles.content,self.props.rowStyle ]}
+        style={[styles.content,self.props.rowStyle,
+                (Array.isArray(self.props.rowStyleArray) && self.props.rowStyleArray[rowID])? self.props.rowStyleArray[rowID]:{}]}
         contentContainerStyle={styles.col}
         dataSource={dataSource}
         renderRow={(colData, sectionIDCol, colID, highlightRow)=>{return(self._renderColumn(colData, sectionIDCol, colID, highlightRow,rowID))}}
