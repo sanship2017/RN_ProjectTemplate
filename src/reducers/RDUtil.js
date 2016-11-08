@@ -15,17 +15,17 @@ var RDUtil = {
     switch (action.subtype) {
       case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:{
         stateTemp[nameAction].loading++;
-        if(process.onRequest) {process.onRequest()}
+        if(process.onRequest) { stateTemp = process.onRequest(stateTemp)}
         break;
       }
       case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:{
         if (stateTemp[nameAction].loading>0) {stateTemp[nameAction].loading--;}
-        if(process.onRequest) {process.onSuccess()}
+        if(process.onSuccess) {stateTemp = process.onSuccess(stateTemp)}
         break;
       }
       case RDActionsTypes.REQUEST_SUBTYPE.ERROR:{
         if (stateTemp[nameAction].loading>0) {stateTemp[nameAction].loading--;}
-        if(process.onRequest) {process.onError()}
+        if(process.onError) {stateTemp = process.onError(stateTemp)}
         break;
       }
       default:
