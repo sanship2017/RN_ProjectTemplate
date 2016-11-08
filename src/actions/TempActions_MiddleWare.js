@@ -1,5 +1,6 @@
 
-var ActionsTypes = require('./ActionsTypes');
+var RDActionsTypes = require('./RDActionsTypes');
+import RDActions_MiddleWare from './RDActions_MiddleWare'
 
 // LIB
 var TimeoutCallback = require('timeout-callback');
@@ -10,7 +11,7 @@ var Debug = require('../Util/Debug');
 var Util = require('../Util/Util');
 
 var {socketConnection} = require('../components/modules/ConnectionsManager');
-var Actions = require('./Actions');
+var RDActions = require('./RDActions');
 
 // NOTE : stuck when call getState (when dispatch another action in a action)
 
@@ -18,10 +19,25 @@ var Actions = require('./Actions');
  * action creators
  */
 
-const Actions_MiddleWare={
-  name:'Actions_MiddleWare',
-  logRes:true,
-  function:function(arg={},setState = true){
+class TempActions_MiddleWare extends RDActions_MiddleWare {
+  constructor(){
+    super('TempActions_MiddleWare',true);
+    this.init();
+  }
+  get actionsList(){
+    return {
+      action:{
+        query:'',
+        argFormat:{},
+        argMap:{},
+        onArg:undefined, //(arg,getState)=>{return arg;},
+        onError:undefined, // (dispatch,getState,data)=>{return true},
+        onDone:undefined, // (dispatch,getState,data)=>{return true},
+      },
+    };
+  }
+
+  tempFunction(arg={},setState = true){
     var self = this;
     var actionName = '...';
     var query = '....';
@@ -44,7 +60,7 @@ const Actions_MiddleWare={
       var data = {};
       var promise = new Promise((resolve,reject)=>{
         if (socketConnection.getConnectState()) {
-          if(setState) {dispatch(Actions[actionName+'OnRequest']())}
+          if(setState) {dispatch(RDActions[this.sortName][actionName+'OnRequest']())}
             socketConnection.emit(query,req,
                 TimeoutCallback(Define.constants.requestTimeout,(err,res) => {
                   Debug.log(preTextLog+':callback:'+query+':'+JSON.stringify(req));
@@ -58,7 +74,7 @@ const Actions_MiddleWare={
                       arg:argTemp,
                       err:err,
                     }
-                    if(setState) {dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
+                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
                     reject(data);
                   }
                   else{
@@ -68,7 +84,7 @@ const Actions_MiddleWare={
                       arg:argTemp,
                       res:res,
                     }
-                    if(setState) {dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
+                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
                     resolve(data);
                   }
                 }
@@ -79,8 +95,8 @@ const Actions_MiddleWare={
       })
       return promise;
     }
-  },
-
+  }
 }
 
-module.exports=Actions_MiddleWare;
+
+module.exports= new TempActions_MiddleWare();

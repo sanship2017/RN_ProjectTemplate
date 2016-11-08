@@ -1,5 +1,5 @@
 
-var ActionsTypes = require('./ActionsTypes');
+var RDActionsTypes = require('./RDActionsTypes');
 
 // LIB
 var TimeoutCallback = require('timeout-callback');
@@ -10,7 +10,7 @@ var Debug = require('../Util/Debug');
 var Util = require('../Util/Util');
 
 var {socketConnection} = require('../components/modules/ConnectionsManager');
-var Actions = require('./...Actions');
+var RDActions = require('./RDActions');
 
 // NOTE : stuck when call getState (when dispatch another action in a action)
 
@@ -18,22 +18,15 @@ var Actions = require('./...Actions');
  * action creators
  */
 
-const Actions_MiddleWare={
-  name:'Actions_MiddleWare',
-  logRes:true,
+class RDActions_MiddleWare {
+  constructor(name,logRes){
+    this.name = name;
+    this.sortName = name.slice(0,name.indexOf('Actions'));
+    this.logRes = logRes;
+    this.actionsList={};
+  }
 
-  actionsList:{
-    action:{
-      query:'',
-      argFormat:{},
-      argMap:{},
-      onArg:undefined, //(arg,getState)=>{return arg;},
-      onError:undefined, // (dispatch,getState,data)=>{return true},
-      onDone:undefined, // (dispatch,getState,data)=>{return true},
-    },
-  },
-
-  init:function(){
+  init(){
     var self = this;
     Object.keys(self.actionsList).forEach((key)=>{
       var obj = self.actionsList[key];
@@ -65,7 +58,7 @@ const Actions_MiddleWare={
                       Debug.log(preTextLog+':'+query+':'+JSON.stringify(req));
                       var promise = new Promise((resolve,reject)=>{
                         if (socketConnection.getConnectState()) {
-                          if(setState) {dispatch(Actions[actionName+'OnRequest']()); }
+                          if(setState) {dispatch(RDActions[this.sortName][actionName+'OnRequest']()); }
                           var data ={};
                           socketConnection.emit(query,req,
                               TimeoutCallback(Define.constants.requestTimeout,(err,res) => {
@@ -83,10 +76,10 @@ const Actions_MiddleWare={
                                   var onErrorRet = true;
                                   if (obj.onError) {onErrorRet = obj.onError(dispatch,getState,data);}
                                   if (onErrorRet) {
-                                    if(setState) {dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
+                                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.constants.REQUEST_SUBTYPE.ERROR,data));}
                                     reject(data);
                                   }else{
-                                    if(setState) {dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
+                                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS,data));}
                                     resolve(data);
                                   }
                                 }
@@ -100,10 +93,10 @@ const Actions_MiddleWare={
                                   var onDoneRet = true;
                                   if (obj.onDone) {onDoneRet = obj.onDone(dispatch,getState,data);}
                                   if (onDoneRet) {
-                                    if(setState) {dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
+                                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS,data));}
                                     resolve(data);
                                   }else{
-                                    if(setState) {dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
+                                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.constants.REQUEST_SUBTYPE.ERROR,data));}
                                     reject(data);
                                   }
                                 }
@@ -118,7 +111,8 @@ const Actions_MiddleWare={
                   };
     })
     return self;
-  },
-}.init();
+  }
+}
 
-module.exports=Actions_MiddleWare;
+
+export default RDActions_MiddleWare;

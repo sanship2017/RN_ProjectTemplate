@@ -8,7 +8,7 @@ var Debug = require('../../Util/Debug');
 var Themes = require('../../Themes');
 var Define = require('../../Define');
 
-// var ServerConnectionActions=require('../../actions/ServerConnectionActions');
+// var Actions.ServerConnection=require('../../actions/Actions.ServerConnection');
 
 // var {reduxManager}=  require('./ReduxManager');
 

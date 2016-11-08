@@ -1,13 +1,9 @@
 package com.projecttemplate;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.KeyEvent;
 
 import com.facebook.common.references.SharedReference;
@@ -41,7 +37,7 @@ public class MainActivity extends ReactActivity {
 
         super.onCreate(savedInstanceState);
 
-        HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager(this));
+        HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager());
 
     }
     @Override
@@ -62,11 +58,11 @@ public class MainActivity extends ReactActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && getReactNativeHost().getReactInstanceManager(this) != null) {
-            getReactNativeHost().getReactInstanceManager(this).showDevOptionsDialog();
-            if (getReactNativeHost().getReactInstanceManager(this).getCurrentReactContext()!= null)
+        if (keyCode == KeyEvent.KEYCODE_MENU && getReactNativeHost().getReactInstanceManager() != null) {
+            getReactNativeHost().getReactInstanceManager().showDevOptionsDialog();
+            if (getReactNativeHost().getReactInstanceManager().getCurrentReactContext()!= null)
                 try {
-                    getReactNativeHost().getReactInstanceManager(this).getCurrentReactContext()
+                    getReactNativeHost().getReactInstanceManager().getCurrentReactContext()
                             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("hardwareMenuPress", null);
                 }

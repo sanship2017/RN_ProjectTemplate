@@ -18,21 +18,23 @@ var Default ={
     NavBar:{
       height:Define.constants.navBarHeight,
       borderBottomWidth:0,
+      padding:0,paddingTop:0,
+      // ...StyleConfig.default.shadownStyle,
     },
     leftButtonWrapNavBar:{
-      position:'absolute', height:Define.constants.navBarHeight,width:Define.constants.widthScreen/2,flexDirection:'row',alignItems:'center',
+      position:'absolute',top:-8,left:0,paddingRight:10,height:Define.constants.navBarHeight, flexDirection:'row',alignItems:'center',justifyContent:'flex-start',
     },
     leftButtonIcon:{
       marginLeft:10,width:10,height:20,tintColor :'#FFF',
     },
     rightButtonWrapNavBar:{
-      position:'absolute',height:Define.constants.navBarHeight,width:Define.constants.widthScreen/2,right:0,flexDirection:'row',alignItems:'center',justifyContent:'flex-end',
+      position:'absolute',top:-9,right:10,paddingLeft:10,height:Define.constants.navBarHeight,flexDirection:'row',alignItems:'center',justifyContent:'flex-end',
     },
     titleWrapNavBarCenter:{
-      top:0,bottom:0,left:0,right:0,position:'absolute',alignSelf:'center',alignItems :'center' ,justifyContent:'center',
+      left:0,right:0,top:0,height:Define.constants.navBarHeight,position:'absolute',alignSelf:'center',alignItems :'center' ,justifyContent:'center',
     },
     titleWrapNavBarLeft:{
-      top:0,bottom:0,left:0,right:0,position:'absolute',alignSelf:'center',alignItems :'flex-start',justifyContent:'center',
+      left:40,right:0,top:0,height:Define.constants.navBarHeight,position:'absolute',alignSelf:'center',alignItems :'flex-start',justifyContent:'center',
     },
     bodyViewNoNavBarWrap:{
       // justifyContent: 'flex-start',
@@ -145,18 +147,21 @@ var Default ={
   },
   text:{
     defaultText:{
-      color:'#303030'
+      color:'#303030',
       fontSize:13,
     },
     normal:{
       fontSize:13,
     },
+    subNormal:{
+      color:'#8b8b8b',fontSize:10,
+    },
     navBartitle:{
       fontSize:17,fontFamily:Define.constants.fontBold,color:'#000'
     },
-    title:{
-      fontSize:17,color:'#232323'
-    },
+    // title:{
+    //   fontSize:17,color:'#232323'
+    // },
     tabbarTitle:{
       fontSize:12,fontFamily: Define.constants.fontBold,
     },
@@ -169,18 +174,13 @@ var Default ={
     subTitle:{
       fontSize:15,fontFamily:Define.constants.fontBold
     },
-    normal:{
-      fontSize:13,
-    },
-    subNormal:{
-      color:'#8b8b8b',fontSize:10,
-    },
+
   },
   image:{
     loading:{
       position:'absolute',
       resizeMode:'stretch',
-      top:(-Define.constants.heightOfNotifyBarAndroid),
+      top:(-Define.constants.heightOfStatusBarAndroid),
       bottom:0,left:0,right:0,
       width:Define.constants.widthScreen,
       height:Define.constants.heightScreen

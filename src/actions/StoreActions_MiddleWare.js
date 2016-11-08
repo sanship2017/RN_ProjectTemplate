@@ -8,7 +8,7 @@ var {
 var TimeoutCallback = require('timeout-callback');
 
 //
-var ActionsTypes = require('./ActionsTypes');
+var RDActionsTypes = require('./RDActionsTypes');
 
 
 // components
@@ -16,7 +16,7 @@ var Define = require('../Define');
 var Debug = require('../Util/Debug');
 var Util = require('../Util/Util');
 
-var Actions = require('./StoreActions');
+var RDActions = require('./RDActions');
 
 /*
  * action creators
@@ -42,7 +42,7 @@ const StoreActions_MiddleWare={
       // req config
       //
       Debug.log(self.name+':'+actionName);
-      if(setState) {dispatch(Actions[actionName+'OnRequest']());}
+      if(setState) {dispatch(RDActions.StoreActions[actionName+'OnRequest']());}
       var data = {};
       var promise = new Promise((resolve,reject)=>{
         AsyncStorage[req](key,value)
@@ -53,7 +53,7 @@ const StoreActions_MiddleWare={
               arg:argTemp,
               res:res,
             }
-            if(setState){ dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
+            if(setState){ dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
             resolve(data);
             return;
           })
@@ -67,7 +67,7 @@ const StoreActions_MiddleWare={
               arg:argTemp,
               err:err,
             }
-            if(setState){dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
+            if(setState){dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
             reject(data);
             return;
           }).done();
@@ -97,7 +97,7 @@ const StoreActions_MiddleWare={
       //
 
       Debug.log(self.name+':'+actionName);
-      if(setState) dispatch(Actions[actionName+'OnRequest']());
+      if(setState) dispatch(RDActions.StoreActions[actionName+'OnRequest']());
 
       var promise = new Promise((resolve,reject)=>{
         AsyncStorage[req](key)
@@ -108,11 +108,11 @@ const StoreActions_MiddleWare={
             data.key=key;
             data.res=res;
             if (!res) { // null
-              if(setState) dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,data));
+              if(setState) dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.ERROR,data));
               reject(data);
               return;
             }
-            if(setState) dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));
+            if(setState) dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));
             resolve(data);
             return;
           })
@@ -122,7 +122,7 @@ const StoreActions_MiddleWare={
             if (err == 'Error: callback timeout') {
               Debug.log(preTextLog+'callback timeout');
             }
-            if(setState) dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,err));
+            if(setState) dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.ERROR,err));
             reject(err);
             return;
           }).done();
@@ -152,7 +152,7 @@ const StoreActions_MiddleWare={
       //
 
       Debug.log(self.name+':'+actionName);
-      if(setState) dispatch(Actions[actionName+'OnRequest']());
+      if(setState) dispatch(RDActions.StoreActions[actionName+'OnRequest']());
 
       var promise = new Promise((resolve,reject)=>{
         AsyncStorage[req](key)
@@ -162,7 +162,7 @@ const StoreActions_MiddleWare={
             var data={};
             data.key=key;
 
-            if(setState) dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));
+            if(setState) dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));
             resolve(data);
             return;
           })
@@ -172,7 +172,7 @@ const StoreActions_MiddleWare={
             if (err == 'Error: callback timeout') {
               Debug.log(preTextLog+'callback timeout');
             }
-            if(setState) dispatch(Actions[actionName+'OnResult'](ActionsTypes.REQUEST_SUBTYPE.ERROR,err));
+            if(setState) dispatch(RDActions.StoreActions[actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.ERROR,err));
             reject(err);
             return;
           }).done();

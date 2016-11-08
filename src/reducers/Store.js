@@ -1,5 +1,5 @@
 
-var ActionsTypes = require( '../actions/ActionsTypes');
+var RDActionsTypes = require( '../actions/RDActionsTypes');
 
 /**
  * [Store description]
@@ -20,35 +20,35 @@ function Store(state ={
 
   var stateTemp = state;
   switch (action.type) {
-    case ActionsTypes.STORE_SET:{
+    case RDActionsTypes.Store.set:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:
+        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:
           stateTemp.set.loading++;
           return  stateTemp ;
-        case ActionsTypes.REQUEST_SUBTYPE.SUCCESS:
+        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:
           if (stateTemp.set.loading>0) {stateTemp.set.loading--;}
           return  stateTemp ;
-        case ActionsTypes.REQUEST_SUBTYPE.ERROR:
+        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:
           if (stateTemp.set.loading>0) {stateTemp.set.loading--;}
           return  stateTemp ;
         default:
           return state;
       }
     }
-    case ActionsTypes.STORE_GET:{
+    case RDActionsTypes.Store.get:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:
+        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:
           stateTemp.get.loading++;
           return  stateTemp ;
-        case ActionsTypes.REQUEST_SUBTYPE.SUCCESS:
+        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:
           if (stateTemp.get.loading>0) {stateTemp.get.loading--;}
           if (action.data) {
               stateTemp.data[action.data.key]=action.data.res;
           }
           return  stateTemp ;
-        case ActionsTypes.REQUEST_SUBTYPE.ERROR:
+        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:
           if (stateTemp.get.loading>0) {stateTemp.get.loading--;}
           return  stateTemp ;
         default:

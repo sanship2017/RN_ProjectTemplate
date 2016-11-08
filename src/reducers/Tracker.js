@@ -15,7 +15,7 @@ var {socketConnection} = require('../components/modules/ConnectionsManager');
 
 //
 
-var ActionsTypes = require( '../actions/ActionsTypes');
+var RDActionsTypes = require( '../actions/RDActionsTypes');
 var {popupActions} = require('../components/popups/Popup');
 var DefaultPopup = require('../components/popups/DefaultPopup');
 var FadeDownDefaultPopup = require('../components/popups/FadeDownDefaultPopup');
@@ -54,14 +54,14 @@ function Tracker(state ={} , action) {
   Debug.log('Reducers:Tracker:'+action.type+':'+action.subtype+':',Debug.level.USER_TRACKER);
 
   switch (action.subtype) {
-    case ActionsTypes.REQUEST_SUBTYPE.SUCCESS:
+    case RDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS:
       break;
-    case ActionsTypes.REQUEST_SUBTYPE.ERROR:
+    case RDActionsTypes.constants.REQUEST_SUBTYPE.ERROR:
       Debug.log(JSON.stringify(action.data),Debug.level.DATA_ERROR);
 
       switch (action.type) {
-        case ActionsTypes.USER_USETOKENFROMSTORE:
-        break;
+        // case RDActionsTypes.USER_USETOKENFROMSTORE:
+        // break;
         default:
           // display popup error
           if (action.data) {
@@ -108,12 +108,12 @@ function Tracker(state ={} , action) {
   //       extras = info.acts[0].extras;
   //     }
   //   }
-    popupActions.setRenderContentAndShow(
-      FadeDownDefaultPopup,
-      {
-        description:info
-      })
-  }
+    // popupActions.setRenderContentAndShow(
+    //   FadeDownDefaultPopup,
+    //   {
+    //     description:info
+    //   })
+  // }
 
   //
   Debug.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',Debug.level.MARK);

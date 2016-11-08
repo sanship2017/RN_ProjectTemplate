@@ -1,106 +1,128 @@
+var _ = require('lodash')
 
-import React, { Component } from 'react';
-
-var {
-  AppRegistry,
-  StyleSheet,
-  Text,
+//LIB
+import React  from 'react';
+import {
   View,
-  Image,
-  TouchableOpacity,
-  Dimensions,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
   InteractionManager
-} = require('react-native');
+} from 'react-native';
 
+var {Actions} = require('react-native-router-flux');
+import { connect } from 'react-redux';
 var Spinner = require('react-native-spinkit');
-//Component
-var { Actions} = require('react-native-router-flux');
+//action
 
+//components
+var Define = require('../../Define');
 var Debug = require('../../Util/Debug');
 var Themes = require('../../Themes');
+var Util = require('../../Util/Util');
 var Include = require('../../Include');
-var Define = require('../../Define');
 
-//  var SCTVScrollableTabBarContainer = require('./SCTVScrollableTabBarContainer');
-//
-// var SCTVNotifyButton = require('../elements/SCTVNotifyButton');
+var {popupActions} = require('../popups/Popup');
+var {globalVariableManager}= require('../modules/GlobalVariableManager');
+
 var ButtonWrap = require('../elements/ButtonWrap');
-// Actions
-// var NewsActions_MiddleWare = require('../../actions/NewsActions_MiddleWare');
-// var UserActions_MiddleWare = require('../../actions/UserActions_MiddleWare');
+
+//screens
+import Screen from './Screen'
+
+// popups
+var DefaultPopup = require('../popups/DefaultPopup');
+
+// actions
+
+//variable
+
+// var styles = StyleSheet.create({
+//
+// })
 
 //
-var  HomeScreen = React.createClass({
-  propTypes: {
-    style:React.PropTypes.any,
-  },
 
-  getDefaultProps: function() {
-    return {
-    };
-  },
+class HomeScreen extends Screen{
+  constructor(props){
+    super(props);
+    this.constructor.sceneConfig = _.merge(this.constructor.sceneConfig,
+    {
 
-  statics:{
-    nameScreen:'HomeScreen',
-    sceneConfig:{
-      hideNavBar:true,
-    },
-    // renderNavigationBar:function(){
-    //   return (
-    //       <View style={{left:50,width:5,height:100,backgroundColor:'#555'}}/>
-    //   //     // <SCTVNotifyButton/>
-    //     );
-    // },
-    renderRightButton: function(){
-      return (
-        <View style={Themes.Current.screen.rightButtonWrapNavBar}>
-          <Include.Text>Test</Include.Text>
-        </View>
-        // <SCTVNotifyButton/>
-      );
-    },
-
-    renderLeftButton: function(scene){
-      return (
-        <ButtonWrap onPress={()=>{Actions.SecondScreen()}}>
-          <View style={Themes.Current.screen.leftButtonWrapNavBar}>
-            <Include.Image style={{width:20,height:20 }} source={Define.assets.Home_screen.home_icon_menu}/>
-          </View>
-        </ButtonWrap>
-      );
-    },
-
-    renderTitle:function(scene){
-      return(
-        <View style={Themes.Current.screen.titleWrapNavBarCenter}>
-          <Include.Text style={Themes.Current.text.navBartitle}>{scene.title}</Include.Text>
-        </View>
-      )
-    }
-  },
-
-  componentWillMount:function(){
-    var self = this;
-    var {dispatch,} = self.props;
-    // dispatch(UserActions_MiddleWare.getVipList());
-  },
-
-  render:function(){
-    var self = this;
-    // <SCTVNavigatorTabBar/>
+    })
+  }
+  // static renderRightButton(scene){
+  //   return (
+  //     <View style={Themes.current.screen.rightButtonWrapNavBar}>
+  //       <Include.Text>RightButton</Include.Text>
+  //     </View>
+  //   )
+  // }
+  // static renderLeftButton(scene){
+  //   return (
+  //     <View style={Themes.current.screen.leftButtonWrapNavBar}>
+  //       <Include.Text>LeftButton</Include.Text>
+  //     </View>
+  //   )
+  // }
+  static renderTitle(scene){
     return(
-      <View style={[Themes.Current.screen.bodyView,self.bodyStyle]}>
-        <ButtonWrap onPress={()=>{Actions.SecondScreen({abs:"abs"});}}>
-          <Spinner type={'Bounce'} color={'black'} style={{height: 50,width:50}} />
-        </ButtonWrap>
+      <View style={Themes.current.screen.titleWrapNavBarCenter}>
+        <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
       </View>
     )
   }
-});
 
-var styles = StyleSheet.create({
+  onRefresh(){
+    super.onRefresh();
+    var {dispatch} = this.props;
+  }
 
-})
+  onGetMore(){
+    super.onGetMore();
+    var {dispatch} = this.props;
+  }
+  renderContent(){
+    var {dispatch} = this.props;
+    var content = null;
+    content =(
+      <ScrollView
+          style={[Themes.current.screen.bodyView,this.props.bodyStyle]}
+          removeClippedSubviews ={true}
+          refreshControl ={
+            <RefreshControl
+              refreshing={false? true:false}
+              onRefresh={this.onRefresh}
+              colors={Themes.current.factor.refreshingColor}
+              progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
+          }
+          scrollEventThrottle={200}
+          onScroll={(event)=>{
+              if (event.nativeEvent.contentOffset.y > (event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-Define.constants.getMoreHeight)) {
+                // self.onGetMore();
+              }
+            }}>
+        <Include.Text>Content</Include.Text>
+      </ScrollView>
+    )
+    return content;
+  }
+  componentDidMount(){
+    super.componentDidMount();
+  }
+}
 
 
-module.exports = (HomeScreen);
+/**
+ * [selectActions description]
+ * @param  {[type]} state [description]
+ * @return {[type]}       [description]
+ */
+function selectActions(state) {
+  return {
+    navigator: state.Navigator,
+  }
+}
+
+module.exports=connect(selectActions, undefined, undefined, {withRef: true})(HomeScreen);
+// export default HomeScreen

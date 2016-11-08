@@ -1,5 +1,5 @@
 
-var ActionsTypes = require('./ActionsTypes');
+var RDRDActionsTypes = require('./RDRDActionsTypes');
 
 //LIB
 //COMPONENTS
@@ -7,15 +7,15 @@ var ActionsTypes = require('./ActionsTypes');
 var Debug = require('../Util/Debug');
 
 var {socketConnection} = require('../components/modules/ConnectionsManager');
-var AppStateActions = require('./AppStateActions');
-var ServerConnectionActions = require('./ServerConnectionActions');
+var AppStateRDActions = require('./AppStateRDActions');
+var RDActions = require('./RDRDActions');
 var {popupActions} = require('../components/popups/Popup');
 var DefaultPopup = require('../components/popups/DefaultPopup');
 /*
  * action creators
  */
 
-const ServerConnectionActions_MiddleWare={
+const ServerConnection_MiddleWare={
   autoReconnectTime:2,
   autoReconnectCount:0,
   intervalTimeout:null,
@@ -25,14 +25,14 @@ const ServerConnectionActions_MiddleWare={
       if (getState().ServerConnection.connecting) {
         return new Promise((resolve,reject)=>{});
       }
-      dispatch(ServerConnectionActions.connectToServerOnRequest());
+      dispatch(RDActions.ServerConnection.connectOnRequest());
       var promise = new Promise((resolve,reject)=>{
         socketConnection.connect();
         // var dispatchReturn;
         socketConnection.on('connect', ()=>{
-          Debug.log('ServerConnectionActions_MiddleWare:connectToServer:connected',Debug.level.USER_TRACKER);
+          Debug.log('RDRDActions.ServerConnection_MiddleWare:connectToServer:connected',Debug.level.USER_TRACKER);
 
-          dispatch(ServerConnectionActions.connectToServerOnResult(ActionsTypes.REQUEST_SUBTYPE.SUCCESS,null));
+          dispatch(RDActions.ServerConnection.connectOnResult(RDRDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS,null));
           self.autoReconnectCount = 0;
           popupActions.popAllPopup(2,true,2);
           clearTimeout(self.intervalTimeout);
@@ -40,8 +40,8 @@ const ServerConnectionActions_MiddleWare={
           resolve();
         });
         socketConnection.on('connect_timeout', ()=>{
-          Debug.log('ServerConnectionActions_MiddleWare:connectToServer:connect_timeout',Debug.level.USER_TRACKER);
-          dispatch(ServerConnectionActions.connectToServerOnResult(ActionsTypes.REQUEST_SUBTYPE.ERROR,null));
+          Debug.log('RDRDActions.ServerConnection_MiddleWare:connectToServer:connect_timeout',Debug.level.USER_TRACKER);
+          dispatch(RDActions.ServerConnection.connectOnResult(RDRDActionsTypes.constants.REQUEST_SUBTYPE.ERROR,null));
 
           clearTimeout(self.intervalTimeout);
           reject();
@@ -49,8 +49,8 @@ const ServerConnectionActions_MiddleWare={
 
         self.intervalTimeout = setTimeout(()=>{
             // intervalTimeout connect timeout
-            Debug.log('ServerConnectionActions_MiddleWare:connectToServer:connect_timeout:intervalTimeout',Debug.level.USER_TRACKER);
-            dispatch(ServerConnectionActions.connectToServerOnResult(ActionsTypes.REQUEST_SUBTYPE.ERROR,null));
+            Debug.log('RDActions.ServerConnection_MiddleWare:connectToServer:connect_timeout:intervalTimeout',Debug.level.USER_TRACKER);
+            dispatch(RDActions.ServerConnection.connectOnResult(RDRDActionsTypes.constants.REQUEST_SUBTYPE.ERROR,null));
 
             clearTimeout(self.intervalTimeout);
             reject();
@@ -58,12 +58,12 @@ const ServerConnectionActions_MiddleWare={
 
 
         socketConnection.on('disconnect', ()=>{
-          Debug.log('ServerConnectionActions_MiddleWare:connectToServer:disconnect',Debug.level.USER_TRACKER);
+          Debug.log('RDActions.ServerConnection_MiddleWare:connectToServer:disconnect',Debug.level.USER_TRACKER);
 
-          dispatch(ServerConnectionActions.connectToServerOnResult(ActionsTypes.REQUEST_SUBTYPE.ERROR,null));
+          dispatch(RDActions.ServerConnection.connectOnResult(RDRDActionsTypes.constants.REQUEST_SUBTYPE.ERROR,null));
 
           // if (self.autoReconnectCount < self.autoReconnectTime) {
-          //   Debug.log('ServerConnectionActions_MiddleWare:connectToServer:disconnect:auto reconnect '+self.autoReconnectCount);
+          //   Debug.log('RDActions.ServerConnection_MiddleWare:connectToServer:disconnect:auto reconnect '+self.autoReconnectCount);
           //   dispatch(self.connectToServer());
           //   self.autoReconnectCount++;
           // }
@@ -124,4 +124,4 @@ const ServerConnectionActions_MiddleWare={
   }
 }
 
-module.exports=ServerConnectionActions_MiddleWare;
+module.exports=RDActions.ServerConnection_MiddleWare;

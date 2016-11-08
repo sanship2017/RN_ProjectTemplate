@@ -1,5 +1,5 @@
 
-var ActionsTypes = require( '../actions/ActionsTypes');
+var RDActionsTypes = require( '../actions/RDActionsTypes');
 
 var Debug = require('../Util/Debug');
 
@@ -18,19 +18,19 @@ function ServerConnection(state ={
 
   var stateTemp = state;
   switch (action.type) {
-    case ActionsTypes.SERVER_CONNECT:{
+    case RDActionsTypes.Server.connect:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:
+        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:
           stateTemp.connecting = true;
           // stateTemp.retryTimes += 1 ;
           return  stateTemp ;
-        case ActionsTypes.REQUEST_SUBTYPE.SUCCESS:
+        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:
           stateTemp.connecting = false;
           stateTemp.connected = true;
           // stateTemp.retryTimes = 0 ;
           return  stateTemp ;
-        case ActionsTypes.REQUEST_SUBTYPE.ERROR:
+        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:
           stateTemp.connecting = false;
           stateTemp.connected = false;
           break;
@@ -40,10 +40,10 @@ function ServerConnection(state ={
       }
       break;
     }
-    case ActionsTypes.SERVER_CONNECT_NET_INFO_CHANGE:{
+    case RDActionsTypes.server.changeNetInfo:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:
+        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:
           stateTemp.netInfo = action.data;
           break;
         default:

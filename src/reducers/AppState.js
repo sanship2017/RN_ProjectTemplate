@@ -2,7 +2,7 @@ import {
   Dimensions
 } from 'react-native';
 
-var ActionsTypes = require( '../actions/ActionsTypes');
+var RDActionsTypes = require( '../actions/RDActionsTypes');
 
 // components
 var Define = require('../Define');
@@ -21,15 +21,17 @@ var heightScreen = Dimensions.get('window').height;
  * @returns {null} .
  */
 function AppState(state ={
-  currentState:ActionsTypes.APP_STATE_LIST.LOADING,
-  currentDirect: (widthScreen < heightScreen)?ActionsTypes.APP_STATE_DIRECT_LIST.PORTRAIT:ActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE,
+  currentState:RDActionsTypes.AppState.constants.APP_STATE_LIST.RUNNING,
+  currentDirect: (widthScreen < heightScreen)?
+                      RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.PORTRAIT:
+                      RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.LANDSCAPE,
                   } , action) {
   var stateTemp =state;
   switch (action.type) {
-    case ActionsTypes.APP_STATE_SET:{
+    case RDActionsTypes.AppState.set:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:{
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.REQUEST:{
           stateTemp.currentState = action.data;
           break;
         }
@@ -38,10 +40,10 @@ function AppState(state ={
       }
       break;
     }
-    case ActionsTypes.APP_STATE_DIRECT_SET:{
+    case RDActionsTypes.AppState.setDirect:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:{
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.REQUEST:{
           stateTemp.currentDirect = action.data;
           break;
         }

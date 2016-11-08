@@ -30,9 +30,9 @@ var Define = {
   assets: (__DEV__)? assets:PlatformConfig.default.processAsset(assets,mapAssets),
   constants:{
     hybridVersion: PlatformConfig.default.hybridVersion,
-    heightOfNotifyBarAndroid : ExtraDimensions.get('STATUS_BAR_HEIGHT'),
-    heightOfSoftMenuBarAndroid: (Platform.OS === 'android') ? ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'):0,
-    availableHeightScreen: PlatformConfig.default.availableHeightScreen,
+    heightOfStatusBarAndroid : 0,
+    heightOfSoftMenuBarAndroid: 0,
+    availableHeightScreen: heightScreen,
     widthScreen:widthScreen,
     heightScreen:heightScreen,
     screenSizeByInch:screenSizeByInch,
@@ -40,7 +40,7 @@ var Define = {
     imageThumbRate:(20/9),
     smallImageThumbRate:(9/6),
     videoHeight:widthScreen<heightScreen?widthScreen:heightScreen,
-    videoWidth:PlatformConfig.default.videoWidth,
+    videoWidth:widthScreen<heightScreen? heightScreen:widthScreen,
 
     fontScale : Math.floor(4/PixelRatio.getFontScale()),
 
@@ -71,10 +71,10 @@ var Define = {
     elevation:3,
     periodOfAccelerometer:1000,
     requestTimeout:26000,
-    debug:false,  // must false in release
+    debug:true,  // must false in release
     debugStyle:false,
     debugTrackerLogLength:166,
-    logLevel:10,  // must be 10 when release
+    logLevel:0,  // must be 10 when release
     funnyMode:false,
   },
   config:{
@@ -88,6 +88,16 @@ var Define = {
   init:function(){
     var self = this;
 
+    if (Platform.OS === 'android') {
+      ExtraDimensions.getDimentions()
+      .then((dimentions)=>{
+        self.constants.heightOfStatusBarAndroid = dimentions.statusBarHeight;
+        self.constants.heightOfSoftMenuBarAndroid =dimentions.softMenuBarHeight;
+
+        self.constants.availableHeightScreen= heightScreen-dimentions.statusBarHeight;
+        self.constants.videoWidth= widthScreen<heightScreen? heightScreen + dimentions.softMenuBarHeight:widthScreen;
+      })
+    }
 
     if (self.constants.debug) {
       self.assets = assets;

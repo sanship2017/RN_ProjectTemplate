@@ -45,9 +45,10 @@ var RNFS = require('react-native-fs');
 
 
 // action
-var ActionsTypes = require( '../actions/ActionsTypes');
+var RDActionsTypes = require( '../actions/RDActionsTypes');
+var RDActions = require( '../actions/RDActions');
 
-
+var TempActions_MiddleWare = require( '../actions/TempActions_MiddleWare');
 //Component
 var Debug = require('../Util/Debug');
 var Util = require('../Util/Util');
@@ -61,15 +62,13 @@ import ButtonWrap from '../components/elements/ButtonWrap'
 var {globalVariableManager} = require('../components/modules/GlobalVariableManager');
 var {Popup,popupActions,popupConst} = require('../components/popups/Popup');
 
-var LogoRotate = require('../components/elements/logoRotate.js')
-
-var SCTVFilmsSideMenu = require('../components/elements/SCTVFilmsSideMenu');
+// var SCTVFilmsSideMenu = require('../components/elements/SCTVFilmsSideMenu');
 // screens
 import HomeScreen from '../components/screens/HomeScreen'
-import SecondScreen from '../components/screens/SecondScreen'
+import TemplateScreen from '../components/screens/TemplateScreen'
 var screenList=[
   HomeScreen,
-  SecondScreen,
+  TemplateScreen
 ];
 //popups
 var DefaultPopup = require('../components/popups/DefaultPopup');
@@ -136,18 +135,16 @@ var App = React.createClass({
     }
   },
 
-  screenList:[],
   createScreen:function(){
     var self = this;
-
     self.screenList= screenList.map((current)=>{
       return(
         <Scene
-          key={current.nameScreen}
-          title={current.nameScreen}
+          key={current.WrappedComponent.name}
+          title={current.WrappedComponent.name}
           component={current}
           //backButtonImage={Define.assets.Menu.icon_back}
-          {...current.sceneConfig}
+          {...current.WrappedComponent.sceneConfig}
 
           bodyStyle={Themes.current.screen.bodyViewWrap}
           rootView={self}
@@ -219,7 +216,7 @@ var App = React.createClass({
 
     self.preProcessWhenStartDone = true;
 
-    GcmAndroid.requestPermissions();
+    // GcmAndroid.requestPermissions();
 
     RNHotUpdate.getCheckUpdateInfo()
       .then((arg)=>{
@@ -262,9 +259,9 @@ var App = React.createClass({
     // iOS only
     if(specificOrientation === 'PORTRAITUPSIDEDOWN') {
       Debug.log2('currentDirect', appState.currentDirect);
-      if(appState.currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) {
+      if(appState.currentDirect===RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.LANDSCAPE) {
         specificOrientation = 'PORTRAIT';
-      } else if(appState.currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.UNKNOWN) {
+      } else if(appState.currentDirect===RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.UNKNOWN) {
         if(Define.constants.widthScreen < Define.constants.heightScreen) {
           return;
         } else {
@@ -300,10 +297,10 @@ var App = React.createClass({
       Define.constants.heightScreen=temp;
     }
 
-    Define.constants.availableHeightScreen = Platform.OS === 'ios' ? Define.constants.heightScreen : Define.constants.heightScreen- ExtraDimensions.get('STATUS_BAR_HEIGHT');
+    Define.constants.availableHeightScreen = Platform.OS === 'ios' ? Define.constants.heightScreen : Define.constants.heightScreen- Define.constants.heightOfStatusBarAndroid;
     Themes.init();
     if (specificOrientation !== appState.currentDirect) {
-      dispatch(AppStateActions.setDirectOnRequest(ActionsTypes.APP_STATE_DIRECT_LIST[specificOrientation]))
+      dispatch(RDActions.AppState.setDirectOnRequest(RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST[specificOrientation]))
     }
 
 
@@ -336,7 +333,7 @@ var App = React.createClass({
   },
   componentWillMount : function(){
     var self = this;
-    const { dispatch,state} = this.props;
+    var { dispatch,state,appState} = this.props;
     // regis
     globalVariableManager.deepLinkManager.setRootView(self);
     globalVariableManager.reduxManager.setDispatchAndState(dispatch,state);
@@ -345,6 +342,7 @@ var App = React.createClass({
     // events
     NetInfo.addEventListener('change',(connectionInfo)=>{
       Debug.log('Connection state change: ' + connectionInfo,Debug.level.USER_TRACKER); // NONE , WIFI, MOBILE
+      dispatch(RDActions.ServerConnection.changeNetInfoOnRequest(connectionInfo));
     })
 
     Orientation.addOrientationListener(self.handleAppOrientation)
@@ -391,72 +389,71 @@ var App = React.createClass({
          if (self.hideContentState) {
            globalVariableManager.rootView.hideContent(false);
          }
-
-         if (popupActions.popPopup(undefined,undefined,undefined,undefined,[popupConst.INFO_GROUP])) {
+         if (popupActions.popPopup()) {
            return true;
          }
          else if(popupActions.getPopupStackSize(0)>0){
            popupActions.popPopup(0,true,0);
            return true;
          }
-         //else if (self.sideMenu && self.sideMenu.isOpen) {
-         //  self.drawSideMenu(false);
-         //  return true;
-         //}
-         else if (!(appState.currentState === ActionsTypes.APP_STATE_LIST.LOADING)) {
-           if (navigator.currentScreen.name !== 'HomeScreen') {
+         else if (self.sideMenu && self.sideMenu.isOpen) {
+           self.drawSideMenu(false);
+           return true;
+         }
+         else if (!(appState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING)) {
+           console.log(navigator.currentScreen.name)
+           if (navigator.currentScreen.name !== 'HomeScreen' && navigator.currentScreen.name !== 'TemplateScreen') {
              if(Actions.pop()) {
                return true;
              }else{
               //  RNIntent.moveTaskToBack();
               //  return true;
-              //dispatch(UserActions_MiddleWare.signout())
-              //.then(()=>{
-              //  RNIntent.exit();
-              //})
-              //.catch(()=>{
+              // dispatch(UserActions_MiddleWare.signout())
+              // .then(()=>{
                 RNIntent.exit();
-              //})
+              // })
+              // .catch(()=>{
+              //   RNIntent.exit();
+              // })
                return true;
              }
            }
            else{
-             //if (globalVariableManager.SCTVScrollableTabBarContainer &&
-             //       globalVariableManager.SCTVScrollableTabBarContainer.tabFocus !== 1 &&
-             //       globalVariableManager.SCTVScrollableTabBarContainer.refs.ScrollableTabView
-             //     ) {
-             //   globalVariableManager.SCTVScrollableTabBarContainer.refs.ScrollableTabView.goToPage(1);
-             //   return true;
-             //}else{
+            //  if (globalVariableManager.SCTVScrollableTabBarContainer &&
+            //         globalVariableManager.SCTVScrollableTabBarContainer.tabFocus !== 0 &&
+            //         globalVariableManager.SCTVScrollableTabBarContainer.refs.ScrollableTabView
+            //       ) {
+            //     globalVariableManager.SCTVScrollableTabBarContainer.refs.ScrollableTabView.goToPage(0);
+            //     return true;
+            //  }else{
                //  RNIntent.moveTaskToBack();
                //  return true;
-               //dispatch(UserActions_MiddleWare.signout())
-               //.then(()=>{
-               //  RNIntent.exit();
-               //})
-               //.catch(()=>{
+              //  dispatch(UserActions_MiddleWare.signout())
+              //  .then(()=>{
                  RNIntent.exit();
-               //})
+              //  })
+              //  .catch(()=>{
+              //    RNIntent.exit();
+              //  })
                 return true;
-             //}
+            //  }
             }
           }
           else{
             //  RNIntent.moveTaskToBack();
             //  return true;
-            //dispatch(UserActions_MiddleWare.signout())
-            //.then(()=>{
-            //  RNIntent.exit();
-            //})
-            //.catch(()=>{
+            // dispatch(UserActions_MiddleWare.signout())
+            // .then(()=>{
               RNIntent.exit();
-            //})
+            // })
+            // .catch(()=>{
+            //   RNIntent.exit();
+            // })
              return true;
           }
 
           // return false;
-        }
-      );
+         });
 
       DeviceEventEmitter.addListener('hardwareMenuPress', ()=>{
         // self.drawSideMenu();
@@ -469,13 +466,14 @@ var App = React.createClass({
     var self= this;
     const { dispatch,state,appState} = this.props;
     var content;
-    if (appState.currentState === ActionsTypes.APP_STATE_LIST.LOADING) {
+    if (appState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING) {
       content=<View/>
     }else{
       content = (
         <RouterWithRedux
             sceneStyle={Themes.current.screen.appBackground}
-            navigationBarStyle={Themes.Current.screen.NavBar} >
+            navigationBarStyle={Themes.current.screen.NavBar}
+            backAndroidHandler={()=>{}}>
           <Scene key="root">
             {self.screenList}
           </Scene>
@@ -484,10 +482,21 @@ var App = React.createClass({
     }
 
     return(
-      <View style={{flex:1}}>
-        {content}
+      <View renderToHardwareTextureAndroid={true} style={Themes.current.screen.appBackground}>
+        <Animatable.View
+          onStartShouldSetResponderCapture={()=>{
+            if (self.hideContentState) {
+              globalVariableManager.rootView.hideContent(false);
+              return true;
+            }
+            return false;
+          }}
+          ref='contentView' style={{flex:1}}>
+          {content}
+        </Animatable.View>
         <Popup rootView={self}/>
       </View>
+
     )
   },
 
@@ -497,14 +506,16 @@ var App = React.createClass({
      if (Platform.OS ==='android') {
       StatusBarAndroid.setHexColor(Themes.current.factor.backgroundColor);
      }
+
+
     //  // util connected
     //  if (globalVariableManager.socketConnection.getConnectState()) {
-    //    dispatch(AppStateActions.setOnRequest(ActionsTypes.APP_STATE_LIST.RUNNING));
+    //    dispatch(AppStateActions.setOnRequest(RDActionsTypes.AppState.constants.APP_STATE_LIST.RUNNING));
     //    self.preProcessWhenStart();
     //  }
     //  else{
     //    globalVariableManager.socketConnection.on('connect', function(){
-    //      dispatch(AppStateActions.setOnRequest(ActionsTypes.APP_STATE_LIST.RUNNING));
+    //      dispatch(AppStateActions.setOnRequest(RDActionsTypes.AppState.constants.APP_STATE_LIST.RUNNING));
     //        self.preProcessWhenStart();
     //      });
     //  }

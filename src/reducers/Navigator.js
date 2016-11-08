@@ -1,5 +1,5 @@
 
-// var ActionsTypes = require( '../actions/ActionsTypes');
+// var RDActionsTypes = require( '../actions/RDActionsTypes');
 var {ActionConst} = require( 'react-native-router-flux');
 var Debug = require('../Util/Debug');
 

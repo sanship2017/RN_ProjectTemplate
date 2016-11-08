@@ -80,8 +80,6 @@ function processAssetAndroid(assets,mapAssets,assetsContent={},parentPath='asset
 const PlatformConfig = {
   ...Platform.select({
     ios:{
-      availableHeightScreen:heightScreen,
-      videoWidth: widthScreen<heightScreen? heightScreen:widthScreen,
       navBarHeight: 44,
       font: 'Roboto-Regular',
       fontBold: 'Roboto-Bold',
@@ -93,8 +91,6 @@ const PlatformConfig = {
       processAsset:processAssetIos,
     },
     android:{
-      availableHeightScreen: heightScreen-(ExtraDimensions.get('STATUS_BAR_HEIGHT')),
-      videoWidth: widthScreen<heightScreen? heightScreen + ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'):widthScreen,
       navBarHeight: 50,
       font: 'roboto-regular',
       fontBold: 'roboto-bold',

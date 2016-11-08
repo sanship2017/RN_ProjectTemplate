@@ -9,7 +9,7 @@ var SocketIO = require("../../../node_modules/socket.io-client/socket.io");
 var Debug = require('../../Util/Debug');
 var Define = require('../../Define');
 
-// var ServerConnectionActions=require('../../actions/ServerConnectionActions');
+// var Actions.ServerConnection=require('../../actions/Actions.ServerConnection');
 
 var {globalVariableManager} = require('./GlobalVariableManager')
 
@@ -99,7 +99,7 @@ class ConnectionsManager{
           if (self.serverConnectChange) {
             self.serverConnectChange('disconnect');
           }
-          // globalVariableManager.reduxManager.dispatch(ServerConnectionActions.disconnectFromServer());
+          // globalVariableManager.reduxManager.dispatch(Actions.ServerConnection.disconnectFromServer());
           break;
         case 'connect':
           self.connectState = true;

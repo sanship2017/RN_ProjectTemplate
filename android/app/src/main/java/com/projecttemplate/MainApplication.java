@@ -8,7 +8,6 @@
 
 package com.projecttemplate;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
@@ -59,15 +58,15 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     @Override
-    protected List<ReactPackage> getPackages(Activity activity) {
+    protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
               new RNBridgeReloaderPackage(),
               new RNFSPackage(),
               new RNDeviceInfo(),
               new StatusBarPackage(),
-              new ExtraDimensionsPackage(activity),
-              new OrientationPackage(activity),
+              new ExtraDimensionsPackage(),
+              new OrientationPackage(),
               new SensorManagerPackage(),
               new RNSpinkitPackage(),
               new RNIntentPackage()

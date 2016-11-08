@@ -20,7 +20,7 @@ var Define = require('../../Define')
 var Include = require('../../Include')
 var StyleConfig = require('../../Themes/StyleConfig')
 
-var ActionsTypes = require( '../../actions/ActionsTypes');
+var RDActionsTypes = require( '../../actions/RDActionsTypes');
 var StatusBarAndroid = require('react-native-android-statusbar');
 
 var SensorManager = NativeModules.SensorManager;
@@ -689,15 +689,15 @@ class PopupActions{
                   var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
                   var currentDirect = globalVariableManager.reduxManager.state.AppState.currentDirect;
                   // if (contentObject.info.videoMotion &&
-                  //   ( (currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) || (self.getVideoPopupState()!=='FULLSCREEN' ) && (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' ))
+                  //   ( (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) || (self.getVideoPopupState()!=='FULLSCREEN' ) && (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' ))
                   //   && self.moveVideoToNormalAtMount) {
                   //   self.moveVideoToNormalAtMount = false;
                   //   self.setVideoPopupState('NORMAL');
                   // }
                   if(contentObject.info.videoMotion) {
-                    if (currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
+                    if (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
                       self.setVideoPopupState('FULLSCREEN');
-                    } else if(currentDirect===ActionsTypes.APP_STATE_DIRECT_LIST.PORTRAIT &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
+                    } else if(currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.PORTRAIT &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
                       self.setVideoPopupState('NORMAL');
                     }
                   }

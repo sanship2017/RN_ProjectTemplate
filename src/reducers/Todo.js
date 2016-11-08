@@ -1,5 +1,5 @@
 
-var ActionsTypes = require( '../actions/ActionsTypes');
+var RDActionsTypes = require( '../actions/RDActionsTypes');
 
 var _ = require('lodash')
 // components
@@ -20,22 +20,22 @@ function Todo(state ={
               } , action) {
   var stateTemp =state;
   switch (action.type) {
-    case ActionsTypes.ACTION1:{
+    case RDActionsTypes.Todo.ACTION1:{
       stateTemp = Object.assign({}, state);
       break;
     }
-    case ActionsTypes.ACTION2:{
+    case RDActionsTypes.Todo.ACTION2:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case ActionsTypes.REQUEST_SUBTYPE.REQUEST:{
+        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:{
           stateTemp.actionState.loading++;
           break;
         }
-        case ActionsTypes.REQUEST_SUBTYPE.SUCCESS:{
+        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:{
           if (stateTemp.actionState.loading>0) {stateTemp.actionState.loading--;}
           break;
         }
-        case ActionsTypes.REQUEST_SUBTYPE.ERROR:{
+        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:{
           if (stateTemp.actionState.loading>0) {stateTemp.actionState.loading--;}
           break;
         }
