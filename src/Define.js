@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 var PlatformConfig = require('./PlatformConfig');
-// var RNFS = require('react-native-fs');
+var RNFS = require('react-native-fs');
 //variable
 var widthScreen = Dimensions.get('window').width;
 var heightScreen = Dimensions.get('window').height;
