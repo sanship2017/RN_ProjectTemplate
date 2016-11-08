@@ -5,52 +5,7 @@
 // } = React;
 
 var Util = {
-  getCurrentAndNext: function(programs) {
-    const self = this;
-    const length = programs.length;
-    const obj = {
-      current: null,
-      next: null
-    }
 
-    const currentInf = self.getCurrentProgram(programs);
-    if(currentInf.current) {
-      obj.current = currentInf.current;
-    }
-
-    if(currentInf.index !== -1 && currentInf.index < length-1) {
-      obj.next = programs[currentInf.index+1];
-    }
-
-    return obj;
-  },
-
-  getCurrentProgram: function(programs) {
-    const length = programs.length;
-    const currentTime = Date.now();
-    let current = null;
-    let index = -1;
-
-    if(length != 0) {
-      for(let i=length-1; i>=0; i--) {
-        if(currentTime >= programs[i].livedAt) {
-          const dateFromCurrent = new Date(programs[i].livedAt);
-          const dateFromProgram = new Date(currentTime);
-          dateFromProgram.setHours(0, 0, 0, 0);
-          dateFromCurrent.setHours(0, 0, 0, 0);
-          if(dateFromCurrent.getTime() === dateFromProgram.getTime()) {
-            current = programs[i];
-            index = i;
-          }
-          break;
-        }
-      }
-    }
-    return {
-      current,
-      index
-    };
-  },
   timeToHours: function(time) {
     const dateInstance = new Date(time);
     let hours = dateInstance.getHours();

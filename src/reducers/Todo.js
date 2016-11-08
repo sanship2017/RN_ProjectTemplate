@@ -1,47 +1,35 @@
+var _ = require('lodash')
 
 var RDActionsTypes = require( '../actions/RDActionsTypes');
 
-var _ = require('lodash')
 // components
 var Define = require('../Define');
 var Debug = require('../Util/Debug');
 var Util = require('../Util/Util');
+var RDUtil = require('./RDUtil');
 // NOTE : if want to use promise of middleware action , this reducer must update state to a temp to use in then of promise
 // =>no no no , only need update state variable from reduxManager in then funciton   (maybe because pointer changed)
 
-/**
- * Reducer Template.
- * @param {Object} state .
- * @param {Object} action .
- * @returns {null} .
- */
+function initLoading(){
+  let retObj={};
+  Object.keys(RDActionsTypes.Todo).forEach((key)=>{
+    if (key === 'constants') { return;}
+    retObj[key] = {loading:0};
+  })
+  return retObj;
+}
+
 function Todo(state ={
-                actionState:{loading:0},
+                ...initLoading(),
               } , action) {
   var stateTemp =state;
   switch (action.type) {
-    case RDActionsTypes.Todo.ACTION1:{
-      stateTemp = Object.assign({}, state);
-      break;
-    }
-    case RDActionsTypes.Todo.ACTION2:{
-      stateTemp = Object.assign({}, state);
-      switch (action.subtype) {
-        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:{
-          stateTemp.actionState.loading++;
-          break;
-        }
-        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:{
-          if (stateTemp.actionState.loading>0) {stateTemp.actionState.loading--;}
-          break;
-        }
-        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:{
-          if (stateTemp.actionState.loading>0) {stateTemp.actionState.loading--;}
-          break;
-        }
-        default:
-          break;
-      }
+    case RDActionsTypes.Todo.nameAction:{
+      stateTemp = RDUtil.processReducerLoading(state,action,'nameAction',
+                {
+                  onSuccess:()=>{}
+                })
+
       break;
     }
     default:

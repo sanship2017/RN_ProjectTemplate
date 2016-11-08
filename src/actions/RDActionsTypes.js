@@ -4,8 +4,8 @@
  */
 const RDActionsTypes={
 
-  Temp:{
-    temp:'TEMP',
+  Todo:{
+    test:'TEST',
   },
 
   ServerConnection:{
