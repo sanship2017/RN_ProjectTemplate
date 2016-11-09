@@ -7,10 +7,9 @@ var RDRDActionsTypes = require('./RDRDActionsTypes');
 var Debug = require('../Util/Debug');
 
 var {socketConnection} = require('../components/modules/ConnectionsManager');
-var AppStateRDActions = require('./AppStateRDActions');
 var RDActions = require('./RDRDActions');
 var {popupActions} = require('../components/popups/Popup');
-var DefaultPopup = require('../components/popups/DefaultPopup');
+
 /*
  * action creators
  */
@@ -124,4 +123,4 @@ const ServerConnection_MiddleWare={
   }
 }
 
-module.exports=RDActions.ServerConnection_MiddleWare;
+module.exports=ServerConnection_MiddleWare;

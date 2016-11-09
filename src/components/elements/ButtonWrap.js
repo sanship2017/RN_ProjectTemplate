@@ -1,4 +1,4 @@
-
+//@flow
 //LIB
 import React from 'react';
 
@@ -15,7 +15,7 @@ var Debug = require('../../Util/Debug');
 
 // note children must be wrap in view (only one element in ButtonWrap)
 var ButtonWrap = React.createClass({
-  animationFunction(prop, value){
+  animationFunction(prop:Object, value:number){
     return Animated.timing(
       prop,
       {

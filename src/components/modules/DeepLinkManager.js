@@ -76,7 +76,7 @@ class DeepLinkManager{
         //     }
         //   },
         //   param:{},
-        // },                
+        // },
 
       },
       popup:{
@@ -159,7 +159,7 @@ class DeepLinkManager{
         // }
         Debug.log('Check extras');
         var countExtra = 0;
-        var extraKey = undefined;
+        var extraKey;
         Object.keys(extras).forEach((key)=>{
           if (extras.hasOwnProperty(key)) {
             countExtra++;
@@ -174,7 +174,7 @@ class DeepLinkManager{
         if(countExtra===1 ){
           // check if param has only one param
           var countParam = 0;
-          var paramKey = undefined;
+          var paramKey;
           Object.keys(self.linkList[ret][link].param).forEach((key)=>{
             if (self.linkList[ret][link].param.hasOwnProperty(key)) {
               countParam++;

@@ -102,17 +102,17 @@ var App = React.createClass({
   //    )
   //  },
    updateSideMenu: function() {
-     const self = this;
-     if(self._sideMenuContent) {
-       self._sideMenuContent.getWrappedInstance().forceUpdate();
-     }
+    //  const self = this;
+    //  if(self._sideMenuContent) {
+    //    self._sideMenuContent.getWrappedInstance().forceUpdate();
+    //  }
    },
-  // drawSideMenu:function(flag=true){
+  drawSideMenu:function(flag=true){
   //   var self = this;
   //   if (self.sideMenu) {
   //     self.sideMenu.openMenu(flag);
   //   }
-  // },
+  },
 
   handleAppStateChange:function(currentAppState){
     var self = this;
@@ -136,7 +136,7 @@ var App = React.createClass({
       default:
     }
   },
-
+  screenList:[],
   createScreen:function(){
     var self = this;
     self.screenList= screenList.map((current)=>{
@@ -223,7 +223,7 @@ var App = React.createClass({
     RNHotUpdate.getCheckUpdateInfo()
       .then((arg)=>{
         Debug.log('getCheckUpdateInfo:done');
-        self.processUpdateInfo(arg);
+        // self.processUpdateInfo(arg);
       })
       .catch((err)=>{Debug.log2('getCheckUpdateInfo:err',err,Debug.level.ERROR);})
 
@@ -253,9 +253,10 @@ var App = React.createClass({
     self.processDeepLinkFromNotify();
 
   },
-  handleAppOrientation:function(specificOrientation){
+  handleAppOrientation:function(specificOrientationIn){
     var self = this;
     var { dispatch,state,appState} = this.props;
+    var specificOrientation = specificOrientationIn;
     Debug.log2('specificOrientation',specificOrientation,Debug.level.USER_TRACKER);
     let shouldUpdateVideoPopup = true;
     // iOS only
@@ -377,9 +378,9 @@ var App = React.createClass({
       if (Platform.OS==='android') {
         ToastAndroid.show('Update completed', ToastAndroid.SHORT)
       }
-      if (!self.processUpdateInfoDone ) {
-          self.processUpdateInfo(arg);
-      }
+      // if (!self.processUpdateInfoDone ) {
+      //     self.processUpdateInfo(arg);
+      // }
     });
     //key
     BackAndroid.addEventListener('hardwareBackPress',
@@ -525,7 +526,11 @@ var App = React.createClass({
   },
 })
 
-
+/**
+ * [selectActions description]
+ * @param  {[type]} state [description]
+ * @return {[type]}       [description]
+ */
 function selectActions(state) {
   return {
     appState:state.AppState,

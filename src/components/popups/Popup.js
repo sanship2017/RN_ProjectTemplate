@@ -200,6 +200,9 @@ class PopupActions{
         Define.constants.widthScreen:Define.constants.heightScreen)/Define.constants.videoWidth)
         *Define.constants.videoHeight );
 
+      var widthTemp;
+      var heightTemp;
+
       if (stateTemp === 'NORMAL') {
         globalVariableManager.rootView.hideContent(false);
 
@@ -233,7 +236,7 @@ class PopupActions{
         if (Define.constants.widthScreen<Define.constants.heightScreen) {
           videoWidth = Define.constants.widthScreen;
         }else{
-          additionX = Define.constants.widthScreen/2 - Define.constants.heightScreen/2;
+          additionX = (Define.constants.widthScreen/2) - (Define.constants.heightScreen/2);
           videoWidth = videoHeight / Define.constants.videoHeight * Define.constants.videoWidth;
         }
 
@@ -259,8 +262,7 @@ class PopupActions{
 
 
 
-        var widthTemp;
-        var heightTemp;
+
         if (Define.constants.widthScreen<Define.constants.heightScreen) {
           widthTemp=Define.constants.widthScreen;
           heightTemp=Define.constants.heightScreen;
@@ -299,16 +301,14 @@ class PopupActions{
       } else if(stateTemp === 'FORCE_FULLSCREEN') {
           globalVariableManager.rootView.hideContent(true);
           var rotate;
-          var widthTemp;
-          var heightTemp;
           var translateY;
           var translateX;
 
           if (Define.constants.widthScreen<Define.constants.heightScreen) {
             widthTemp=Define.constants.heightScreen;
             heightTemp=Define.constants.widthScreen;
-            translateX = -Define.constants.heightScreen/2 + Define.constants.widthScreen/2;
-            translateY = Define.constants.heightScreen/2 - Define.constants.widthScreen/2;
+            translateX = -(Define.constants.heightScreen/2) + (Define.constants.widthScreen/2);
+            translateY = (Define.constants.heightScreen/2) - (Define.constants.widthScreen/2);
             rotate = '-90deg';
           }else{
             widthTemp=Define.constants.widthScreen;
@@ -668,7 +668,7 @@ class PopupActions{
 
     var renderContentTemp ;
     if(RenderContent !== null){
-      renderContentTemp= <RenderContent ref={ref=>contentObject.instance = ref} {...renderContentProps}/>;
+      renderContentTemp= <RenderContent ref={(ref)=>{contentObject.instance = ref}} {...renderContentProps}/>;
     }
     else{
       renderContentTemp= <EmptyPopup/>;
@@ -791,125 +791,125 @@ class PopupActions{
             return true;
           }}
 
-          onResponderMove ={(evt)=>{
-            return;
-            if(contentObject.info.videoMotion) {
-              const currentStateVideo = self.getVideoPopupState();
-              const currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
-              const heightStatusBar = (currentScreenName === 'FilmDetailScreen' || currentScreenName === 'ChannelScreen') ? Define.constants.navBarHeight : 0;
-
-              const addBottom = 50;
-              const addRight = 20;
-              const widthScreen = Define.constants.widthScreen;
-
-              let translateX = 0;
-              let translateY = 0;
-              let opacity = 1;
-              let scale = 1;
-              var touchHistory = Platform.OS ==='ios' ? evt.touchHistory.touchBank[1] : evt.touchHistory.touchBank[0];
-
-              const currentX = touchHistory.currentPageX;
-              const startX = touchHistory.startPageX;
-              const currentY = touchHistory.currentPageY;
-              const startY = touchHistory.startPageY;
-              const previousPageX = touchHistory.previousPageX;
-              const previousPageY = touchHistory.previousPageY;
-
-              var videoSize={
-                width: Define.constants.widthScreen<Define.constants.heightScreen?
-                        Define.constants.widthScreen:Define.constants.heightScreen,
-                height:  (((Define.constants.widthScreen<Define.constants.heightScreen?
-                  Define.constants.widthScreen:Define.constants.heightScreen)/Define.constants.videoWidth)
-                  *Define.constants.videoHeight ),
-              }
-
-              if(currentStateVideo === 'NORMAL') {
-                if(currentY > startY) {
-                  scale = 1 - 0.5*(currentY - startY)/(Define.constants.availableHeightScreen - heightStatusBar - addBottom - videoSize.height/2);
-                  if(scale < 0.5) {
-                    return;
-                  }
-                  const widthLost = videoSize.width*(1-scale);
-                  const heightLost = videoSize.height*(1-scale);
-                  translateY = (currentY - startY)/scale;
-                  translateX = (widthLost/2 - addRight*(1-scale))/scale;
-                }
-              } else if (currentStateVideo === 'ACTIVE') {
-                const type = '';
-                scale = 0.5;
-                const deltaX = currentX - startX;
-                const deltaY = currentY - startY;
-
-                if(!contentObject.direction) {
-                  if(Math.abs(deltaX) >= Math.abs(deltaY)) {
-                    contentObject.direction = 'X';
-                  } else {
-                    contentObject.direction = 'Y';
-                  }
-                }
-
-                if(contentObject.direction === 'X') {
-                  const widthLost = videoSize.width*(1-scale);
-                  const heightLost = videoSize.height*(1-scale);
-                  const temp1 = Define.constants.widthScreen < Define.constants.heightScreen ? 0 : (Define.constants.widthScreen - videoSize.width);
-                  translateX = (temp1 + widthLost/2 + deltaX - addRight)/scale;
-                  translateY = (Define.constants.availableHeightScreen - videoSize.height -15) /scale;
-                  const temp = Define.constants.widthScreen < Define.constants.heightScreen ? Define.constants.widthScreen : Define.constants.heightScreen;
-                  opacity = 1 - Math.abs(deltaX)/(temp - addRight);
-                } else {
-                  scale = 0.5 + 0.5*(startY - currentY)/(Define.constants.availableHeightScreen - heightStatusBar - addBottom - videoSize.height/2);
-
-                  if(currentY >= startY || scale >= 1 || (Define.constants.widthScreen > Define.constants.heightScreen)) {
-                    if(Define.constants.widthScreen > Define.constants.heightScreen && contentObject.direction === 'Y') {
-                      contentObject.direction = 'X';
-                    }
-                    return;
-                  }
-
-                  const widthLost = videoSize.width*(1-scale);
-                  translateY = (Define.constants.availableHeightScreen - heightStatusBar - addBottom - videoSize.height/2 + currentY - startY)/scale;
-                  translateX = (widthLost/2 - addRight*(1-scale))/scale;
-                }
-
-              } else {
-                return;
-              }
-              contentObject.objRef.transitionTo({
-                translateY: translateY,
-                translateX: translateX,
-                scale: scale,
-                opacity: opacity
-              },10) ;
-            }
-            // console.log('onResponderMove');
-            // // console.log(evt.nativeEvent);
-            // // console.log(evt.timeStamp);
-            // console.log(evt);
-            //
-            // console.log(evt.nativeEvent);
-            // console.log(_.merge({}, evt.touchHistory));
-            // const data = evt.touchHistory.touchBank[1];
-            // var temp = evt.touchHistory.touchBank[0];
-            // // console.log(contentObject.objRef)
-            //
-            //
-            //
-            // if (contentObject) {
-            //   var temp1 = (contentObject.objRef.state.transitionValues.translateX?contentObject.objRef.state.transitionValues.translateX._value:0) + temp.currentPageX-temp.previousPageX;
-            //   var temp2 = (contentObject.objRef.state.transitionValues.translateY?contentObject.objRef.state.transitionValues.translateY._value:0) + temp.currentPageY-temp.previousPageY;
-            //
-            //   console.log(temp1);
-            //   console.log(temp2)
-            //
-            //   // var scale = contentObject.objRef.state.transitionValues.scale?contentObject.objRef.state.transitionValues.scale._value:1;
-            //
-            //   // temp1 *= scale;
-            //   // temp2 *= scale;
-            //   //
-
-
-            // }
-          }}
+          // onResponderMove ={(evt)=>{
+          //   return;
+          //   if(contentObject.info.videoMotion) {
+          //     const currentStateVideo = self.getVideoPopupState();
+          //     const currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
+          //     const heightStatusBar = (currentScreenName === 'FilmDetailScreen' || currentScreenName === 'ChannelScreen') ? Define.constants.navBarHeight : 0;
+          //
+          //     const addBottom = 50;
+          //     const addRight = 20;
+          //     const widthScreen = Define.constants.widthScreen;
+          //
+          //     let translateX = 0;
+          //     let translateY = 0;
+          //     let opacity = 1;
+          //     let scale = 1;
+          //     var touchHistory = Platform.OS ==='ios' ? evt.touchHistory.touchBank[1] : evt.touchHistory.touchBank[0];
+          //
+          //     const currentX = touchHistory.currentPageX;
+          //     const startX = touchHistory.startPageX;
+          //     const currentY = touchHistory.currentPageY;
+          //     const startY = touchHistory.startPageY;
+          //     const previousPageX = touchHistory.previousPageX;
+          //     const previousPageY = touchHistory.previousPageY;
+          //
+          //     var videoSize={
+          //       width: Define.constants.widthScreen<Define.constants.heightScreen?
+          //               Define.constants.widthScreen:Define.constants.heightScreen,
+          //       height:  (((Define.constants.widthScreen<Define.constants.heightScreen?
+          //         Define.constants.widthScreen:Define.constants.heightScreen)/Define.constants.videoWidth)
+          //         *Define.constants.videoHeight ),
+          //     }
+          //
+          //     if(currentStateVideo === 'NORMAL') {
+          //       if(currentY > startY) {
+          //         scale = 1 - 0.5*(currentY - startY)/(Define.constants.availableHeightScreen - heightStatusBar - addBottom - videoSize.height/2);
+          //         if(scale < 0.5) {
+          //           return;
+          //         }
+          //         const widthLost = videoSize.width*(1-scale);
+          //         const heightLost = videoSize.height*(1-scale);
+          //         translateY = (currentY - startY)/scale;
+          //         translateX = (widthLost/2 - addRight*(1-scale))/scale;
+          //       }
+          //     } else if (currentStateVideo === 'ACTIVE') {
+          //       const type = '';
+          //       scale = 0.5;
+          //       const deltaX = currentX - startX;
+          //       const deltaY = currentY - startY;
+          //
+          //       if(!contentObject.direction) {
+          //         if(Math.abs(deltaX) >= Math.abs(deltaY)) {
+          //           contentObject.direction = 'X';
+          //         } else {
+          //           contentObject.direction = 'Y';
+          //         }
+          //       }
+          //
+          //       if(contentObject.direction === 'X') {
+          //         const widthLost = videoSize.width*(1-scale);
+          //         const heightLost = videoSize.height*(1-scale);
+          //         const temp1 = Define.constants.widthScreen < Define.constants.heightScreen ? 0 : (Define.constants.widthScreen - videoSize.width);
+          //         translateX = (temp1 + widthLost/2 + deltaX - addRight)/scale;
+          //         translateY = (Define.constants.availableHeightScreen - videoSize.height -15) /scale;
+          //         const temp = Define.constants.widthScreen < Define.constants.heightScreen ? Define.constants.widthScreen : Define.constants.heightScreen;
+          //         opacity = 1 - Math.abs(deltaX)/(temp - addRight);
+          //       } else {
+          //         scale = 0.5 + 0.5*(startY - currentY)/(Define.constants.availableHeightScreen - heightStatusBar - addBottom - videoSize.height/2);
+          //
+          //         if(currentY >= startY || scale >= 1 || (Define.constants.widthScreen > Define.constants.heightScreen)) {
+          //           if(Define.constants.widthScreen > Define.constants.heightScreen && contentObject.direction === 'Y') {
+          //             contentObject.direction = 'X';
+          //           }
+          //           return;
+          //         }
+          //
+          //         const widthLost = videoSize.width*(1-scale);
+          //         translateY = (Define.constants.availableHeightScreen - heightStatusBar - addBottom - videoSize.height/2 + currentY - startY)/scale;
+          //         translateX = (widthLost/2 - addRight*(1-scale))/scale;
+          //       }
+          //
+          //     } else {
+          //       return;
+          //     }
+          //     contentObject.objRef.transitionTo({
+          //       translateY: translateY,
+          //       translateX: translateX,
+          //       scale: scale,
+          //       opacity: opacity
+          //     },10) ;
+          //   }
+          //   // console.log('onResponderMove');
+          //   // // console.log(evt.nativeEvent);
+          //   // // console.log(evt.timeStamp);
+          //   // console.log(evt);
+          //   //
+          //   // console.log(evt.nativeEvent);
+          //   // console.log(_.merge({}, evt.touchHistory));
+          //   // const data = evt.touchHistory.touchBank[1];
+          //   // var temp = evt.touchHistory.touchBank[0];
+          //   // // console.log(contentObject.objRef)
+          //   //
+          //   //
+          //   //
+          //   // if (contentObject) {
+          //   //   var temp1 = (contentObject.objRef.state.transitionValues.translateX?contentObject.objRef.state.transitionValues.translateX._value:0) + temp.currentPageX-temp.previousPageX;
+          //   //   var temp2 = (contentObject.objRef.state.transitionValues.translateY?contentObject.objRef.state.transitionValues.translateY._value:0) + temp.currentPageY-temp.previousPageY;
+          //   //
+          //   //   console.log(temp1);
+          //   //   console.log(temp2)
+          //   //
+          //   //   // var scale = contentObject.objRef.state.transitionValues.scale?contentObject.objRef.state.transitionValues.scale._value:1;
+          //   //
+          //   //   // temp1 *= scale;
+          //   //   // temp2 *= scale;
+          //   //   //
+          //
+          //
+          //   // }
+          // }}
           onResponderRelease={(evt)=>{
             var direct = null;
             var touchHistory = Platform.OS ==='ios' ? evt.touchHistory.touchBank[1] : evt.touchHistory.touchBank[0];

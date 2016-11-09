@@ -1,5 +1,5 @@
-var _ = require('lodash')
-
+// @flow
+// var _ = require('lodash')
 var RDActionsTypes = require('./RDActionsTypes');
 
 var Debug = require('../Util/Debug');

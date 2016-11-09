@@ -1,4 +1,5 @@
 
+var _ = require('lodash')
 //LIB
 import React  from 'react';
 import {
@@ -43,10 +44,13 @@ var DefaultPopup = require('../popups/DefaultPopup');
 //
 
 class TemplateScreen extends Screen{
+  // static defaultProps = {}
+  // static propTypes = {}
   constructor(props){
     super(props);
     this.constructor.nameScreen ='TemplateScreen'
-    // this.constructor.sceneConfig ={}
+    this.state = _.merge(this.state,
+    {})
   }
   // static renderRightButton(scene){
   //   return (
@@ -88,7 +92,7 @@ class TemplateScreen extends Screen{
           removeClippedSubviews ={true}
           refreshControl ={
             <RefreshControl
-              refreshing={false? true:false}
+              refreshing={false}
               onRefresh={this.onRefresh}
               colors={Themes.current.factor.refreshingColor}
               progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>

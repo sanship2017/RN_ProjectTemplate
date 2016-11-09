@@ -1,4 +1,5 @@
-var _ = require('lodash')
+// @flow
+// var _ = require('lodash')
 var RDActionsTypes = require('./RDActionsTypes');
 
 // LIB
@@ -19,11 +20,14 @@ var RDActions = require('./RDActions');
  */
 
 class RDActions_MiddleWare {
-  constructor(name,logRes){
+  name:string=''
+  sortName:string=''
+  logRes:boolean=false
+  actionsList:Object={}
+  constructor(name : string ,logRes :boolean){
     this.name = name;
     this.sortName = name.slice(0,name.indexOf('Actions'));
     this.logRes = logRes;
-    this.actionsList={};
   }
 
   init(){

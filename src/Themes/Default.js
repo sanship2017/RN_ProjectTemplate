@@ -228,7 +228,7 @@ var Default ={
        height:X*4.7,
       resizeMode:'cover',
       width:Define.constants.widthScreen,
-	    // alignSelf:'stretch',
+      // alignSelf:'stretch',
     },
     //
     nextArrow:{

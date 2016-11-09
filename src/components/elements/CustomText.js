@@ -1,10 +1,9 @@
+//@flow
 import React , {Component} from 'react';
 import {Animated,Text,StyleSheet} from 'react-native';
 
-
 var Define = require('../../Define');
 var Themes = require('../../Themes');
-
 
 
 class CustomText extends React.Component {

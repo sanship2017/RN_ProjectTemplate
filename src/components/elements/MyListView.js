@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 var {
@@ -62,7 +63,7 @@ var MyListView = React.createClass({
     })
   },
 
-  renderDescription:function(rowData, sectionID: number, rowID: number){
+  renderDescription:function(rowData:any, sectionID: number, rowID: number){
     var self = this;
     if (!rowData.title && !rowData.subInfo) {
       return null;
@@ -122,7 +123,7 @@ var MyListView = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function(nextProps:Object) {
     const self = this;
     self.setState({
       ds: self.state.ds.cloneWithRows(nextProps.infos?nextProps.infos:[])
@@ -189,8 +190,9 @@ var MyListView = React.createClass({
   scrollTo: function(obj) {
     const self = this;
     InteractionManager.runAfterInteractions(() => {
-      if(self._list)
+      if(self._list){
         self._list.scrollTo(obj);
+      }
     });
   }
 })

@@ -93,7 +93,7 @@ class SecondScreen extends Screen{
           removeClippedSubviews ={true}
           refreshControl ={
             <RefreshControl
-              refreshing={false? true:false}
+              refreshing={false}
               onRefresh={this.onRefresh}
               colors={Themes.current.factor.refreshingColor}
               progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>

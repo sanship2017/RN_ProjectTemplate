@@ -1,4 +1,5 @@
-
+// @flow
+// var _ = require('lodash')
 var RDActionsTypes = require('./RDActionsTypes');
 import RDActions_MiddleWare from './RDActions_MiddleWare'
 
@@ -24,21 +25,19 @@ class TempActions_MiddleWare extends RDActions_MiddleWare {
     super('TempActions_MiddleWare',true);
     this.init();
   }
-  get actionsList(){
-    return {
-      action:{
-        query:'',
-        argFormat:{},
-        argMap:{},
-        limitProcess:1,
-        onArg:undefined, //(arg,getState)=>{return arg;},
-        onError:undefined, // (dispatch,getState,data)=>{return true},
-        onDone:undefined, // (dispatch,getState,data)=>{return true},
-      },
-    };
+  actionsList:Object={
+    action:{
+      query:'',
+      argFormat:{},
+      argMap:{},
+      limitProcess:1,
+      onArg:undefined, //(arg,getState)=>{return arg;},
+      onError:undefined, // (dispatch,getState,data)=>{return true},
+      onDone:undefined, // (dispatch,getState,data)=>{return true},
+    },
   }
 
-  tempFunction(arg={},setState = true){
+  tempFunction(arg:Object={},setState:boolean = true){
     var self = this;
     var actionName = '...';
     var query = '....';
@@ -53,7 +52,7 @@ class TempActions_MiddleWare extends RDActions_MiddleWare {
 
     var preTextLog = self.name+':'+actionName+':';
 
-    return (dispatch, getState) => {
+    return (dispatch: Function, getState: Function) => {
       var req = fetchOption;
       // req config
       //

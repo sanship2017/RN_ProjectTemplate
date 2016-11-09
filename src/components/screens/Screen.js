@@ -1,3 +1,4 @@
+
 var _ = require('lodash')
 //LIB
 import React,{Component}  from 'react';
@@ -27,10 +28,11 @@ class Screen extends Component{
 
   // static defaultProps = {}
   // static propTypes = {}
+  state={}
   static sceneConfig={
     hideNavBar:false,
   }
-  constructor(props){
+  constructor(props:Object){
     super(props);
     this.state={
       loading:true,
@@ -50,7 +52,7 @@ class Screen extends Component{
   componentWillReceiveProps(){
     Debug.log(this.constructor.name + ':componentWillReceiveProps');
   }
-  shouldComponentUpdate(nextProps){
+  shouldComponentUpdate(nextProps:Object){
     let ret = true;
     var {navigator} = nextProps;
     if (navigator.currentScreen.name !== this.constructor.name) {
@@ -63,6 +65,8 @@ class Screen extends Component{
   componentWillUpdate(){
     Debug.log(this.constructor.name + ':componentWillUpdate',Debug.level.USER_TRACKER);
   }
+  // over write by children
+  renderContent(){}
   render(){
     Debug.log(this.constructor.name + ':render',Debug.level.USER_TRACKER);
     var content = null;

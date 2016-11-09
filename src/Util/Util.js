@@ -43,8 +43,9 @@ var Util = {
       dateString
     }
   },
-  formatDateFromNow : function(time)
+  formatDateFromNow : function(timeIn)
   {
+      var time = timeIn;
       switch (typeof time)
       {
           case 'number':

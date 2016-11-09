@@ -1,3 +1,4 @@
+
 var _ = require('lodash')
 
 //LIB
@@ -91,7 +92,7 @@ class HomeScreen extends Screen{
           removeClippedSubviews ={true}
           refreshControl ={
             <RefreshControl
-              refreshing={false? true:false}
+              refreshing={false}
               onRefresh={this.onRefresh}
               colors={Themes.current.factor.refreshingColor}
               progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
