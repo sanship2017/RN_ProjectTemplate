@@ -30,7 +30,7 @@ class TempActions_MiddleWare extends RDActions_MiddleWare {
         query:'',
         argFormat:{},
         argMap:{},
-        limitProcess:0,
+        limitProcess:1,
         onArg:undefined, //(arg,getState)=>{return arg;},
         onError:undefined, // (dispatch,getState,data)=>{return true},
         onDone:undefined, // (dispatch,getState,data)=>{return true},
