@@ -1,4 +1,4 @@
-
+var _ = require('lodash')
 var RDActionsTypes = require('./RDActionsTypes');
 
 // LIB
@@ -57,9 +57,22 @@ class RDActions_MiddleWare {
                       //
                       Debug.log(preTextLog+':'+query+':'+JSON.stringify(req));
                       var promise = new Promise((resolve,reject)=>{
+                        var data ={};
+                        // check limitProcess
+                        if ( getState()[this.sortName] && getState()[this.sortName][actionName]  &&
+                          getState()[this.sortName][actionName].loading >= obj.limitProcess) {
+                          Debug.log(preTextLog+':reach limitProcess:' + getState()[this.sortName][actionName].loading);
+                          data={
+                            arg:argTemp,
+                            err:'react limitProcess',
+                          }
+                          reject(data)
+                          return;
+                        }
+
+                        // check connection
                         if (socketConnection.getConnectState()) {
                           if(setState) {dispatch(RDActions[this.sortName][actionName+'OnRequest']()); }
-                          var data ={};
                           socketConnection.emit(query,req,
                               TimeoutCallback(Define.constants.requestTimeout,(err,res) => {
                                 Debug.log(preTextLog+':callback:'+query+':'+JSON.stringify(req));
