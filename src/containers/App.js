@@ -65,9 +65,11 @@ var {Popup,popupActions,popupConst} = require('../components/popups/Popup');
 // var SCTVFilmsSideMenu = require('../components/elements/SCTVFilmsSideMenu');
 // screens
 import HomeScreen from '../components/screens/HomeScreen'
+import SecondScreen from '../components/screens/SecondScreen'
 import TemplateScreen from '../components/screens/TemplateScreen'
 var screenList=[
   HomeScreen,
+  SecondScreen,
   TemplateScreen
 ];
 //popups

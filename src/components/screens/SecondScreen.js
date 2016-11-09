@@ -34,7 +34,8 @@ import Screen from './Screen'
 var DefaultPopup = require('../popups/DefaultPopup');
 
 // actions
-
+var RDActions = require('../../actions/RDActions');
+var RDActionsTypes = require('../../actions/RDActionsTypes');
 //variable
 
 // var styles = StyleSheet.create({
@@ -43,7 +44,7 @@ var DefaultPopup = require('../popups/DefaultPopup');
 
 //
 
-class HomeScreen extends Screen{
+class SecondScreen extends Screen{
   constructor(props){
     super(props);
     this.constructor.sceneConfig = _.merge(this.constructor.sceneConfig,
@@ -76,6 +77,7 @@ class HomeScreen extends Screen{
   onRefresh(){
     super.onRefresh();
     var {dispatch} = this.props;
+    // dispatch(RDActions.AppState.setDirectOnRequest(RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST['PORTRAIT']))
   }
 
   onGetMore(){
@@ -102,9 +104,7 @@ class HomeScreen extends Screen{
                 // self.onGetMore();
               }
             }}>
-        <ButtonWrap onPress={()=>{Actions.SecondScreen()}}>
-          <Include.Text>Content</Include.Text>
-        </ButtonWrap>
+        <Include.Text>SecondScreen</Include.Text>
       </ScrollView>
     )
     return content;
@@ -127,5 +127,5 @@ function selectActions(state) {
   }
 }
 
-module.exports=connect(selectActions, undefined, undefined, {withRef: true})(HomeScreen);
-// export default HomeScreen
+module.exports=connect(selectActions, undefined, undefined, {withRef: true})(SecondScreen);
+// export default SecondScreen

@@ -50,9 +50,9 @@ class Screen extends Component{
   componentWillReceiveProps(){
     Debug.log(this.constructor.name + ':componentWillReceiveProps');
   }
-  shouldComponentUpdate(){
+  shouldComponentUpdate(nextProps){
     let ret = true;
-    var {navigator} = this.props;
+    var {navigator} = nextProps;
     if (navigator.currentScreen.name !== this.constructor.name) {
       ret=false;
     }
