@@ -52,7 +52,12 @@ class Screen extends Component{
   }
   shouldComponentUpdate(){
     let ret = true;
+    var {navigator} = this.props;
+    if (navigator.currentScreen.name !== this.constructor.name) {
+      ret=false;
+    }
     Debug.log(this.constructor.name + ':shouldComponentUpdate:'+ret);
+
     return ret;
   }
   componentWillUpdate(){
