@@ -1,7 +1,6 @@
 
 var Define = require('../Define'); // var Include = require('../Include');
 var StyleConfig = require('./StyleConfig');
-import {Platform,PixelRatio} from 'react-native';
 
 var X = Define.constants.X;
 

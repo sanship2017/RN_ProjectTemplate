@@ -79,7 +79,7 @@ var Util = {
           [3600, 'phút', 60], // 60*60, 60
           [7200, '1 giờ trước', '1 giờ nữa'], // 60*60*2
           [86400, 'giờ', 3600], // 60*60*24, 60*60
-          [(86400 - (timeNow.getHours()*60+timeNow.getMinutes())*60+timeNow.getSeconds()) + 86400, 'Hôm qua', 'Ngày mai'], // exactly tomorow
+          [(86400 - (((timeNow.getHours()*60)+timeNow.getMinutes())*60)+timeNow.getSeconds()) + 86400, 'Hôm qua', 'Ngày mai'], // exactly tomorow
           [604800, 'Ngày', 86400], // 60*60*24*7, 60*60*24
           [1209600, 'Tuần trước', 'Tuần tới'], // 60*60*24*7*4*2
           [2419200, 'Tuần', 604800], // 60*60*24*7*4, 60*60*24*7
@@ -160,25 +160,24 @@ var Util = {
 
 
     var temp = parseInt(stringDate.slice(indexYear,indexYear+4));
-    if (indexYear>=0 && !isNaN(temp)) date.setYear(temp);
+    if (indexYear>=0 && !isNaN(temp)) {date.setYear(temp);}
     temp = parseInt(parseInt(stringDate.slice(indexMonth,indexMonth+2))-1);
-    if (indexMonth>=0 && !isNaN(temp)) date.setMonth(temp);
+    if (indexMonth>=0 && !isNaN(temp)) {date.setMonth(temp);}
     temp = parseInt(stringDate.slice(indexDay,indexDay+2));
-    if (indexDay>=0 && !isNaN(temp)) date.setDate(temp);
+    if (indexDay>=0 && !isNaN(temp)) {date.setDate(temp);}
 
     temp = parseInt(stringDate.slice(indexHours,indexHours+2));
-    if (indexHours>=0 && !isNaN(temp)) date.setHours(temp);
+    if (indexHours>=0 && !isNaN(temp)) {date.setHours(temp);}
     temp = parseInt(stringDate.slice(indexMinutes,indexMinutes+2));
-    if (indexMinutes>=0 && !isNaN(temp)) date.setMinutes(temp);
+    if (indexMinutes>=0 && !isNaN(temp)) {date.setMinutes(temp);}
     temp = parseInt(stringDate.slice(indexSecond,indexSecond+2));
-    if (indexSecond>=0 && !isNaN(temp)) date.setSeconds(temp);
+    if (indexSecond>=0 && !isNaN(temp)) {date.setSeconds(temp);}
 
     return date;
   },
 
 
   date2String:function(date,formatString='HH:MM - Ngày dd/mm'){
-    var self = this;
     var stringReturn = 'unknown';
     try{
       stringReturn= formatString.replace(/HH/, '0'.repeat(2-date.getHours().toString().length) +  date.getHours().toString() );
@@ -221,8 +220,8 @@ var Util = {
 
  },
 
- dataProtectAndMap:function(org,format={},map={}){
-
+ dataProtectAndMap:function(orgIn,format={},map={}){
+   let org=orgIn;
    if ( Array.isArray(format) && !Array.isArray(org)) {
      org = [];
    }else if (typeof(format) === 'object'  &&  typeof(org) !== 'object') {

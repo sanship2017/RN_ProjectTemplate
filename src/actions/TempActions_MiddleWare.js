@@ -1,4 +1,4 @@
-// @flow
+
 // var _ = require('lodash')
 var RDActionsTypes = require('./RDActionsTypes');
 import RDActions_MiddleWare from './RDActions_MiddleWare'
@@ -52,7 +52,7 @@ class TempActions_MiddleWare extends RDActions_MiddleWare {
 
     var preTextLog = self.name+':'+actionName+':';
 
-    return (dispatch: Function, getState: Function) => {
+    return (dispatch: Function) => {
       var req = fetchOption;
       // req config
       //

@@ -11,7 +11,7 @@ var Define = require('../../Define');
 
 // var Actions.ServerConnection=require('../../actions/Actions.ServerConnection');
 
-var {globalVariableManager} = require('./GlobalVariableManager')
+// var {globalVariableManager} = require('./GlobalVariableManager')
 
 //variable
 

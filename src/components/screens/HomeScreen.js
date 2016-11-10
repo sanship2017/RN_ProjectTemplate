@@ -5,15 +5,12 @@ var _ = require('lodash')
 import React  from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   RefreshControl,
-  InteractionManager
 } from 'react-native';
 
 var {Actions} = require('react-native-router-flux');
 import { connect } from 'react-redux';
-var Spinner = require('react-native-spinkit');
 //action
 
 //components
@@ -23,7 +20,7 @@ var Themes = require('../../Themes');
 var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var {popupActions} = require('../popups/Popup');
+var {popupActions} = require('../popups/PopupManager');
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 var ButtonWrap = require('../elements/ButtonWrap');
@@ -45,12 +42,16 @@ var DefaultPopup = require('../popups/DefaultPopup');
 //
 
 class HomeScreen extends Screen{
+  static componentName = 'HomeScreen'
+  static sceneConfig ={
+    ...Screen.sceneConfig
+  }
+  // static defaultProps = {}
+  // static propTypes = {}
   constructor(props){
     super(props);
-    this.constructor.sceneConfig = _.merge(this.constructor.sceneConfig,
-    {
-
-    })
+    this.state = _.merge(this.state,
+    {})
   }
   // static renderRightButton(scene){
   //   return (
@@ -66,13 +67,13 @@ class HomeScreen extends Screen{
   //     </View>
   //   )
   // }
-  static renderTitle(scene){
-    return(
-      <View style={Themes.current.screen.titleWrapNavBarCenter}>
-        <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
-      </View>
-    )
-  }
+  // static renderTitle(scene){
+  //   return(
+  //     <View style={Themes.current.screen.titleWrapNavBarCenter}>
+  //       <Include.Text style={Themes.current.text.navBartitle}>{scene.name}</Include.Text>
+  //     </View>
+  //   )
+  // }
 
   onRefresh(){
     super.onRefresh();
@@ -83,7 +84,7 @@ class HomeScreen extends Screen{
     super.onGetMore();
     var {dispatch} = this.props;
   }
-  renderContent(){
+  renderScreenContent(){
     var {dispatch} = this.props;
     var content = null;
     content =(
@@ -104,7 +105,7 @@ class HomeScreen extends Screen{
               }
             }}>
         <ButtonWrap onPress={()=>{Actions.SecondScreen()}}>
-          <Include.Text>Content</Include.Text>
+          <Include.Text>HomeScreen</Include.Text>
         </ButtonWrap>
       </ScrollView>
     )
@@ -123,7 +124,6 @@ class HomeScreen extends Screen{
  */
 function selectActions(state) {
   return {
-    appState: state.AppState,
     navigator: state.Navigator,
   }
 }

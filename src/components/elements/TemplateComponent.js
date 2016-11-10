@@ -18,25 +18,13 @@ var Themes = require('../../Themes');
 var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var ButtonWrap= require('../elements/ButtonWrap');
+import ReactComponent from '../ReactComponent'
 
-import Popup from './Popup'
-
-var {popupActions,popupConst} = require('./PopupManager');
+var {popupActions} = require('../popups/PopupManager');
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
-class TemplatePopup extends Popup{
-  static componentName = 'TemplatePopup'
-  static config=
-  {
-    ...Popup.config,
-  }
-  static containerStyle={
-    ...Popup.containerStyle,
-  }
-  static defaultProps = {
-    disableClose:true,
-  }
+class TemplateComponent extends ReactComponent{
+  static componentName = 'TemplateComponent'
   // static defaultProps = {}
   // static propTypes = {}
   constructor(props){
@@ -50,7 +38,6 @@ class TemplatePopup extends Popup{
   }
 }
 
-// NOTE : TODO :now can't use connect ( popupManager can't read config)
 /**
  * [selectActions description]
  * @param  {[type]} state [description]
@@ -60,6 +47,5 @@ class TemplatePopup extends Popup{
 //   return {}
 // }
 
-// export default connect(selectActions, undefined, undefined, {withRef: true})(TemplatePopup);
-
-export default TemplatePopup
+// export default connect(selectActions, undefined, undefined, {withRef: true})(TemplateComponent);
+export default TemplateComponent

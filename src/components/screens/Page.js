@@ -1,7 +1,7 @@
 
 var _ = require('lodash')
 //LIB
-import React,{Component}  from 'react';
+import React  from 'react';
 import {
   View,
   InteractionManager
@@ -13,19 +13,19 @@ var Spinner = require('react-native-spinkit');
 //action
 
 //components
-var Define = require('../../Define');
+// var Define = require('../../Define');
 var Debug = require('../../Util/Debug');
 var Themes = require('../../Themes');
-var Util = require('../../Util/Util');
-var Include = require('../../Include');
+// var Util = require('../../Util/Util');
+// var Include = require('../../Include');
 
-var {popupActions} = require('../popups/Popup');
-var {globalVariableManager}= require('../modules/GlobalVariableManager');
+import ReactComponent from '../ReactComponent'
 
+// var {popupActions} = require('../popups/PopupManager');
+// var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
-
-class Page extends Component{
-
+export default class Page extends ReactComponent{
+  static componentName = 'UnNamedPage'
   // static defaultProps = {}
   // static propTypes = {}
   constructor(props){
@@ -35,27 +35,18 @@ class Page extends Component{
     }
   }
   onRefresh(){
-    Debug.log(this.constructor.name + ':onRefresh',Debug.level.USER_TRACKER);
+    Debug.log(this.constructor.componentName + ':onRefresh',Debug.level.USER_TRACKER);
   }
   onGetMore(){
-    Debug.log(this.constructor.name + ':onGetMore',Debug.level.USER_TRACKER);
-  }
-  componentWillMount(){
-    Debug.log(this.constructor.name + ':componentWillMount',Debug.level.USER_TRACKER);
-  }
-  componentWillReceiveProps(){
-    Debug.log(this.constructor.name + ':componentWillReceiveProps');
+    Debug.log(this.constructor.componentName + ':onGetMore',Debug.level.USER_TRACKER);
   }
   shouldComponentUpdate(){
     let ret = true;
-    Debug.log(this.constructor.name + ':shouldComponentUpdate:'+ret);
+    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret);
     return ret;
   }
-  componentWillUpdate(){
-    Debug.log(this.constructor.name + ':componentWillUpdate',Debug.level.USER_TRACKER);
-  }
-  render(){
-    Debug.log(this.constructor.name + ':render',Debug.level.USER_TRACKER);
+  renderPageContent(){} // implement by child
+  renderContent(){
     var content = null;
     if (this.state.loading) {
       content=(
@@ -67,42 +58,20 @@ class Page extends Component{
       ) ;
     }
     else{
-      if (_.isFunction(this.renderContent) ) {
-        content = this.renderContent();
+      if (_.isFunction(this.renderPageContent) ) {
+        content = this.renderPageContent();
       }else{
-        Debug.log(this.constructor.name+':no renderContent',Debug.level.ERROR)
+        Debug.log(this.constructor.componentName+':no renderPageContent',Debug.level.ERROR)
         content = null;
       }
     }
     return(content)
   }
-  componentDidUpdate(){
-    Debug.log(this.constructor.name + ':componentDidUpdate');
-  }
-  componentWillUnmount(){
-    Debug.log(this.constructor.name + ':componentWillUnmount',Debug.level.USER_TRACKER);
-  }
   componentDidMount(){
-    Debug.log(this.constructor.name + ':componentDidMount',Debug.level.USER_TRACKER);
+    super.componentDidMount()
     InteractionManager.runAfterInteractions(() => {
       this.setState({loading:false});
       this.onRefresh();
     });
   }
 }
-
-
-/**
- * [selectActions description]
- * @param  {[type]} state [description]
- * @return {[type]}       [description]
- */
-// function selectActions(state) {
-//   return {
-//     navigator: state.Navigator,
-//   }
-// }
-//
-// module.exports=connect(selectActions, undefined, undefined, {withRef: true})(Screen);
-
-export default Page

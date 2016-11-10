@@ -4,7 +4,7 @@ import {Image,StyleSheet} from 'react-native';
 
 var Define = require('../../Define');
 
-var Spinner = require('react-native-spinkit');
+// var Spinner = require('react-native-spinkit');
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 var CustomImage= React.createClass({

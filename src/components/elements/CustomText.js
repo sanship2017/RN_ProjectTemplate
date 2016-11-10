@@ -1,6 +1,6 @@
 //@flow
-import React , {Component} from 'react';
-import {Animated,Text,StyleSheet} from 'react-native';
+import React from 'react';
+import {Animated,Text} from 'react-native';
 
 var Define = require('../../Define');
 var Themes = require('../../Themes');

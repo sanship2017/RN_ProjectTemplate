@@ -7,7 +7,7 @@ var {
 } = require('react-native');
 
 //components
-var Debug = require('../../Util/Debug');
+// var Debug = require('../../Util/Debug');
 var Include = require('../../Include');
 
 //variable

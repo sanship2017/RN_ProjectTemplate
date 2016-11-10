@@ -4,9 +4,9 @@
 // SQLite.DEBUG(true);
 // SQLite.enablePromise(true);
 //components
-var Debug = require('../../Util/Debug');
-var Themes = require('../../Themes');
-var Define = require('../../Define');
+// var Debug = require('../../Util/Debug');
+// var Themes = require('../../Themes');
+// var Define = require('../../Define');
 
 // var Actions.ServerConnection=require('../../actions/Actions.ServerConnection');
 

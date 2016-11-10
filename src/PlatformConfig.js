@@ -2,9 +2,8 @@
 import {Platform, Dimensions} from 'react-native';
 
 var RNFS = require('react-native-fs');
-var ExtraDimensions = require('react-native-extra-dimensions-android');
-var widthScreen = Dimensions.get('window').width;
-var heightScreen = Dimensions.get('window').height;
+// var widthScreen = Dimensions.get('window').width;
+// var heightScreen = Dimensions.get('window').height;
 
 // console.log('RNFS.DocumentDirectoryPath' )
 // console.log(RNFS.DocumentDirectoryPath )
@@ -12,8 +11,10 @@ var heightScreen = Dimensions.get('window').height;
 
 /**
  * [processAssetIos description]
- * @param {[type]} assets    [description]
- * @param {[type]} mapAssets [description]
+ * @param {[type]}  assets                [description]
+ * @param {[type]}  mapAssets             [description]
+ * @param {String}  [parentPath='assets'] [description]
+ * @param {Boolean} [hasAssetsDir=false]  [description]
  */
 function processAssetIos(assets,mapAssets,parentPath='assets', hasAssetsDir = false){
   var retObj={};
@@ -44,8 +45,10 @@ function processAssetIos(assets,mapAssets,parentPath='assets', hasAssetsDir = fa
 
 /**
  * [processAssetAndroid description]
- * @param {[type]} assets    [description]
- * @param {[type]} mapAssets [description]
+ * @param {[type]} assets                [description]
+ * @param {[type]} mapAssets             [description]
+ * @param {Object} [assetsContent={}]    [description]
+ * @param {String} [parentPath='assets'] [description]
  */
 function processAssetAndroid(assets,mapAssets,assetsContent={},parentPath='assets'){
 

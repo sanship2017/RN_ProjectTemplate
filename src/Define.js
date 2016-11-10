@@ -120,7 +120,7 @@ var Define = {
     } else if(Platform.OS === 'ios') {
       const path = 'file://'+RNFS.DocumentDirectoryPath+'/assets';
       RNFS.exists(path)
-        .then(isExist => {
+        .then((isExist) => {
           if(isExist) {
             self.assets = PlatformConfig.default.processAsset(assets,mapAssets, 'assets', true);
           }

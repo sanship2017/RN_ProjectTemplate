@@ -14,7 +14,7 @@ import {
  var RNFS = require('react-native-fs');
 import { createStore,applyMiddleware  } from 'redux';
 import thunk from 'redux-thunk';
-import {connect , Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 //
 var Define = require('./Define');
 var Debug = require('./Util/Debug');

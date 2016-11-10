@@ -22,7 +22,7 @@ var RDActions = require('./RDActions');
 class RDActions_MiddleWare {
   name:string=''
   sortName:string=''
-  logRes:boolean=false
+  logRes:boolean=true
   actionsList:Object={}
   constructor(name : string ,logRes :boolean){
     this.name = name;

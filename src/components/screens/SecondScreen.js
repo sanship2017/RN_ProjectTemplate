@@ -1,18 +1,16 @@
+
 var _ = require('lodash')
 
 //LIB
 import React  from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   RefreshControl,
-  InteractionManager
 } from 'react-native';
 
 var {Actions} = require('react-native-router-flux');
 import { connect } from 'react-redux';
-var Spinner = require('react-native-spinkit');
 //action
 
 //components
@@ -22,7 +20,7 @@ var Themes = require('../../Themes');
 var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var {popupActions} = require('../popups/Popup');
+var {popupActions} = require('../popups/PopupManager');
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 var ButtonWrap = require('../elements/ButtonWrap');
@@ -31,11 +29,11 @@ var ButtonWrap = require('../elements/ButtonWrap');
 import Screen from './Screen'
 
 // popups
-var DefaultPopup = require('../popups/DefaultPopup');
+import DefaultPopup from '../popups/DefaultPopup'
+import FadeDownDefaultPopup from '../popups/FadeDownDefaultPopup'
 
 // actions
-var RDActions = require('../../actions/RDActions');
-var RDActionsTypes = require('../../actions/RDActionsTypes');
+
 //variable
 
 // var styles = StyleSheet.create({
@@ -45,12 +43,16 @@ var RDActionsTypes = require('../../actions/RDActionsTypes');
 //
 
 class SecondScreen extends Screen{
+  static componentName = 'SecondScreen'
+  static sceneConfig ={
+    ...Screen.sceneConfig
+  }
+  // static defaultProps = {}
+  // static propTypes = {}
   constructor(props){
     super(props);
-    this.constructor.sceneConfig = _.merge(this.constructor.sceneConfig,
-    {
-
-    })
+    this.state = _.merge(this.state,
+    {})
   }
   // static renderRightButton(scene){
   //   return (
@@ -66,25 +68,24 @@ class SecondScreen extends Screen{
   //     </View>
   //   )
   // }
-  static renderTitle(scene){
-    return(
-      <View style={Themes.current.screen.titleWrapNavBarCenter}>
-        <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
-      </View>
-    )
-  }
+  // static renderTitle(scene){
+  //   return(
+  //     <View style={Themes.current.screen.titleWrapNavBarCenter}>
+  //       <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
+  //     </View>
+  //   )
+  // }
 
   onRefresh(){
     super.onRefresh();
     var {dispatch} = this.props;
-    // dispatch(RDActions.AppState.setDirectOnRequest(RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST['PORTRAIT']))
   }
 
   onGetMore(){
     super.onGetMore();
     var {dispatch} = this.props;
   }
-  renderContent(){
+  renderScreenContent(){
     var {dispatch} = this.props;
     var content = null;
     content =(
@@ -104,7 +105,12 @@ class SecondScreen extends Screen{
                 // self.onGetMore();
               }
             }}>
-        <Include.Text>SecondScreen</Include.Text>
+        <ButtonWrap onPress={()=>{
+          popupActions.setRenderContentAndShow(DefaultPopup)
+          popupActions.setRenderContentAndShow(FadeDownDefaultPopup)
+        }}>
+          <Include.Text>SecondScreen</Include.Text>
+        </ButtonWrap>
       </ScrollView>
     )
     return content;
@@ -122,7 +128,6 @@ class SecondScreen extends Screen{
  */
 function selectActions(state) {
   return {
-    appState: state.AppState,
     navigator: state.Navigator,
   }
 }

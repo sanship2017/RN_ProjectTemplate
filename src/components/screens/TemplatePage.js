@@ -4,15 +4,12 @@ var _ = require('lodash')
 import React  from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   RefreshControl,
-  InteractionManager
 } from 'react-native';
 
 var {Actions} = require('react-native-router-flux');
 import { connect } from 'react-redux';
-var Spinner = require('react-native-spinkit');
 //action
 
 //components
@@ -22,13 +19,13 @@ var Themes = require('../../Themes');
 var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var {popupActions} = require('../popups/Popup');
+var {popupActions} = require('../popups/PopupManager');
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 var ButtonWrap = require('../elements/ButtonWrap');
 
 //screens
-import Screen from './Screen'
+import Page from './Page'
 
 // popups
 var DefaultPopup = require('../popups/DefaultPopup');
@@ -43,35 +40,14 @@ var DefaultPopup = require('../popups/DefaultPopup');
 
 //
 
-class TemplateScreen extends Screen{
+class TemplatePage extends Page{
+  static componentName = 'TemplatePage'
   // static defaultProps = {}
   // static propTypes = {}
   constructor(props){
     super(props);
-    this.constructor.nameScreen ='TemplateScreen'
     this.state = _.merge(this.state,
     {})
-  }
-  // static renderRightButton(scene){
-  //   return (
-  //     <View style={Themes.current.screen.rightButtonWrapNavBar}>
-  //       <Include.Text>RightButton</Include.Text>
-  //     </View>
-  //   )
-  // }
-  // static renderLeftButton(scene){
-  //   return (
-  //     <View style={Themes.current.screen.leftButtonWrapNavBar}>
-  //       <Include.Text>LeftButton</Include.Text>
-  //     </View>
-  //   )
-  // }
-  static renderTitle(scene){
-    return(
-      <View style={Themes.current.screen.titleWrapNavBarCenter}>
-        <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
-      </View>
-    )
   }
 
   onRefresh(){
@@ -83,7 +59,7 @@ class TemplateScreen extends Screen{
     super.onGetMore();
     var {dispatch} = this.props;
   }
-  renderContent(){
+  renderPageContent(){
     var {dispatch} = this.props;
     var content = null;
     content =(
@@ -121,9 +97,7 @@ class TemplateScreen extends Screen{
  */
 function selectActions(state) {
   return {
-    navigator: state.Navigator,
   }
 }
 
-module.exports=connect(selectActions, undefined, undefined, {withRef: true})(TemplateScreen);
-// export default TemplateScreen
+export default connect(selectActions, undefined, undefined, {withRef: true})(TemplatePage);

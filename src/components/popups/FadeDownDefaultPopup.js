@@ -1,79 +1,67 @@
 
+var _ = require('lodash')
 //LIB
-import React from 'react';
-var {
+import React  from 'react';
+import {
   View,
-  // Dimensions,
-} = require('react-native');
+  // InteractionManager
+} from 'react-native';
 
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
+
+//action
 
 //components
-var Debug = require('../../Util/Debug');
-var Themes = require('../../Themes');
 var Define = require('../../Define');
+// var Debug = require('../../Util/Debug');
+var Themes = require('../../Themes');
+// var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
+var StyleConfig = require('../../Themes/StyleConfig');
 var RectButton = require('../elements/RectButton');
 var ButtonWrap= require('../elements/ButtonWrap');
 
-var {popupActions,popupConst} = require('./Popup');
+import Popup from './Popup'
 
-// action
+var {popupActions,popupConst} = require('../popups/PopupManager');
+// var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
-//variable
-//
-//
-
-// var styles={
-//   container:{
-//     backgroundColor:'#FFF',
-//     borderWidth:1,
-//     borderColor:'#000',
-//     borderRadius:4,
-//     flexDirection:'column',
-//     alignItems:'center',
-//     padding:10,
-//   }
-// }
-
-
-//
-
-var FadeDownDefaultPopup = React.createClass({
-  propTypes:{
-    // disableClose:React.PropTypes.bool,
-  },
-  getDefaultProps:function(){
-    return({
-
-      disableClose:true,
-    })
-  },
-  statics:{
-    namePopup:'DefaultPopup',
-    config:{
-      pointerEvents:'none',
-      group:popupConst.INFO_GROUP,
-      movePopupIn:(contentObject)=>{
-        var contentRefObject =  contentObject.objRef;
-        return contentRefObject.fadeInDown(600);
-      },
-      movePopupOut:(contentObject)=>{
-        var contentRefObject =  contentObject.objRef;
-        return contentRefObject.fadeOutUp(200);
-      }
+class FadeDownDefaultPopup extends Popup{
+  static componentName = 'FadeDownDefaultPopup'
+  static config=
+  {
+    ...Popup.config,
+    pointerEvents:'none',
+    group:popupConst.INFO_GROUP,
+    movePopupIn:(contentObject)=>{
+      var contentRefObject =  contentObject.objRef;
+      return contentRefObject.fadeInDown(600);
     },
-    containerStyle:{
-      backgroundColor:'transparent',
-      flexDirection:'column',
-      justifyContent:'flex-start',
-      alignItems:'center',
-      alignSelf:'stretch',
-      // width: Define.constants.widthScreen,
+    movePopupOut:(contentObject)=>{
+      var contentRefObject =  contentObject.objRef;
+      return contentRefObject.fadeOutUp(200);
     }
-  },
-  render:function(){
+  }
+  static containerStyle={
+    ...Popup.containerStyle,
+    backgroundColor:'transparent',
+    flexDirection:'column',
+    justifyContent:'flex-start',
+    alignItems:'center',
+    alignSelf:'stretch',
+    // width: Define.constants.widthScreen,
+  }
+  static defaultProps = {
+    disableClose:true,
+  }
+  // static propTypes = {}
+  constructor(props){
+    super(props);
+    this.state = _.merge(this.state,
+    {})
+  }
+  renderPopupContent(){
     var self = this;
     const {disableClose,title,description,buttonTitle,onPress,onPressPopup} = self.props;
 
@@ -123,25 +111,24 @@ var FadeDownDefaultPopup = React.createClass({
         </View>
       )
     }
-  },
-
-  componentDidMount:function(){
-    var self = this;
-    const {time2Close} = self.props;
+  }
+  componentDidMount(){
+    super.componentDidMount();
+    const {time2Close} = this.props;
     setTimeout(()=>{
       popupActions.popPopup(undefined,undefined,popupConst.INFO_GROUP);
     },time2Close?time2Close:5000)
   }
-})
-
-/**
- * function to select state.
- * @param {Object} state .
- * @returns {null} .
- */
-function selectActions(state) {
-  return {
-  }
 }
 
-module.exports=connect(selectActions)(FadeDownDefaultPopup);
+/**
+ * [selectActions description]
+ * @param  {[type]} state [description]
+ * @return {[type]}       [description]
+ */
+// function selectActions(state) {
+//   return {}
+// }
+
+// export default connect(selectActions, undefined, undefined, {withRef: true})(DefaultPopup);
+export default FadeDownDefaultPopup

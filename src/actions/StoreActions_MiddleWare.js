@@ -37,7 +37,7 @@ const StoreActions_MiddleWare={
     var {key,value}=argTemp;
 
     var preTextLog = self.name+':'+actionName+':';
-    return (dispatch, getState) => {
+    return (dispatch) => {
       var req = 'setItem';
       // req config
       //
@@ -91,7 +91,7 @@ const StoreActions_MiddleWare={
     var {key}=arg;
 
     var preTextLog = self.name+':'+actionName+':';
-    return (dispatch, getState) => {
+    return (dispatch) => {
       var req = 'getItem';
       // req config
       //
@@ -146,7 +146,7 @@ const StoreActions_MiddleWare={
     var {key}=arg;
 
     var preTextLog = self.name+':'+actionName+':';
-    return (dispatch, getState) => {
+    return (dispatch) => {
       var req = 'removeItem';
       // req config
       //

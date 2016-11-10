@@ -5,12 +5,12 @@ var { Actions} = require('react-native-router-flux');
 
 //components
 var Debug = require('../../Util/Debug');
-var Themes = require('../../Themes');
-var Define = require('../../Define');
-var Include = require('../../Include');
+// var Themes = require('../../Themes');
+// var Define = require('../../Define');
+// var Include = require('../../Include');
 
 
-var {popupActions,popupConst} = require('../popups/Popup');
+var {popupActions,popupConst} = require('../popups/PopupManager');
 var {globalVariableManager} = require('./GlobalVariableManager')
 
 // var ChannelActions_MiddleWare = require('../../actions/ChannelActions_MiddleWare');

@@ -3,7 +3,6 @@ import React from 'react';
 
 var {
   View,
-  Dimensions,
 } = require('react-native');
 
 //components

@@ -1,9 +1,9 @@
-
+var _ = require('lodash');
 // LIB
 var {
   Platform,
 } = require('react-native');
-var _ = require('lodash');
+
 var DeviceInfo = require('react-native-device-info');
 var RNFS = require('react-native-fs');
 // components
@@ -16,7 +16,7 @@ var {socketConnection} = require('../components/modules/ConnectionsManager');
 //
 
 var RDActionsTypes = require( '../actions/RDActionsTypes');
-var {popupActions} = require('../components/popups/Popup');
+var {popupActions} = require('../components/popups/PopupManager');
 var DefaultPopup = require('../components/popups/DefaultPopup');
 var FadeDownDefaultPopup = require('../components/popups/FadeDownDefaultPopup');
 

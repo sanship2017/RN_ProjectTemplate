@@ -1,7 +1,7 @@
 
 var _ = require('lodash')
 //LIB
-import React,{Component}  from 'react';
+import React  from 'react';
 import {
   View,
   InteractionManager
@@ -13,24 +13,33 @@ var Spinner = require('react-native-spinkit');
 //action
 
 //components
-var Define = require('../../Define');
+// var Define = require('../../Define');
 var Debug = require('../../Util/Debug');
 var Themes = require('../../Themes');
-var Util = require('../../Util/Util');
+// var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var {popupActions} = require('../popups/Popup');
-var {globalVariableManager}= require('../modules/GlobalVariableManager');
+
+import ReactComponent from '../ReactComponent'
+
+// var {popupActions} = require('../popups/PopupManager');
+// var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 
-
-class Screen extends Component{
-
+class Screen extends ReactComponent{
+  static componentName = 'UnNamedScreen'
   // static defaultProps = {}
   // static propTypes = {}
   state={}
   static sceneConfig={
     hideNavBar:false,
+  }
+  static renderTitle(scene){
+    return(
+      <View style={Themes.current.screen.titleWrapNavBarCenter}>
+        <Include.Text style={Themes.current.text.navBartitle}>{scene.name}</Include.Text>
+      </View>
+    )
   }
   constructor(props:Object){
     super(props);
@@ -41,34 +50,24 @@ class Screen extends Component{
     this.onGetMore = this.onGetMore.bind(this);
   }
   onRefresh(){
-    Debug.log(this.constructor.name + ':onRefresh',Debug.level.USER_TRACKER);
+    Debug.log(this.constructor.componentName + ':onRefresh',Debug.level.USER_TRACKER);
   }
   onGetMore(){
-    Debug.log(this.constructor.name + ':onGetMore',Debug.level.USER_TRACKER);
-  }
-  componentWillMount(){
-    Debug.log(this.constructor.name + ':componentWillMount',Debug.level.USER_TRACKER);
-  }
-  componentWillReceiveProps(){
-    Debug.log(this.constructor.name + ':componentWillReceiveProps');
+    Debug.log(this.constructor.componentName + ':onGetMore',Debug.level.USER_TRACKER);
   }
   shouldComponentUpdate(nextProps:Object){
     let ret = true;
     var {navigator} = nextProps;
-    if (navigator.currentScreen.name !== this.constructor.name) {
+    if (navigator.currentScreen.name !== this.constructor.componentName) {
       ret=false;
     }
-    Debug.log(this.constructor.name + ':shouldComponentUpdate:'+ret);
+    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret);
 
     return ret;
   }
-  componentWillUpdate(){
-    Debug.log(this.constructor.name + ':componentWillUpdate',Debug.level.USER_TRACKER);
-  }
   // over write by children
-  renderContent(){}
-  render(){
-    Debug.log(this.constructor.name + ':render',Debug.level.USER_TRACKER);
+  renderScreenContent(){}
+  renderContent(){
     var content = null;
     if (this.state.loading) {
       content=(
@@ -80,23 +79,17 @@ class Screen extends Component{
       ) ;
     }
     else{
-      if (_.isFunction(this.renderContent) ) {
-        content = this.renderContent();
+      if (_.isFunction(this.renderScreenContent) ) {
+        content = this.renderScreenContent();
       }else{
-        Debug.log(this.constructor.name+':no renderContent',Debug.level.ERROR)
+        Debug.log(this.constructor.componentName+':no renderScreenContent',Debug.level.ERROR)
         content = null;
       }
     }
     return(content)
   }
-  componentDidUpdate(){
-    Debug.log(this.constructor.name + ':componentDidUpdate');
-  }
-  componentWillUnmount(){
-    Debug.log(this.constructor.name + ':componentWillUnmount',Debug.level.USER_TRACKER);
-  }
   componentDidMount(){
-    Debug.log(this.constructor.name + ':componentDidMount',Debug.level.USER_TRACKER);
+    super.componentDidMount();
     InteractionManager.runAfterInteractions(() => {
       this.setState({loading:false});
       this.onRefresh();
@@ -104,18 +97,5 @@ class Screen extends Component{
   }
 }
 
-
-/**
- * [selectActions description]
- * @param  {[type]} state [description]
- * @return {[type]}       [description]
- */
-// function selectActions(state) {
-//   return {
-//     navigator: state.Navigator,
-//   }
-// }
-//
-// module.exports=connect(selectActions, undefined, undefined, {withRef: true})(Screen);
 
 export default Screen

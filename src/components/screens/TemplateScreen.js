@@ -5,15 +5,12 @@ var _ = require('lodash')
 import React  from 'react';
 import {
   View,
-  StyleSheet,
   ScrollView,
   RefreshControl,
-  InteractionManager
 } from 'react-native';
 
 var {Actions} = require('react-native-router-flux');
 import { connect } from 'react-redux';
-var Spinner = require('react-native-spinkit');
 //action
 
 //components
@@ -23,7 +20,7 @@ var Themes = require('../../Themes');
 var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var {popupActions} = require('../popups/Popup');
+var {popupActions} = require('../popups/PopupManager');
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 var ButtonWrap = require('../elements/ButtonWrap');
@@ -45,16 +42,16 @@ var DefaultPopup = require('../popups/DefaultPopup');
 //
 
 class TemplateScreen extends Screen{
+  static componentName = 'TemplateScreen'
+  static sceneConfig ={
+    ...Screen.sceneConfig
+  }
   // static defaultProps = {}
   // static propTypes = {}
   constructor(props){
     super(props);
-    this.constructor.sceneConfig = _.merge(this.constructor.sceneConfig,
-    {})
-
     this.state = _.merge(this.state,
     {})
-
   }
   // static renderRightButton(scene){
   //   return (
@@ -70,13 +67,13 @@ class TemplateScreen extends Screen{
   //     </View>
   //   )
   // }
-  static renderTitle(scene){
-    return(
-      <View style={Themes.current.screen.titleWrapNavBarCenter}>
-        <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
-      </View>
-    )
-  }
+  // static renderTitle(scene){
+  //   return(
+  //     <View style={Themes.current.screen.titleWrapNavBarCenter}>
+  //       <Include.Text style={Themes.current.text.navBartitle}>title</Include.Text>
+  //     </View>
+  //   )
+  // }
 
   onRefresh(){
     super.onRefresh();
@@ -87,7 +84,7 @@ class TemplateScreen extends Screen{
     super.onGetMore();
     var {dispatch} = this.props;
   }
-  renderContent(){
+  renderScreenContent(){
     var {dispatch} = this.props;
     var content = null;
     content =(
@@ -129,5 +126,4 @@ function selectActions(state) {
   }
 }
 
-module.exports=connect(selectActions, undefined, undefined, {withRef: true})(TemplateScreen);
-// export default TemplateScreen
+export default connect(selectActions, undefined, undefined, {withRef: true})(TemplateScreen);

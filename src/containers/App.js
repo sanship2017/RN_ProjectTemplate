@@ -1,6 +1,6 @@
 
 //LIB
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   NativeModules,
@@ -9,7 +9,6 @@ import {
   ToastAndroid,
   BackAndroid,
   AppState,
-  StyleSheet,
   NativeAppEventEmitter,
   PushNotificationIOS,
   AlertIOS,
@@ -60,7 +59,7 @@ var Include = require('../Include');
 import ButtonWrap from '../components/elements/ButtonWrap'
 
 var {globalVariableManager} = require('../components/modules/GlobalVariableManager');
-var {Popup,popupActions,popupConst} = require('../components/popups/Popup');
+var {PopupManager,popupActions,popupConst} = require('../components/popups/PopupManager');
 
 // var SCTVFilmsSideMenu = require('../components/elements/SCTVFilmsSideMenu');
 // screens
@@ -69,12 +68,11 @@ import SecondScreen from '../components/screens/SecondScreen'
 import TemplateScreen from '../components/screens/TemplateScreen'
 var screenList=[
   HomeScreen,
-  SecondScreen,
-  TemplateScreen
+  SecondScreen
 ];
 //popups
-var DefaultPopup = require('../components/popups/DefaultPopup');
-var FadeDownDefaultPopup = require('../components/popups/FadeDownDefaultPopup');
+import DefaultPopup from '../components/popups/DefaultPopup'
+import FadeDownDefaultPopup from '../components/popups/FadeDownDefaultPopup'
 //variable
 
 
@@ -139,14 +137,20 @@ var App = React.createClass({
   screenList:[],
   createScreen:function(){
     var self = this;
+    console.log('screenList')
+    console.log(screenList)
     self.screenList= screenList.map((current)=>{
+      var currentTemp = current;
+      if (current.WrappedComponent) {
+        currentTemp = current.WrappedComponent;
+      }
       return(
         <Scene
-          key={current.WrappedComponent.name}
-          title={current.WrappedComponent.name}
+          key={currentTemp.componentName}
+          title={currentTemp.componentName}
           component={current}
           //backButtonImage={Define.assets.Menu.icon_back}
-          {...current.WrappedComponent.sceneConfig}
+          {...currentTemp.sceneConfig}
 
           bodyStyle={Themes.current.screen.bodyViewWrap}
           rootView={self}
@@ -497,7 +501,7 @@ var App = React.createClass({
           ref='contentView' style={{flex:1}}>
           {content}
         </Animatable.View>
-        <Popup rootView={self}/>
+        <PopupManager rootView={self}/>
       </View>
 
     )

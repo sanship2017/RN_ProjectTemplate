@@ -5,7 +5,6 @@ var {
   View,
   ListView,
   Image,
-  Platform,
   InteractionManager
 } = require('react-native');
 

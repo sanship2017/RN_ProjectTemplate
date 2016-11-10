@@ -1,73 +1,62 @@
 
+var _ = require('lodash')
 //LIB
-import React from 'react';
-var {
+import React  from 'react';
+import {
   View,
-  // Dimensions,
-} = require('react-native');
+  // InteractionManager
+} from 'react-native';
 
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
+
+//action
 
 //components
-var Debug = require('../../Util/Debug');
-var Themes = require('../../Themes');
 var Define = require('../../Define');
+// var Debug = require('../../Util/Debug');
+var Themes = require('../../Themes');
+// var Util = require('../../Util/Util');
 var Include = require('../../Include');
-var StyleConfig = require('../../Themes/StyleConfig');
 
+var StyleConfig = require('../../Themes/StyleConfig');
 var RectButton = require('../elements/RectButton');
 var ButtonWrap= require('../elements/ButtonWrap');
 
-var {popupActions,popupConst} = require('./Popup');
+import Popup from './Popup'
 
-// action
+var {popupActions,popupConst} = require('../popups/PopupManager');
+// var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
-//variable
-//
-//
-
-// var styles={
-//   container:{
-//     backgroundColor:'#FFF',
-//     borderWidth:1,
-//     borderColor:'#000',
-//     borderRadius:4,
-//     flexDirection:'column',
-//     alignItems:'center',
-//     padding:10,
-//   }
-// }
-
-
-//
-
-var DefaultPopup = React.createClass({
-  propTypes:{
-    // disableClose:React.PropTypes.bool,
-  },
-  getDefaultProps:function(){
-    return({
-
-      disableClose:true,
-    })
-  },
-  statics:{
-    namePopup:'DefaultPopup',
-    config:{
-      tapToExit : true,videoMotion:false,group:popupConst.POPUP_GROUP
-    },
-    containerStyle:{
-      flexDirection:'column',
-      justifyContent:'center',
+class DefaultPopup extends Popup{
+  static componentName = 'DefaultPopup'
+  static config=
+  {
+    ...Popup.config,
+    group:popupConst.POPUP_GROUP,
+    tapToExit : true,
+    videoMotion:false
+  }
+  static containerStyle={
+    ...Popup.containerStyle,
+    flexDirection:'column',
+    justifyContent:'center',
+  }
+  static defaultProps = {
+    disableClose:true,
+  }
+  // static propTypes = {}
+  constructor(props){
+    super(props);
+    this.state = _.merge(this.state,
+    {})
+  }
+  componentWillMount(){
+    super.componentWillMount();
+    if (this.props.onWillMount) {
+      this.props.onWillMount();
     }
-  },
-  componentWillMount:function(){
-    var self = this;
-    if (self.props.onWillMount) {
-      self.props.onWillMount();
-    }
-  },
-  render:function(){
+  }
+  renderPopupContent(){
     var self = this;
     const {disableClose,title,description,description2,buttonTitle,onPress,buttonTitle2,onPress2,onPressPopup} = self.props;
 
@@ -151,23 +140,23 @@ var DefaultPopup = React.createClass({
         </View>
       )
     }
-  },
-  componentWillUnmount:function(){
-    var self = this;
-    if (self.props.onWillUnmount) {
-      self.props.onWillUnmount();
-    }
   }
-})
-
-/**
- * function to select state.
- * @param {Object} state .
- * @returns {null} .
- */
-function selectActions(state) {
-  return {
+  componentWillUnmount(){
+    super.componentWillUnmount()
+    if (this.props.onWillUnmount) {
+      this.props.onWillUnmount();
+    }
   }
 }
 
-module.exports=connect(selectActions)(DefaultPopup);
+/**
+ * [selectActions description]
+ * @param  {[type]} state [description]
+ * @return {[type]}       [description]
+ */
+// function selectActions(state) {
+//   return {}
+// }
+
+// export default connect(selectActions, undefined, undefined, {withRef: true})(DefaultPopup);
+export default DefaultPopup

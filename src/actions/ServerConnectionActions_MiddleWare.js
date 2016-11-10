@@ -8,7 +8,7 @@ var Debug = require('../Util/Debug');
 
 var {socketConnection} = require('../components/modules/ConnectionsManager');
 var RDActions = require('./RDRDActions');
-var {popupActions} = require('../components/popups/Popup');
+var {popupActions} = require('../components/popups/PopupManager');
 
 /*
  * action creators
@@ -22,7 +22,7 @@ const ServerConnection_MiddleWare={
     var self = this;
     return (dispatch, getState) => {
       if (getState().ServerConnection.connecting) {
-        return new Promise((resolve,reject)=>{});
+        return new Promise(()=>{});
       }
       dispatch(RDActions.ServerConnection.connectOnRequest());
       var promise = new Promise((resolve,reject)=>{
@@ -77,7 +77,7 @@ const ServerConnection_MiddleWare={
 
   disconnectToServer:function(){
     // var self = this;
-    return (dispatch, getState) => {
+    return () => {
       socketConnection.disconnect();
     }
   },
@@ -98,7 +98,7 @@ const ServerConnection_MiddleWare={
   autoTryConnectToServer:function(){
     var self = this;
 
-    return (dispatch, getState) => {
+    return (dispatch) => {
       return new Promise((resolve,reject)=>{
         dispatch(self.connectToServer()).
         then(()=>{
