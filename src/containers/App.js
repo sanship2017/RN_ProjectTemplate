@@ -137,8 +137,6 @@ var App = React.createClass({
   screenList:[],
   createScreen:function(){
     var self = this;
-    console.log('screenList')
-    console.log(screenList)
     self.screenList= screenList.map((current)=>{
       var currentTemp = current;
       if (current.WrappedComponent) {
