@@ -216,7 +216,7 @@ var App = React.createClass({
   preProcessWhenStart : function(){
     Debug.log('preProcessWhenStart');
     var self = this;
-    var {dispatch,user,movie}= self.props;
+    var {dispatch,user}= self.props;
 
     self.preProcessWhenStartDone = true;
 
