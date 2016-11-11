@@ -74,7 +74,7 @@ var Define = {
     debug:true,  // must false in release
     debugStyle:false,
     debugTrackerLogLength:166,
-    logLevel:0,  // must be 10 when release
+    logLevel:10,  // must be 10 when release
     funnyMode:false,
   },
   config:{
