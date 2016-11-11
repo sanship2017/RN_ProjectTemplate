@@ -4,9 +4,9 @@
  */
 const RDActionsTypes={
 
-  Todo:{
-    test:'TEST',
-  },
+  // Todo:{
+  //   test:'TEST',
+  // },
 
   ServerConnection:{
     connect:'SERVER_CONNECT',

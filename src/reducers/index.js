@@ -1,5 +1,5 @@
 
-var Todo = require('./Todo');
+// var Todo = require('./Todo');
 
 
 var Tracker = require('./Tracker');
@@ -19,7 +19,7 @@ export default function todoApp(state = {}, action) {
     AppState : AppState(state.AppState , action),
     Navigator : Navigator(state.Navigator , action),
     Store : Store(state.Store , action),
-    Todo : Todo(state.Todo , action),
+    // Todo : Todo(state.Todo , action),
   };
 
   Tracker(stateRet, action);

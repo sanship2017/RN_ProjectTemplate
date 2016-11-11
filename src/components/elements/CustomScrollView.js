@@ -13,7 +13,7 @@ import {
 //action
 
 //components
-var Define = require('../../Define');
+// var Define = require('../../Define');
 // var Debug = require('../../Util/Debug');
 var Themes = require('../../Themes');
 // var Util = require('../../Util/Util');
@@ -59,7 +59,7 @@ class CustomScrollView extends ReactComponent{
               progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
           }
           scrollEventThrottle={200}
-          onScroll={ event => {
+          onScroll={ (event) => {
               let getMoreHeight = this.props.getMoreHeight;
               let layoutMeasurementSize = event.nativeEvent.layoutMeasurement.height;
               let contentSize = event.nativeEvent.contentSize.height;
