@@ -212,16 +212,18 @@ class PopupActions{
         }
         var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
         self.renderStack[group][self.renderStack[group].length-1].direction = null;
-        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
-          top: (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )? Define.constants.navBarHeight:0,
-          scale:1,
-          width:Define.constants.widthScreen,
-          height:videoHeight,
-          translateX:0,
-          translateY:0,
-          rotate:'0deg',
-          opacity: 1,
-        }, 300)
+        InteractionManager.runAfterInteractions(() => {
+	        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
+	          top:Define.constants.navBarHeight,
+	          scale:1,
+	          width:Define.constants.widthScreen,
+	          height:videoHeight,
+	          translateX:0,
+	          translateY:0,
+	          rotate:'0deg',
+	          opacity: 1,
+	        }, 300)
+        });
       }
       else if(stateTemp === 'ACTIVE'){
         globalVariableManager.rootView.hideContent(false);
@@ -241,17 +243,18 @@ class PopupActions{
         }
 
         // Debug.log2('contentObject', self.renderStack[group][self.renderStack[group].length-1].instance);
-
-        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
-          top:Define.constants.navBarHeight,
-          scale:scale,
-          width:videoWidth,
-          height:videoHeight,
-          translateX:( additionX + (Define.constants.widthScreen/2) - ((videoWidth*scale)/2) -15)/scale ,
-          translateY:(Define.constants.availableHeightScreen - videoHeight -15) /scale ,
-          rotate:'0deg',
-          opacity: 1,
-        }, 300);
+        InteractionManager.runAfterInteractions(() => {
+	        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
+	          top:Define.constants.navBarHeight,
+	          scale:scale,
+	          width:videoWidth,
+	          height:videoHeight,
+	          translateX:( additionX + (Define.constants.widthScreen/2) - ((videoWidth*scale)/2) -15)/scale ,
+	          translateY:(Define.constants.availableHeightScreen - videoHeight -15) /scale ,
+	          rotate:'0deg',
+	          opacity: 1,
+	        }, 300);
+        });
       }
       else if(stateTemp === 'FULLSCREEN' ) {
         globalVariableManager.rootView.hideContent(true);
@@ -270,17 +273,19 @@ class PopupActions{
           widthTemp=Define.constants.videoWidth;
           heightTemp=Define.constants.videoHeight;
         }
-        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
-          scale:1,
-          width:widthTemp,
-          height:heightTemp,
-          translateX:0,
-          translateY:0,
-          top:0,
-          rotate:'0deg',
-          opacity: 1
-          // rotate:''+self.accelerometerDirect+'deg',
-        }, 300)
+        InteractionManager.runAfterInteractions(() => {
+	        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
+	          scale:1,
+	          width:widthTemp,
+	          height:heightTemp,
+	          translateX:0,
+	          translateY:0,
+	          top:0,
+	          rotate:'0deg',
+	          opacity: 1
+	          // rotate:''+self.accelerometerDirect+'deg',
+	        }, 300)
+        });
         Orientation.getOrientation((err, orientation)=>{
           Debug.log2('PopupManager:Orientation.getOrientation',err,Debug.level.ERROR)
           if (orientation !== 'LANDSCAPE' && orientation !== 'UNKNOWN') {
@@ -289,10 +294,10 @@ class PopupActions{
               Orientation.getOrientationConfig((orientationConfig)=>{
                 // if orientationConfig is on , unlock after 4 second
                 if (orientationConfig) {
-                  setTimeout(()=>{
+                  globalVariableManager.unlockAllOrientations = setTimeout(()=>{
                     // unlock after 4 second
                     Orientation.unlockAllOrientations();
-                  },4000)
+                  },2000)
                 }
               });
             }
@@ -431,11 +436,11 @@ class PopupActions{
           Orientation.unlockAllOrientations();
           globalVariableManager.rootView.hideContent(false);
           var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
-          if (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen') {
-            self.moveVideoPopup('NORMAL',VIDEO_GROUP);
-          }else{
+          //if (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen') {
+          //  self.moveVideoPopup('NORMAL',VIDEO_GROUP);
+          //}else{
             self.moveVideoPopup('ACTIVE',VIDEO_GROUP);
-          }
+          //}
 
           ret = true;
           breakFlag = true;
