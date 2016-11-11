@@ -213,16 +213,16 @@ class PopupActions{
         var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
         self.renderStack[group][self.renderStack[group].length-1].direction = null;
         InteractionManager.runAfterInteractions(() => {
-	        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
-	          top:Define.constants.navBarHeight,
-	          scale:1,
-	          width:Define.constants.widthScreen,
-	          height:videoHeight,
-	          translateX:0,
-	          translateY:0,
-	          rotate:'0deg',
-	          opacity: 1,
-	        }, 300)
+          self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
+            top:Define.constants.navBarHeight,
+            scale:1,
+            width:Define.constants.widthScreen,
+            height:videoHeight,
+            translateX:0,
+            translateY:0,
+            rotate:'0deg',
+            opacity: 1,
+          }, 300)
         });
       }
       else if(stateTemp === 'ACTIVE'){
@@ -244,16 +244,16 @@ class PopupActions{
 
         // Debug.log2('contentObject', self.renderStack[group][self.renderStack[group].length-1].instance);
         InteractionManager.runAfterInteractions(() => {
-	        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
-	          top:Define.constants.navBarHeight,
-	          scale:scale,
-	          width:videoWidth,
-	          height:videoHeight,
-	          translateX:( additionX + (Define.constants.widthScreen/2) - ((videoWidth*scale)/2) -15)/scale ,
-	          translateY:(Define.constants.availableHeightScreen - videoHeight -15) /scale ,
-	          rotate:'0deg',
-	          opacity: 1,
-	        }, 300);
+          self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
+            top:Define.constants.navBarHeight,
+            scale:scale,
+            width:videoWidth,
+            height:videoHeight,
+            translateX:( additionX + (Define.constants.widthScreen/2) - ((videoWidth*scale)/2) -15)/scale ,
+            translateY:(Define.constants.availableHeightScreen - videoHeight -15) /scale ,
+            rotate:'0deg',
+            opacity: 1,
+          }, 300);
         });
       }
       else if(stateTemp === 'FULLSCREEN' ) {
@@ -274,17 +274,17 @@ class PopupActions{
           heightTemp=Define.constants.videoHeight;
         }
         InteractionManager.runAfterInteractions(() => {
-	        self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
-	          scale:1,
-	          width:widthTemp,
-	          height:heightTemp,
-	          translateX:0,
-	          translateY:0,
-	          top:0,
-	          rotate:'0deg',
-	          opacity: 1
-	          // rotate:''+self.accelerometerDirect+'deg',
-	        }, 300)
+          self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
+            scale:1,
+            width:widthTemp,
+            height:heightTemp,
+            translateX:0,
+            translateY:0,
+            top:0,
+            rotate:'0deg',
+            opacity: 1
+            // rotate:''+self.accelerometerDirect+'deg',
+          }, 300)
         });
         Orientation.getOrientation((err, orientation)=>{
           Debug.log2('PopupManager:Orientation.getOrientation',err,Debug.level.ERROR)
@@ -294,6 +294,7 @@ class PopupActions{
               Orientation.getOrientationConfig((orientationConfig)=>{
                 // if orientationConfig is on , unlock after 4 second
                 if (orientationConfig) {
+                  clearTimeout(globalVariableManager.unlockAllOrientations )
                   globalVariableManager.unlockAllOrientations = setTimeout(()=>{
                     // unlock after 4 second
                     Orientation.unlockAllOrientations();
