@@ -39,6 +39,8 @@ export default class Page extends ReactComponent{
     this.state={
       loading:true,
     }
+    this.onRefresh = this.onRefresh.bind(this);
+    this.onGetMore = this.onGetMore.bind(this);
   }
   onRefresh(){
     Debug.log(this.constructor.componentName + ':onRefresh',Debug.level.USER_TRACKER);
