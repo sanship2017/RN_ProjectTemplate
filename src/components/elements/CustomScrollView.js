@@ -5,6 +5,7 @@ import React  from 'react';
 import {
   ScrollView,
   RefreshControl,
+  ActivityIndicator
 } from 'react-native';
 
 // import { connect } from 'react-redux';
@@ -37,6 +38,13 @@ class CustomScrollView extends ReactComponent{
     this.state = _.merge(this.state,
     {})
   }
+  isGetMore = false;
+  componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
+    if(!nextProps.refreshing && this.isGetMore) {
+      this.isGetMore = false;
+    }
+  }
   renderContent(){
     var content = null;
     content =(
@@ -45,7 +53,7 @@ class CustomScrollView extends ReactComponent{
           removeClippedSubviews ={true}
           refreshControl ={
             <RefreshControl
-              refreshing={this.props.refreshing}
+              refreshing={this.props.refreshing && !this.isGetMore}
               onRefresh={this.props.onRefresh}
               colors={Themes.current.factor.refreshingColor}
               progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
@@ -59,20 +67,28 @@ class CustomScrollView extends ReactComponent{
 
               if(layoutMeasurementSize > contentSize) {
                 if(contentOffset > getMoreHeight) {
+                  this.isGetMore = true;
                   this.props.onGetMore();
                 }
               } else {
                 if(contentOffset > (contentSize  - layoutMeasurementSize + getMoreHeight)) {
+                  this.isGetMore = true;
                   this.props.onGetMore();
                 }
               }
             }}
           {...this.props} >
         {this.props.children}
+
+        {this.isGetMore ?
+          <ActivityIndicator />
+        : null}
+
       </ScrollView>
     )
     return(content)
   }
+
 }
 
 /**
