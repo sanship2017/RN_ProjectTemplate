@@ -25,7 +25,12 @@ import ReactComponent from '../ReactComponent'
 
 class CustomScrollView extends ReactComponent{
   static componentName = 'CustomScrollView'
-  // static defaultProps = {}
+  static defaultProps = {
+    onGetMore: () => {},
+    refreshing: false,
+    onRefresh: () => {},
+    getMoreHeight: 1000,
+  }
   // static propTypes = {}
   constructor(props){
     super(props);
@@ -46,15 +51,23 @@ class CustomScrollView extends ReactComponent{
               progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
           }
           scrollEventThrottle={200}
-          onScroll={(event)=>{
-              if (event.nativeEvent.contentOffset.y > (event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-Define.constants.getMoreHeight)) {
-                if (this.props.onGetMore) {
+          onScroll={ event => {
+              let getMoreHeight = this.props.getMoreHeight;
+              let layoutMeasurementSize = event.nativeEvent.layoutMeasurement.height;
+              let contentSize = event.nativeEvent.contentSize.height;
+              let contentOffset = event.nativeEvent.contentOffset.y;
+
+              if(layoutMeasurementSize > contentSize) {
+                if(contentOffset > getMoreHeight) {
+                  this.props.onGetMore();
+                }
+              } else {
+                if(contentOffset > (contentSize  - layoutMeasurementSize + getMoreHeight)) {
                   this.props.onGetMore();
                 }
               }
             }}
-          {...this.props}
-            >
+          {...this.props} >
         {this.props.children}
       </ScrollView>
     )
