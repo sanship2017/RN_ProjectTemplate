@@ -61,7 +61,8 @@ class Screen extends ReactComponent{
     if (navigator.currentScreen.name !== this.constructor.componentName) {
       ret=false;
     }
-    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret);
+    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret,
+        !nextProps.navigator? Debug.level.WARNING:null);
 
     return ret;
   }

@@ -24,7 +24,7 @@ var {popupActions} = require('../popups/PopupManager');
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 var ButtonWrap = require('../elements/ButtonWrap');
-
+import ScrollableTabBarContainer from './ScrollableTabBarContainer';
 //screens
 import Screen from './Screen'
 
@@ -89,29 +89,10 @@ class SecondScreen extends Screen{
     var {dispatch} = this.props;
     var content = null;
     content =(
-      <ScrollView
-          style={[Themes.current.screen.bodyView,this.props.bodyStyle]}
-          removeClippedSubviews ={true}
-          refreshControl ={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={this.onRefresh}
-              colors={Themes.current.factor.refreshingColor}
-              progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
-          }
-          scrollEventThrottle={200}
-          onScroll={(event)=>{
-              if (event.nativeEvent.contentOffset.y > (event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-Define.constants.getMoreHeight)) {
-                // self.onGetMore();
-              }
-            }}>
-        <ButtonWrap onPress={()=>{
-          popupActions.setRenderContentAndShow(DefaultPopup)
-          popupActions.setRenderContentAndShow(FadeDownDefaultPopup)
-        }}>
-          <Include.Text>SecondScreen</Include.Text>
-        </ButtonWrap>
-      </ScrollView>
+      <View style={[Themes.current.screen.bodyView,this.props.bodyStyle]}>
+        <ScrollableTabBarContainer currentScreenName='SecondScreen'/>
+      </View>
+
     )
     return content;
   }

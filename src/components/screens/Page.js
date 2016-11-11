@@ -26,8 +26,14 @@ import ReactComponent from '../ReactComponent'
 
 export default class Page extends ReactComponent{
   static componentName = 'UnNamedPage'
-  // static defaultProps = {}
-  // static propTypes = {}
+  static defaultProps = {
+    currentScreenName:'UNKNOWN',
+    tabIndex:0,
+    tabView:{}
+  }
+  static propTypes = {
+    currentScreenName:React.PropTypes.string
+  }
   constructor(props){
     super(props);
     this.state={
@@ -40,9 +46,13 @@ export default class Page extends ReactComponent{
   onGetMore(){
     Debug.log(this.constructor.componentName + ':onGetMore',Debug.level.USER_TRACKER);
   }
-  shouldComponentUpdate(){
+  shouldComponentUpdate(nextProps){
     let ret = true;
-    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret);
+    if (nextProps.tabView.tabFocus !== nextProps.tabIndex || nextProps.navigator.currentScreen.name !== nextProps.currentScreenName) {
+      ret = false;
+    }
+    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+nextProps.currentScreenName+':'+ret,
+                (!nextProps.navigator || nextProps.currentScreenName==='UNKNOWN')?Debug.level.WARNING:null);
     return ret;
   }
   renderPageContent(){} // implement by child

@@ -42,8 +42,12 @@ var DefaultPopup = require('../popups/DefaultPopup');
 
 class TemplatePage extends Page{
   static componentName = 'TemplatePage'
-  // static defaultProps = {}
-  // static propTypes = {}
+  // static defaultProps = {
+  //   ...Page.defaultProps
+  // }
+  // static propTypes = {
+  //   ...Page.propTypes
+  // }
   constructor(props){
     super(props);
     this.state = _.merge(this.state,
@@ -84,9 +88,6 @@ class TemplatePage extends Page{
     )
     return content;
   }
-  componentDidMount(){
-    super.componentDidMount();
-  }
 }
 
 
@@ -97,6 +98,7 @@ class TemplatePage extends Page{
  */
 function selectActions(state) {
   return {
+    navigator:state.Navigator
   }
 }
 

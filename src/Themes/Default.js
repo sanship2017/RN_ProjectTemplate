@@ -11,7 +11,7 @@ var Default ={
   screen:{
     appBackground:{
       flex:1,
-      // backgroundColor:'#1b1b1b',
+      // backgroundColor:'#cccccc',
       // ...StyleConfig.shadownStyle,
     },
     NavBar:{

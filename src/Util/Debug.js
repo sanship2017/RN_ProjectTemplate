@@ -7,8 +7,8 @@
 var Define = require('../Define');
 var Util = require('./Util')
 var styles ={
-  // borderColor:'#000',
-  borderColor:'#FFF',
+  borderColor:'#000',
+  // borderColor:'#FFF',
   borderWidth:1,
   borderRadius:4,
   // margin :1,
@@ -24,7 +24,8 @@ var Debug={
     DATA_USER_TRACKER:10,
     USER_TRACKER:11,
     DATA_ERROR:12,
-    ERROR:13,
+    WARNING:13,
+    ERROR:14,
   },
   styles:styles,
   trackerLog:trackerLog,
