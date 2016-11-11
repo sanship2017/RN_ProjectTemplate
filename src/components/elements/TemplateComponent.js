@@ -3,8 +3,7 @@ var _ = require('lodash')
 //LIB
 import React  from 'react';
 import {
-  View,
-  InteractionManager
+  View
 } from 'react-native';
 
 // import { connect } from 'react-redux';

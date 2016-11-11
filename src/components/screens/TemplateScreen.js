@@ -88,24 +88,14 @@ class TemplateScreen extends Screen{
     var {dispatch} = this.props;
     var content = null;
     content =(
-      <ScrollView
-          style={[Themes.current.screen.bodyView,this.props.bodyStyle]}
-          removeClippedSubviews ={true}
-          refreshControl ={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={this.onRefresh}
-              colors={Themes.current.factor.refreshingColor}
-              progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
-          }
-          scrollEventThrottle={200}
-          onScroll={(event)=>{
-              if (event.nativeEvent.contentOffset.y > (event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-Define.constants.getMoreHeight)) {
-                // self.onGetMore();
-              }
-            }}>
+      <Include.ScrollView
+        style={[Themes.current.screen.bodyView,this.props.bodyStyle]}
+        refreshing={false}
+        onRefresh={this.onRefresh}
+        onGetMore={this.onGetMore}
+      >
         <Include.Text>Content</Include.Text>
-      </ScrollView>
+      </Include.ScrollView>
     )
     return content;
   }

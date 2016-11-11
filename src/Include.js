@@ -6,6 +6,7 @@
 const Include = {
     Image:require('./components/elements/CustomImage'),
     Text:require('./components/elements/CustomText'),
+    ScrollView:require('./components/elements/CustomScrollView'),
 }
 
 module.exports = Include;
