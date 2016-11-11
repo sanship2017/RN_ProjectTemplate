@@ -1,6 +1,7 @@
 
 var _ = require('lodash')
 //LIB
+import React  from 'react';
 import {
   // View,
   // InteractionManager
@@ -8,7 +9,7 @@ import {
 
 
 // import { connect } from 'react-redux';
-var Spinner = require('react-native-spinkit');
+// var Spinner = require('react-native-spinkit');
 //action
 
 //components
@@ -20,7 +21,7 @@ var Debug = require('../../Util/Debug');
 
 import ReactComponent from '../ReactComponent'
 
-var {popupActions,popupConst} = require('./PopupManager');
+// var {popupActions,popupConst} = require('./PopupManager');
 // var {globalVariableManager}= require('../modules/GlobalVariableManager');
 
 export default class Popup extends ReactComponent{
