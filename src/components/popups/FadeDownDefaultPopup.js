@@ -18,7 +18,7 @@ var Themes = require('../../Themes');
 // var Util = require('../../Util/Util');
 var Include = require('../../Include');
 
-var StyleConfig = require('../../Themes/StyleConfig');
+// var StyleConfig = require('../../Themes/StyleConfig');
 var RectButton = require('../elements/RectButton');
 var ButtonWrap= require('../elements/ButtonWrap');
 
@@ -63,7 +63,7 @@ class FadeDownDefaultPopup extends Popup{
   }
   renderPopupContent(){
     var self = this;
-    const {disableClose,title,description,buttonTitle,onPress,onPressPopup} = self.props;
+    const {disableClose,description,buttonTitle,onPress,onPressPopup} = self.props;
 
     var closeButton = null;
     if (!disableClose) {

@@ -3,9 +3,7 @@ import React from 'react';
 var {
   View,
   TouchableOpacity,
-  Dimensions,
   StyleSheet,
-  NativeModules,
   Platform,
   InteractionManager
 } = require('react-native');
@@ -22,8 +20,6 @@ var StyleConfig = require('../../Themes/StyleConfig')
 
 var RDActionsTypes = require( '../../actions/RDActionsTypes');
 var StatusBarAndroid = require('react-native-android-statusbar');
-
-var SensorManager = NativeModules.SensorManager;
 
 var {globalVariableManager}= require('../modules/GlobalVariableManager');
 //variable
@@ -377,7 +373,7 @@ class PopupActions{
   }
 
 
-  requireRenderContent(popup){
+  requireRenderContent(){
     var self=this;
     var returnElementArray = [];
     self.renderStack.forEach((current)=>{
@@ -969,7 +965,7 @@ class PopupActions{
     var self = this;
     var number = 0;
     if (group<0) {
-      self.renderStack.forEach((current,index)=>{
+      self.renderStack.forEach((current)=>{
         number += current.length;
       })
     }
