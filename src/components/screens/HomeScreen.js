@@ -88,26 +88,16 @@ class HomeScreen extends Screen{
     var {dispatch} = this.props;
     var content = null;
     content =(
-      <ScrollView
-          style={[Themes.current.screen.bodyView,this.props.bodyStyle]}
-          removeClippedSubviews ={true}
-          refreshControl ={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={this.onRefresh}
-              colors={Themes.current.factor.refreshingColor}
-              progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
-          }
-          scrollEventThrottle={200}
-          onScroll={(event)=>{
-              if (event.nativeEvent.contentOffset.y > (event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-Define.constants.getMoreHeight)) {
-                // self.onGetMore();
-              }
-            }}>
+      <Include.ScrollView
+        style={[Themes.current.screen.bodyView,this.props.bodyStyle]}
+        refreshing={false}
+        onRefresh={this.onRefresh}
+        onGetMore={this.onGetMore}
+      >
         <ButtonWrap onPress={()=>{Actions.SecondScreen()}}>
           <Include.Text>HomeScreen</Include.Text>
         </ButtonWrap>
-      </ScrollView>
+      </Include.ScrollView>
     )
     return content;
   }
