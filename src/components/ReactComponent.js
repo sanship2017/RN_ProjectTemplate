@@ -29,7 +29,7 @@ export default class ReactComponent extends Component{
     Debug.log(this.constructor.componentName + ':componentWillReceiveProps');
   }
   shouldComponentUpdate(){
-    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:true');
+    Debug.log(this.constructor.componentName + ':shouldComponentUpdate');
     return true;
   }
   componentWillUpdate(){
