@@ -74,8 +74,6 @@ class ScrollableTabBarContainer extends ReactComponent{
         </View>
       )
     })
-    console.log('this.pageList',this.pageList.length)
-
   }
   componentWillMount(){
     super.componentWillMount();

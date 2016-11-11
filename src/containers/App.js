@@ -406,7 +406,6 @@ var App = React.createClass({
            return true;
          }
          else if (!(appState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING)) {
-           console.log(navigator.currentScreen.name)
            if (navigator.currentScreen.name !== 'HomeScreen' && navigator.currentScreen.name !== 'TemplateScreen') {
              if(Actions.pop()) {
                return true;
