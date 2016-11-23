@@ -115,9 +115,12 @@ class FadeDownDefaultPopup extends Popup{
   componentDidMount(){
     super.componentDidMount();
     const {time2Close} = this.props;
-    setTimeout(()=>{
+    this.timeout = setTimeout(()=>{
       popupActions.popPopup(undefined,undefined,popupConst.INFO_GROUP);
-    },time2Close?time2Close:5000)
+    },time2Close?time2Close:3000)
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timeout)
   }
 }
 

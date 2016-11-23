@@ -137,6 +137,7 @@ var MyListView = React.createClass({
       'refreshControl',
       'scrollEventThrottle',
       'onScroll',
+      'onContentSizeChange',
       'showsHorizontalScrollIndicator',
       'showsVerticalScrollIndicator',
       'horizontal',
@@ -172,7 +173,6 @@ var MyListView = React.createClass({
       <ListView
         style={[ {padding:2 },self.props.style? self.props.style :null]}
         ref={self.props.refProp}
-        renderToHardwareTextureAndroid={true}
         enableEmptySections ={true}
         {...scrollProps}
         {...listViewProps}

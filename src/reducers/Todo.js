@@ -27,7 +27,7 @@ function Todo(state ={
     case RDActionsTypes.Todo.nameAction:{
       stateTemp = RDUtil.processReducerLoading(state,action,'nameAction',
                 {
-                  onSuccess:(stateTemp)=>{ return stateTemp;}
+                  onSuccess:(stateTempIn)=>{ return stateTempIn;}
                 })
 
       break;

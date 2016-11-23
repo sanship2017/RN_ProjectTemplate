@@ -23,15 +23,15 @@ class RDActions{
         // create function
         if (!this[groupKey]) {this[groupKey] = {}}
         this[groupKey][key] = function(data) {
-                Debug.log(this.name +':'+key);
+                Debug.log(groupKey +':'+key);
                 return { type: typeString,subtype:RDActionsTypes.constants.REQUEST_SUBTYPE.REQUEST, data:data };
               };
         this[groupKey][key+'OnRequest'] = function(data) {
-                Debug.log(this.name +':'+key+'OnRequest');
+                Debug.log(groupKey +':'+key+'OnRequest');
                 return { type: typeString,subtype:RDActionsTypes.constants.REQUEST_SUBTYPE.REQUEST, data:data };
               };
         this[groupKey][key+'OnResult'] = function(subtype,data) {
-                Debug.log(this.name +':'+key+'OnResult');
+                Debug.log(groupKey +':'+key+'OnResult');
                 return { type: typeString,subtype:subtype, data:data };
               };
       })

@@ -18,7 +18,7 @@ var Default ={
       height:Define.constants.navBarHeight,
       borderBottomWidth:0,
       padding:0,paddingTop:0,
-      // ...StyleConfig.default.shadownStyle,
+      ...StyleConfig.default.shadownStyle,
     },
     leftButtonWrapNavBar:{
       position:'absolute',top:-8,left:0,paddingRight:10,height:Define.constants.navBarHeight, flexDirection:'row',alignItems:'center',justifyContent:'flex-start',
@@ -39,14 +39,14 @@ var Default ={
       // justifyContent: 'flex-start',
       top: 0,bottom:0,right:0,left:0,
       position: 'absolute',
-      ...StyleConfig.shadownStyle,
+      ...StyleConfig.default.shadownStyle,
     },
     bodyViewWrap:{
       // justifyContent: 'flex-start',
       top: Define.constants.navBarHeight,bottom:0,right:0,left:0,
       // marginTop:X*0.2,
       position: 'absolute',
-      ...StyleConfig.shadownStyle,
+      ...StyleConfig.default.shadownStyle,
     },
     bodyView:{
       top: Define.constants.navBarHeight,bottom:0,right:0,left:0,position: 'absolute',
@@ -84,7 +84,7 @@ var Default ={
     //   flex: 1,alignItems: 'center',justifyContent: 'space-around',backgroundColor: '#bc7905',
     // },
     tabsWrap: {
-      backgroundColor: 'transparent',...StyleConfig.shadownStyle
+      backgroundColor: 'transparent',...StyleConfig.default.shadownStyle
     },
 
     tabs: {
@@ -156,7 +156,10 @@ var Default ={
       color:'#8b8b8b',fontSize:10,
     },
     navBartitle:{
-      fontSize:17,fontFamily:Define.constants.fontBold,color:'#000'
+      fontSize:17,
+      fontFamily:Define.constants.fontBold,
+      color:'#000',
+      fontWeight: '500'
     },
     // title:{
     //   fontSize:17,color:'#232323'
@@ -173,7 +176,12 @@ var Default ={
     subTitle:{
       fontSize:15,fontFamily:Define.constants.fontBold
     },
-
+    popupTitle:{
+      fontSize:15,fontFamily: Define.constants.fontBold,color:'#000',textAlign:'center'
+    },
+    popupDescription:{
+      left:0,right:0,color:'#000',marginVertical:5,alignSelf:'center',textAlign :'center'
+    },
   },
   image:{
     loading:{
@@ -302,6 +310,7 @@ var Default ={
     },
   },
   factor:{
+    shadownStyle:StyleConfig.default.shadownStyle,
     openSideMenuOffset:X*7.36,
     refreshingColor:['#ed1c24', '#0095da', '#fff200' , '#4279bd'],
     refreshingBackgroudColor:'#FFFFFF',

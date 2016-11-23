@@ -28,7 +28,7 @@ var ButtonWrap = require('../elements/ButtonWrap');
 import Page from './Page'
 
 // popups
-var DefaultPopup = require('../popups/DefaultPopup');
+import DefaultPopup from '../popups/DefaultPopup'
 
 // actions
 

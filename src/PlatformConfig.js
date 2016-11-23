@@ -86,10 +86,6 @@ const PlatformConfig = {
       navBarHeight: 44,
       font: 'Roboto-Regular',
       fontBold: 'Roboto-Bold',
-      token: {
-        APNTokenWait:true,
-        APNToken:'',
-      },
       hybridVersion:'0.0.1',
       processAsset:processAssetIos,
     },
@@ -97,11 +93,7 @@ const PlatformConfig = {
       navBarHeight: 50,
       font: 'roboto-regular',
       fontBold: 'roboto-bold',
-      token: {
-        GCMTokenWait:true,
-        GCMToken:'',
-      },
-      hybridVersion:'0.3.1',
+      hybridVersion:'0.0.1',
       processAsset:processAssetAndroid,
     }
   }),

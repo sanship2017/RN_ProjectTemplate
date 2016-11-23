@@ -64,7 +64,7 @@ export default class Page extends ReactComponent{
       content=(
         <View
             pointerEvents={'auto'}
-            style={[Themes.current.screen.bodyView,this.props.bodyStyle]}>
+            style={[Themes.current.screen.bodyView,this.props.bodyStyle,{justifyContent: 'center', alignItems: 'center'}]}>
           <Spinner type={'Wave'} color={Themes.current.factor.spinnerColor} />
         </View>
       ) ;

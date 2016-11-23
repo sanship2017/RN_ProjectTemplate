@@ -23,13 +23,13 @@ function Store(state ={
     case RDActionsTypes.Store.set:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.REQUEST:
           stateTemp.set.loading++;
           return  stateTemp ;
-        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS:
           if (stateTemp.set.loading>0) {stateTemp.set.loading--;}
           return  stateTemp ;
-        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.ERROR:
           if (stateTemp.set.loading>0) {stateTemp.set.loading--;}
           return  stateTemp ;
         default:
@@ -39,16 +39,16 @@ function Store(state ={
     case RDActionsTypes.Store.get:{
       stateTemp = Object.assign({}, state);
       switch (action.subtype) {
-        case RDActionsTypes.REQUEST_SUBTYPE.REQUEST:
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.REQUEST:
           stateTemp.get.loading++;
           return  stateTemp ;
-        case RDActionsTypes.REQUEST_SUBTYPE.SUCCESS:
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS:
           if (stateTemp.get.loading>0) {stateTemp.get.loading--;}
           if (action.data) {
               stateTemp.data[action.data.key]=action.data.res;
           }
           return  stateTemp ;
-        case RDActionsTypes.REQUEST_SUBTYPE.ERROR:
+        case RDActionsTypes.constants.REQUEST_SUBTYPE.ERROR:
           if (stateTemp.get.loading>0) {stateTemp.get.loading--;}
           return  stateTemp ;
         default:

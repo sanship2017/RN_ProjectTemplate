@@ -7,7 +7,7 @@ mkdir "BUILD/bundle/assets"
 
 for /r assets %%F in (*) do call :Func %%F
 
-call react-native bundle --entry-file src/index.android.js --platform android --dev false --minify true --bundle-output BUILD/bundle/index.android.bundle-%vs% --sourcemap-output BUILD/bundle/map/index.android.map-%vs%
+call react-native bundle --entry-file src/index.android.js --platform android --dev false  --bundle-output BUILD/bundle/index.android.bundle-%vs% --sourcemap-output BUILD/bundle/map/index.android.map-%vs%
 
 cd BUILD/bundle
 

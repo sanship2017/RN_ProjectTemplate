@@ -34,7 +34,9 @@ class DefaultPopup extends Popup{
     ...Popup.config,
     group:popupConst.POPUP_GROUP,
     tapToExit : true,
-    videoMotion:false
+    videoMotion:false,
+    // movePopupIn:()=>{return new Promise((resolve)=>{resolve()});},
+    // movePopupOut:()=>{return new Promise((resolve)=>{resolve()});},
   }
   static containerStyle={
     ...Popup.containerStyle,
@@ -62,7 +64,7 @@ class DefaultPopup extends Popup{
 
     var description2Text = null;
     if (description2) {
-      description2Text= <Include.Text style={{left:0,right:0,color:'#000',marginVertical:5,alignSelf:'center',textAlign :'center'}}>{description2}</Include.Text>
+      description2Text= <Include.Text style={Themes.current.text.popupDescription}>{description2}</Include.Text>
     }
 
     var closeButton = null;
@@ -103,7 +105,7 @@ class DefaultPopup extends Popup{
         <ButtonWrap onPress={()=>{
             onPressPopup();
           }}>
-          <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.shadownStyle,  ...self.props.style}}>
+          <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.default.shadownStyle,  ...self.props.style}}>
             <View style={[Themes.current.popup.titleWrap, {paddingLeft: 20, paddingRight: 20}]}>
               <Include.Text style={Themes.current.text.popupTitle}>{title}</Include.Text>
               {closeButton}
@@ -122,7 +124,7 @@ class DefaultPopup extends Popup{
     }
     else{
       return(
-        <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.shadownStyle, ...self.props.style}}>
+        <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.default.shadownStyle, ...self.props.style}}>
 
           <View style={[Themes.current.popup.titleWrap, {paddingLeft: 20, paddingRight: 20}]}>
             <Include.Text style={Themes.current.text.popupTitle}>{title}</Include.Text>
@@ -133,7 +135,7 @@ class DefaultPopup extends Popup{
 
           {description2Text}
           {self.props.children}
-          <View style={{flexDirection:'row', justifyContent: 'space-around', flex: 1}}>
+          <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
             {button}
             {button2}
           </View>

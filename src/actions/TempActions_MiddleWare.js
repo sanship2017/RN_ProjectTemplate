@@ -74,7 +74,7 @@ class TempActions_MiddleWare extends RDActions_MiddleWare {
                       arg:argTemp,
                       err:err,
                     }
-                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.ERROR,data));}
+                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.constants.REQUEST_SUBTYPE.ERROR,data));}
                     reject(data);
                   }
                   else{
@@ -84,7 +84,7 @@ class TempActions_MiddleWare extends RDActions_MiddleWare {
                       arg:argTemp,
                       res:res,
                     }
-                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.REQUEST_SUBTYPE.SUCCESS,data));}
+                    if(setState) {dispatch(RDActions[this.sortName][actionName+'OnResult'](RDActionsTypes.constants.REQUEST_SUBTYPE.SUCCESS,data));}
                     resolve(data);
                   }
                 }

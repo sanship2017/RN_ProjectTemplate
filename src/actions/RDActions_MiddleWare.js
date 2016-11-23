@@ -1,7 +1,7 @@
 // @flow
 // var _ = require('lodash')
 var RDActionsTypes = require('./RDActionsTypes');
-
+var util = require('util')
 // LIB
 var TimeoutCallback = require('timeout-callback');
 
@@ -88,7 +88,7 @@ class RDActions_MiddleWare {
                       }
                       data={
                         arg:argTemp,
-                        err:err,
+                        err:util.inspect(err),
                       }
                       var onErrorRet = true;
                       if (obj.onError) {onErrorRet = obj.onError(dispatch,getState,data);}

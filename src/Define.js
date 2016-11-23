@@ -1,5 +1,6 @@
 
 var ExtraDimensions = require('react-native-extra-dimensions-android');
+var DeviceInfo = require('react-native-device-info');
 
 import {
   Dimensions, Platform,PixelRatio
@@ -36,6 +37,10 @@ var Define = {
     widthScreen:widthScreen,
     heightScreen:heightScreen,
     screenSizeByInch:screenSizeByInch,
+    deviceId:DeviceInfo.getUniqueID(),
+
+    nativeVersion:DeviceInfo.getBuildNumber(),
+    currentHybridVersion:0,
 
     imageThumbRate:(20/9),
     smallImageThumbRate:(9/6),
@@ -73,6 +78,7 @@ var Define = {
     requestTimeout:26000,
     debug:true,  // must false in release
     debugStyle:false,
+    review:false,
     debugTrackerLogLength:166,
     logLevel:10,  // must be 10 when release
     funnyMode:false,
@@ -83,7 +89,8 @@ var Define = {
       spid: "0",
     },
     currentHybridVersion:0,
-    ...PlatformConfig.token,
+    waitToken: true,
+    token: '',
   },
   init:function(){
     var self = this;

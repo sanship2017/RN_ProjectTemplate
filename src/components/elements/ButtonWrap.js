@@ -41,6 +41,10 @@ var ButtonWrap = React.createClass({
   render:function(){
     var self=this;
 
+    if (!self.props.onPress) {
+      return self.props.children
+    }
+
     if (Array.isArray(self.props.children ) && self.props.children.length > 1) {
       if (self.props.noFeedback) {
         return(

@@ -9,35 +9,37 @@ import android.view.KeyEvent;
 import com.facebook.common.references.SharedReference;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.thudo.FullLog;
 import com.thudo.HotUpdateManager;
 
-class UpdateTask implements Runnable {
-    Activity mActivity;
-    UpdateTask(Activity activity) { mActivity = activity; }
-    @Override
-    public void run() {
-        String updateServer = mActivity.getResources().getString(R.string.update_server);
-        HotUpdateManager.getInstance().checkUpdate(updateServer);
-        if(HotUpdateManager.getInstance().getNewHybridVersion() > HotUpdateManager.getInstance().getHybridVersion()){
-            HotUpdateManager.getInstance().update();
-        }
-    }
-}
+//class UpdateTask implements Runnable {
+//    Activity mActivity;
+//    UpdateTask(Activity activity) { mActivity = activity; }
+//    @Override
+//    public void run() {
+//        String updateServer = mActivity.getResources().getString(R.string.update_server);
+//        HotUpdateManager.getInstance().checkUpdate(updateServer);
+//        FullLog.d( "Need update:" + Boolean.toString(HotUpdateManager.getInstance().getNewHybridVersion() > HotUpdateManager.getInstance().getHybridVersion()));
+//        if(HotUpdateManager.getInstance().getNewHybridVersion() > HotUpdateManager.getInstance().getHybridVersion()){
+//            HotUpdateManager.getInstance().update();
+//        }
+//    }
+//}
 
 public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
-        HotUpdateManager.getInstance().init(this);
-
-        if (!BuildConfig.DEBUG) {
-            new Thread(new UpdateTask(this)).start();
-        }
-
+//        HotUpdateManager.getInstance().init(this);
+//
+//       if (!BuildConfig.DEBUG) {
+//            new Thread(new UpdateTask(this)).start();
+//       }
+//
         super.onCreate(savedInstanceState);
-
-        HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager());
+//
+//        HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager());
 
     }
     @Override

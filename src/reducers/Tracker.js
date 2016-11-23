@@ -17,7 +17,7 @@ var {socketConnection} = require('../components/modules/ConnectionsManager');
 
 var RDActionsTypes = require( '../actions/RDActionsTypes');
 var {popupActions} = require('../components/popups/PopupManager');
-var DefaultPopup = require('../components/popups/DefaultPopup');
+import DefaultPopup from '../components/popups/DefaultPopup';
 var FadeDownDefaultPopup = require('../components/popups/FadeDownDefaultPopup');
 
 //var

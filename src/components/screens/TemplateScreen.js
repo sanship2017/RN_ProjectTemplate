@@ -29,7 +29,7 @@ var ButtonWrap = require('../elements/ButtonWrap');
 import Screen from './Screen'
 
 // popups
-var DefaultPopup = require('../popups/DefaultPopup');
+import DefaultPopup from '../popups/DefaultPopup';
 
 // actions
 
@@ -53,17 +53,18 @@ class TemplateScreen extends Screen{
     this.state = _.merge(this.state,
     {})
   }
-  // static renderRightButton(scene){
-  //   return (
-  //     <View style={Themes.current.screen.rightButtonWrapNavBar}>
-  //       <Include.Text>RightButton</Include.Text>
-  //     </View>
-  //   )
-  // }
+
   // static renderLeftButton(scene){
   //   return (
   //     <View style={Themes.current.screen.leftButtonWrapNavBar}>
   //       <Include.Text>LeftButton</Include.Text>
+  //     </View>
+  //   )
+  // }
+  // static renderRightButton(scene){
+  //   return (
+  //     <View style={Themes.current.screen.rightButtonWrapNavBar}>
+  //       <Include.Text>RightButton</Include.Text>
   //     </View>
   //   )
   // }

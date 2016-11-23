@@ -49,8 +49,8 @@ class CustomScrollView extends ReactComponent{
     var content = null;
     content =(
       <ScrollView
-          style={{flex:1}}
-          removeClippedSubviews ={true}
+          style={this.props.style}
+          removeClippedSubviews ={false}
           refreshControl ={
             <RefreshControl
               refreshing={this.props.refreshing && !this.isGetMore}

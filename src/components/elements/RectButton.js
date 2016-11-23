@@ -33,10 +33,15 @@ var RectButton = React.createClass({
   },
   render:function(){
     var self = this;
-
+    var widthButton = Define.constants.widthScreen*1.4/4;
     return(
       <ButtonWrap onPress={self.props.onPress}>
-        <View style={[{width:Define.constants.widthScreen*2.2/4,height:45,justifyContent:'center',backgroundColor:'#58a12b'},self.props.style]}>
+        <View style={[{
+              width:widthButton,height:45,
+              margin:4,
+              borderRadius:4,
+              justifyContent:'center',backgroundColor:'#58a12b'
+            },self.props.style]}>
           {self.props.backgroundImage?
             <View style={[{position:'absolute',top:0,bottom:0,left:0,right:0},self.props.backgroundImageStyle ]}>
               <Include.Image
@@ -44,7 +49,7 @@ var RectButton = React.createClass({
                 tintColor={self.props.backgroundImageColor}
                 style={[{
                   flex:1,
-                  width:self.props.style.width?self.props.style.width: Define.constants.widthScreen*2.2/4,
+                  width:self.props.style.width?self.props.style.width: widthButton,
                   height:self.props.style.height?self.props.style.height: 45,
                   // width:170,height:40
                   // transform:[{scaleX:1},{scaleY:1}]

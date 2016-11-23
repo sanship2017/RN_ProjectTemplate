@@ -9,6 +9,10 @@
 package com.projecttemplate;
 
 import android.app.Application;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -20,7 +24,9 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.rnfs.RNFSPackage;
 import com.sensormanager.SensorManagerPackage;
+import com.thudo.FullLog;
 import com.thudo.HotUpdateManager;
+import com.thudo.HotUpdatePackage;
 import com.thudo.RNBridgeReloaderPackage;
 import com.thudo.RNIntentPackage;
 
@@ -30,7 +36,70 @@ import java.util.List;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import me.neo.react.StatusBarPackage;
 
+class UpdateTask extends AsyncTask<Void, Boolean, Void> {
+
+  Context mContext;
+  public UpdateTask(Context ctx)
+  {
+    mContext=ctx;
+  }
+
+  @Override
+  protected Void doInBackground(Void... params) {
+    update();
+    return null;
+  }
+
+  @Override
+  protected void onProgressUpdate(Boolean... values) {
+    super.onProgressUpdate(values);
+    Toast toast = Toast.makeText(mContext, "Đang tiến hành cập nhật phiên bản mới", Toast.LENGTH_SHORT);
+    toast.show();
+    if (values[0]){
+    }else{
+      toast = Toast.makeText(mContext, "Cập nhật hoàn tất", Toast.LENGTH_SHORT);
+      toast.show();
+    }
+  }
+
+  private Void update() {
+    String updateServer = mContext.getResources().getString(R.string.update_server);
+    HotUpdateManager.getInstance().checkUpdate(updateServer);
+    FullLog.d( "Need update:" + Boolean.toString(HotUpdateManager.getInstance().getNewHybridVersion() > HotUpdateManager.getInstance().getHybridVersion()));
+    if(HotUpdateManager.getInstance().getNewHybridVersion() > HotUpdateManager.getInstance().getHybridVersion()){
+
+      publishProgress(true);
+      HotUpdateManager.getInstance().update();
+      publishProgress(false);
+    }else{
+      HotUpdateManager.getInstance().setState(true);
+    }
+    return null;
+  }
+}
+
+
 public class MainApplication extends Application implements ReactApplication {
+  @Override
+  public void onCreate() {
+
+    HotUpdateManager.getInstance().init(this.getApplicationContext());
+
+    if (!BuildConfig.DEBUG) {
+      new UpdateTask(this.getApplicationContext()).execute();
+    }
+    // FacebookSdk.sdkInitialize(getApplicationContext());
+    // If you want to use AppEventsLogger to log events.
+    // AppEventsLogger.activateApp(this);
+
+    if (!BuildConfig.DEBUG) {
+      while(!HotUpdateManager.getInstance().getState()){
+        SystemClock.sleep(100);
+      }
+    }
+    super.onCreate();
+    HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager());
+  }
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override

@@ -1,6 +1,7 @@
 package com.thudo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 
@@ -51,13 +52,13 @@ import java.util.zip.ZipInputStream;
 public class HotUpdateManager {
     private static HotUpdateManager _instance;
     private HotUpdateManager(){}
-    private Activity _activity;
+    private Context _context;
     private ReactInstanceManager _reactInstanceManager=null;
     private final String RESOURCES_BUNDLE = "resources.arsc";
     private boolean _state = false;
 
-    public void init(Activity activity_){
-        _activity = activity_;
+    public void init(Context context_){
+        _context = context_;
     }
     public void initReact( ReactInstanceManager reactInstanceManager){
         _reactInstanceManager = reactInstanceManager;
@@ -104,7 +105,7 @@ public class HotUpdateManager {
     }
 
     public String getPathBundleFile(){
-        String dir =  _activity.getFilesDir().getAbsolutePath();
+        String dir =  _context.getFilesDir().getAbsolutePath();
         String filePath = dir + "/" + Define.ASSETS_BUNDLE_DIR;
         FullLog.d("getPathBundleFile:" + filePath);
         File bunderDir = new File(filePath);
@@ -116,7 +117,7 @@ public class HotUpdateManager {
     }
 
     public String getPathResourceFile(){
-        String dir =  _activity.getFilesDir().getAbsolutePath();
+        String dir =  _context.getFilesDir().getAbsolutePath();
         String filePath = dir + "/" + Define.RESOURCE_BUNDLE_DIR;
         FullLog.d("getPathBundleFile:" + filePath);
         File bunderDir = new File(filePath);
@@ -128,7 +129,7 @@ public class HotUpdateManager {
     }
 
     public String getPathBundleTempFile(){
-        String dir =  _activity.getFilesDir().getAbsolutePath();
+        String dir =  _context.getFilesDir().getAbsolutePath();
         String filePath = dir + "/" + Define.ASSETS_BUNDLE_TEMP_DIR;
         FullLog.d("getPathBundleFile:" + filePath);
         File bunderDir = new File(filePath);
@@ -145,7 +146,7 @@ public class HotUpdateManager {
 //        File applicationAPKFile = null;
         long binaryResourcesModifiedTime = 0;
         try {
-            ai = _activity.getPackageManager().getApplicationInfo(_activity.getPackageName(), 0);
+            ai = _context.getPackageManager().getApplicationInfo(_context.getPackageName(), 0);
             applicationFile = new ZipFile(ai.sourceDir);
             ZipEntry classesDexEntry = applicationFile.getEntry(RESOURCES_BUNDLE);
 
@@ -162,7 +163,7 @@ public class HotUpdateManager {
     public int getNativeVersion(){
         int verCode = 0;
         try {
-            PackageInfo pInfo = _activity.getPackageManager().getPackageInfo(_activity.getPackageName(), 0);
+            PackageInfo pInfo = _context.getPackageManager().getPackageInfo(_context.getPackageName(), 0);
             verCode = pInfo.versionCode;
         }
         catch(Exception ex){
@@ -188,7 +189,7 @@ public class HotUpdateManager {
         if(lastestBundle < binaryResourcesModifiedTime){
             lastestBundle = binaryResourcesModifiedTime;
         }
-
+        FullLog.d(" lastestBundle : " + lastestBundle);
         return lastestBundle;
     }
     public long checkUpdate(String url_){
@@ -240,6 +241,7 @@ public class HotUpdateManager {
                 }
             } catch (Exception ex) {
                 FullLog.e( ex.getMessage());
+                ex.printStackTrace();
             }
 
             in.close();
@@ -249,6 +251,7 @@ public class HotUpdateManager {
         }
         catch(Exception ex){
             FullLog.e(ex.getMessage());
+            ex.printStackTrace();
         }
 
         if (_reactInstanceManager != null) {
@@ -301,23 +304,27 @@ public class HotUpdateManager {
         boolean ret = false;
         boolean mandatory = getMandatory();
         String description = getDescription();
-        WritableMap map = Arguments.createMap();
-
-        map.putInt("currentNativeVersion", getNativeVersion());
-        map.putDouble("currentHybridVersion", getHybridVersion());
-
-//            map.putInt("requireNativeVersion", getRequireNativeVersion());
-        map.putDouble("newHybridVersion", getNewHybridVersion());
-        map.putString("newHybridVersionUrl", getNewHybridVersionUrl());
-
-        map.putBoolean("mandatory", mandatory );
-        map.putString("description", description );
+        double hybridVersion = getHybridVersion();
+        double newHybridVersion  = getNewHybridVersion();
+        
 
         if (_reactInstanceManager != null) {
-            if (_reactInstanceManager.getCurrentReactContext()!= null)
+            if (_reactInstanceManager.getCurrentReactContext()!= null) {
+				WritableMap map = Arguments.createMap();
+
+		        map.putInt("currentNativeVersion", getNativeVersion());
+                map.putDouble("currentHybridVersion", hybridVersion);
+
+		//            map.putInt("requireNativeVersion", getRequireNativeVersion());
+                map.putDouble("newHybridVersion", newHybridVersion);
+		        map.putString("newHybridVersionUrl", getNewHybridVersionUrl());
+
+		        map.putBoolean("mandatory", mandatory );
+		        map.putString("description", description );
                 _reactInstanceManager.getCurrentReactContext()
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("HotUpdateManager:download",map);
+            }
         }
         try {
             long currentBundleFile = getHybridVersion();
@@ -415,6 +422,7 @@ public class HotUpdateManager {
             FullLog.d(" check unzip folder done: bundlejs : " + haveBundle + ": assets " + haveAssets);
 
             if (!haveBundle && !haveAssets){
+                _state = true;
                 return ret;
             }
 
@@ -481,14 +489,27 @@ public class HotUpdateManager {
         }
         catch(Exception ex){
             FullLog.e(ex.getMessage());
+            _state = true;
             return ret;
         }
 
         if (_reactInstanceManager != null) {
-            if (_reactInstanceManager.getCurrentReactContext()!= null)
+            if (_reactInstanceManager.getCurrentReactContext()!= null) {
+                WritableMap map = Arguments.createMap();
+
+                map.putInt("currentNativeVersion", getNativeVersion());
+                map.putDouble("currentHybridVersion", hybridVersion);
+
+//            map.putInt("requireNativeVersion", getRequireNativeVersion());
+                map.putDouble("newHybridVersion", newHybridVersion);
+                map.putString("newHybridVersionUrl", getNewHybridVersionUrl());
+
+                map.putBoolean("mandatory", mandatory );
+                map.putString("description", description );
                 _reactInstanceManager.getCurrentReactContext()
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("HotUpdateManager:updateDone",map);
+            }
         }
 
         _state = true;
@@ -498,6 +519,10 @@ public class HotUpdateManager {
 
     public boolean getState(){
       return _state;
+    }
+
+    public void setState(boolean state){
+        this._state = state;
     }
 
     void deleteRecursive(File fileOrDirectory) {

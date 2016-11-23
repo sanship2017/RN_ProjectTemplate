@@ -140,7 +140,7 @@ class PopupActions{
     }
 
     var promise;
-    if (contentObject.info.movePopupIn) {
+    if (contentObject.info.movePopupOut) {
       promise = contentObject.info.movePopupOut(contentObject)
     }else{
       var contentRefObject =  contentObject.objRef;
@@ -692,45 +692,43 @@ class PopupActions{
     <View
         onLayout={()=>{
           Debug.log('PopupManager: onLayout')
+        }}
+        ref={(objContainRef)=>{
+          Debug.log('PopupManager: ref')
           if (contentObject) {
-            if (contentObject.info.startFlag) {
-              InteractionManager.runAfterInteractions(() => {
-                self.movePopupIn(group)
-                .then(()=>{
-                  var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
-                  var currentDirect = globalVariableManager.reduxManager.state.AppState.currentDirect;
-                  // if (contentObject.info.videoMotion &&
-                  //   ( (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) || (self.getVideoPopupState()!=='FULLSCREEN' ) && (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' ))
-                  //   && self.moveVideoToNormalAtMount) {
-                  //   self.moveVideoToNormalAtMount = false;
-                  //   self.setVideoPopupState('NORMAL');
-                  // }
-                  if(contentObject.info.videoMotion) {
-                    if (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
-                      self.setVideoPopupState('FULLSCREEN');
-                    } else if(currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.PORTRAIT &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
-                      self.setVideoPopupState('NORMAL');
+              contentObject.objContainRef = objContainRef;
+              if (contentObject.info.startFlag) {
+                InteractionManager.runAfterInteractions(() => {
+                  self.movePopupIn(group)
+                  .then(()=>{
+                    var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
+                    var currentDirect = globalVariableManager.reduxManager.state.AppState.currentDirect;
+                    // if (contentObject.info.videoMotion &&
+                    //   ( (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) || (self.getVideoPopupState()!=='FULLSCREEN' ) && (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' ))
+                    //   && self.moveVideoToNormalAtMount) {
+                    //   self.moveVideoToNormalAtMount = false;
+                    //   self.setVideoPopupState('NORMAL');
+                    // }
+                    if(contentObject.info.videoMotion) {
+                      if (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
+                        self.setVideoPopupState('FULLSCREEN');
+                      } else if(currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.PORTRAIT &&  (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' )) {
+                        self.setVideoPopupState('NORMAL');
+                      }
                     }
-                  }
-                });
+                  });
 
+                  if (contentObject.objContainRef) {
+                      contentObject.objContainRef.setNativeProps({style:{opacity:1}});
+                  }
+
+                });
+                contentObject.info.startFlag = false;
+              }else{
                 if (contentObject.objContainRef) {
                     contentObject.objContainRef.setNativeProps({style:{opacity:1}});
                 }
-
-              });
-              contentObject.info.startFlag = false;
-            }else{
-              if (contentObject.objContainRef) {
-                  contentObject.objContainRef.setNativeProps({style:{opacity:1}});
               }
-            }
-
-          }
-        }}
-        ref={(objContainRef)=>{
-          if (contentObject) {
-              contentObject.objContainRef = objContainRef;
           }
         }}
         pointerEvents ={contentInfoObject.videoMotion? 'box-none':contentInfoObject.pointerEvents? contentInfoObject.pointerEvents : 'auto'}
@@ -755,7 +753,7 @@ class PopupActions{
             }}
           style={StyleSheet.flatten([
            {position:'absolute',top:0,bottom:0,left:0,right:0,alignItems:'center',justifyContent:'center'},
-           contentObject.info.videoMotion?{...StyleConfig.shadownStyle}:undefined,
+           contentObject.info.videoMotion?{...StyleConfig.default.shadownStyle}:undefined,
            containerStyleTemp
            ])}
           pointerEvents ={'auto'}
@@ -995,7 +993,6 @@ var PopupManager = React.createClass({
     var self = this;
     return(
         <View
-          renderToHardwareTextureAndroid={true}
           pointerEvents={'box-none'}
           style={{position:'absolute',top:0,bottom:0,left:0,right:0,alignItems:'center',justifyContent:'center'}}>
           {popupActions.requireRenderContent(self)}
