@@ -233,7 +233,7 @@ public class HotUpdateManager {
                 _hybridVersionGet = data.getLong("createdAt");
                 _mandatoryGet = true;
                 _descriptionGet = data.getString("description");
-                String updateServerStatic = _activity.getResources().getString(R.string.update_server_static);
+                String updateServerStatic = _context.getResources().getString(R.string.update_server_static);
                 _downloadUrlGet = updateServerStatic + "/" + _hybridVersionNameGet ;
 
                 if ((_hybridVersionGet>getHybridVersion())){
