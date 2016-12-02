@@ -5,6 +5,20 @@
 // } = React;
 
 var Util = {
+  debug:{
+    log:()=>{},
+    level:{},
+  },
+  enableDebug:function(){
+    this.debug = require('./Debug');
+  },
+  getCurrentAndNext: function(programs) {
+    const self = this;
+    const length = programs.length;
+    const obj = {
+      current: null,
+      next: null
+    }
 
   timeToHours: function(time) {
     const dateInstance = new Date(time);
@@ -223,8 +237,10 @@ var Util = {
  dataProtectAndMap:function(orgIn,format={},map={}){
    let org=orgIn;
    if ( Array.isArray(format) && !Array.isArray(org)) {
+     this.debug.log('1 : WRONG TYPE',this.debug.level.WARN)
      org = [];
    }else if (typeof(format) === 'object'  &&  typeof(org) !== 'object') {
+     this.debug.log('2 : WRONG TYPE',this.debug.level.WARN)
       org = {};
    }
    else{
@@ -237,6 +253,7 @@ var Util = {
    Object.keys(format).forEach((key)=>{
 
      if ((!org.hasOwnProperty(key) || ( (format[key] !== undefined) && (typeof(org[key]) !== typeof(format[key])) )) && (typeof(format[key]) !== 'object') ) {
+       this.debug.log('3 : WRONG TYPE ' + key,this.debug.level.WARN)
        if (map[key]) {
          org[map[key]] = Array.isArray(format[key]) ? [] : format[key];
        }
@@ -245,6 +262,7 @@ var Util = {
        }
      }
      else if((org[key] === undefined || org[key] === null) && (format[key] !== undefined) && (typeof(format[key]) !== 'object') ){
+       this.debug.log('4 : VALUE UNDEFINED '+ key,this.debug.level.WARN)
        if (map[key]) {
          org[map[key]] = Array.isArray(format[key]) ? [] : format[key];
        }
@@ -256,6 +274,7 @@ var Util = {
        var temp;
        if(Array.isArray(format[key]) && (format[key].length===0)  ){
          if ((org[key]===undefined) || (!Array.isArray(org[key])) ){
+           this.debug.log('5 : WRONG TYPE ' + key,this.debug.level.WARN)
            temp =[];
          }else {
            temp = org[key];
@@ -263,7 +282,8 @@ var Util = {
        }
        else if(Array.isArray(format[key]) && (format[key].length>0)  ){
          temp = [];
-         if (!org[key]) {
+         if (!org[key] || (!Array.isArray(org[key]))) {
+           this.debug.log('7 : WRONG TYPE OR UNDEFINED '+key,this.debug.level.WARN)
            org[key]=[];
            if (typeof(format[key][0]) === 'object') {
              temp = [this.dataProtectAndMap(undefined,format[key][0],map)]

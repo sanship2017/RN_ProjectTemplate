@@ -20,7 +20,7 @@ import { Provider } from 'react-redux';
 var Define = require('./Define');
 var Debug = require('./Util/Debug');
 var Util = require('./Util/Util');
-
+Util.enableDebug();
 
 if (!Define.constants.debug) {
   ErrorUtils.setGlobalHandler((error) => {

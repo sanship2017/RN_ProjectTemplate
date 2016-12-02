@@ -19,6 +19,7 @@ import { Provider } from 'react-redux';
 var Define = require('./Define');
 var Debug = require('./Util/Debug');
 var Util = require('./Util/Util');
+Util.enableDebug();
 var RNHotUpdate = NativeModules.HotUpdateModule;
 
 if (!Define.constants.debug) {
