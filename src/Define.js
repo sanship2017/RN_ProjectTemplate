@@ -92,7 +92,7 @@ var Define = {
     waitToken: true,
     token: '',
   },
-  init:function(){
+  init:function(cb=()=>{}){
     var self = this;
 
     if (Platform.OS === 'android') {
@@ -123,7 +123,13 @@ var Define = {
             catch(ex){}
           })
           self.assets = PlatformConfig.default.processAsset(assets,mapAssets,assetsContent);
+          return Promise.reject();
         })
+      .catch(()=>{
+        if (cb && typeof cb === 'function') {
+          cb();
+        }
+      })
     } else if(Platform.OS === 'ios') {
       const path = 'file://'+RNFS.DocumentDirectoryPath+'/assets';
       RNFS.exists(path)
@@ -131,11 +137,16 @@ var Define = {
           if(isExist) {
             self.assets = PlatformConfig.default.processAsset(assets,mapAssets, 'assets', true);
           }
+          return Promise.reject();
+        })
+        .catch(()=>{
+          if (cb && typeof cb === 'function') {
+            cb();
+          }
         })
     }
-
     return self;
   },
-}.init();
+};
 
 module.exports = Define;

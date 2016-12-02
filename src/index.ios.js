@@ -1,7 +1,6 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- * @flow
  */
 
 import React,{Component}  from 'react';
@@ -95,12 +94,24 @@ const styles = StyleSheet.create({
 });
 
 class ProjectTemplate extends Component {
+  constructor() {
+    super();
+    this.state = {
+        loading: true,
+    };
+    Define.init(()=>{this.setState({loading:false})})
+  }
+
   render() {
-    return (
-        <Provider store={store}>
-          <App/>
-        </Provider>
-      )
+    if(this.state.loading){
+      return (<View/>)
+    }else{
+      return (
+          <Provider store={store}>
+            <App/>
+          </Provider>
+        )
+    }
   }
 }
 
