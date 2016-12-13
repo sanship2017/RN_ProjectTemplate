@@ -590,12 +590,12 @@ class PopupActions{
     }
 
     var RenderContentTemp = RenderContent;
-    if (RenderContent.WrappedComponent) {
+    if (RenderContent && RenderContent.WrappedComponent) {
       RenderContentTemp = RenderContent.WrappedComponent;
     }
 
-    var config = Object.assign({}, RenderContentTemp.config);
-    var containerStyle = _.merge(RenderContentTemp.containerStyle,containerStyleIn) ;
+    var config = Object.assign({}, RenderContentTemp? RenderContentTemp.config:{});
+    var containerStyle = _.merge( RenderContentTemp ? RenderContentTemp.containerStyle:{},containerStyleIn) ;
     var configTemp = _.merge( Util.formatObject(config,argFormat) , argIn);
     var {
       group,
@@ -629,7 +629,7 @@ class PopupActions{
     }
 
 
-    Debug.log2('pushPopup',RenderContentTemp.componentName,Debug.level.USER_TRACKER);
+    Debug.log2('pushPopup',RenderContentTemp?RenderContentTemp.componentName:'Unnamed',Debug.level.USER_TRACKER);
     Debug.log2('configTemp',configTemp);
     Debug.log2('containerStyle',containerStyle);
     self.renderStack.forEach((current,index)=>{
@@ -644,7 +644,7 @@ class PopupActions{
                                 },
                                 {
                                   pointerEvents:pointerEvents,
-                                  namePopup:RenderContentTemp.componentName,
+                                  namePopup:RenderContentTemp?RenderContentTemp.componentName:'Unnamed',
                                   noDetectGes:noDetectGes,
                                   tapToExit:tapToExit,
                                   videoMotion:videoMotion,
