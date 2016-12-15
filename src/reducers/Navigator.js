@@ -22,7 +22,7 @@ function Navigator(state ={
     case ActionConst.FOCUS:{
       stateTemp = Object.assign({}, state);
       stateTemp.navigating = false;
-      stateTemp.currentScreen = action.scene;
+      stateTemp.currentScreen.name = action.scene.name;
       Debug.log('Navigator:FOCUS : '+action.scene.name,Debug.level.USER_TRACKER);
       return  stateTemp ;
     }

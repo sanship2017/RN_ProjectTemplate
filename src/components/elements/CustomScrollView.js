@@ -50,13 +50,15 @@ class CustomScrollView extends ReactComponent{
     content =(
       <ScrollView
           style={this.props.style}
+          ref={this.props.refProp}
           removeClippedSubviews ={false}
-          refreshControl ={
-            <RefreshControl
+          refreshControl ={ this.props.disableRefresh?
+            undefined:
+            (<RefreshControl
               refreshing={this.props.refreshing && !this.isGetMore}
               onRefresh={this.props.onRefresh}
               colors={Themes.current.factor.refreshingColor}
-              progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>
+              progressBackgroundColor={Themes.current.factor.refreshingBackgroudColor}/>)
           }
           scrollEventThrottle={200}
           onScroll={ (event) => {

@@ -12,7 +12,6 @@ for i in `find $folder -name '*'`;
   do if [[ -f $i ]]; then
     y=${i,,}
     a="${y////_}"
-    a="${a/assets_/}"
     cp "$(echo $i)" "./BUILD/bundle/assets/$(echo $a)"
 fi; done
 

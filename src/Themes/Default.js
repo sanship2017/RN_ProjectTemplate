@@ -152,6 +152,13 @@ var Default ={
     normal:{
       fontSize:13,
     },
+    input: {
+        flex:1,
+        paddingRight: 5,
+        paddingLeft: 15,
+        height:40,
+        color: '#fff'
+    },
     subNormal:{
       color:'#8b8b8b',fontSize:10,
     },
@@ -281,7 +288,11 @@ var Default ={
     },
   },
   component:{
-
+    smallGreenButton:{
+      width:Define.constants.widthScreen*1/4,
+      height:30,
+      alignSelf:'center',
+    },
     // swiper
     paginationStyle:{
       position: 'absolute',
