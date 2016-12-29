@@ -12,13 +12,6 @@ var Util = {
   enableDebug:function(){
     this.debug = require('./Debug');
   },
-  getCurrentAndNext: function(programs) {
-    const self = this;
-    const length = programs.length;
-    const obj = {
-      current: null,
-      next: null
-    }
 
   timeToHours: function(time) {
     const dateInstance = new Date(time);
