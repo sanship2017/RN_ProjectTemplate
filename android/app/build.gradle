@@ -110,7 +110,8 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("/media/Programs/Android/my-release-key.keystore")
+            storeFile file("D://Android/my-release-key.keystore")
+            //storeFile file("/media/Programs/Android/my-release-key.keystore")
             storePassword "123456"
             keyAlias "my-key-alias"
             keyPassword "123456"
@@ -167,7 +168,7 @@ dependencies {
     compile(project(':react-native-spinkit')) {
         exclude group: 'com.facebook.react', module: 'react-native'
     }
-    
+
     compile(project(':react-native-orientation')) {
         exclude group: 'com.facebook.react', module: 'react-native'
     }
