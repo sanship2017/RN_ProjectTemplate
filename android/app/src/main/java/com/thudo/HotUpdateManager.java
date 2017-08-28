@@ -1,4 +1,4 @@
-package com.thudo;
+package com.anonymous;
 
 import android.app.Activity;
 import android.content.Context;

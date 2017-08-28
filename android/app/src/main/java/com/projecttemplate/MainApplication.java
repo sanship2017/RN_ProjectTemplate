@@ -24,11 +24,11 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.rnfs.RNFSPackage;
 import com.sensormanager.SensorManagerPackage;
-import com.thudo.FullLog;
-import com.thudo.HotUpdateManager;
-import com.thudo.HotUpdatePackage;
-import com.thudo.RNBridgeReloaderPackage;
-import com.thudo.RNIntentPackage;
+import com.anonymous.FullLog;
+import com.anonymous.HotUpdateManager;
+import com.anonymous.HotUpdatePackage;
+import com.anonymous.RNBridgeReloaderPackage;
+import com.anonymous.RNIntentPackage;
 
 import java.util.Arrays;
 import java.util.List;

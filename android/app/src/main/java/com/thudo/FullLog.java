@@ -1,4 +1,4 @@
-package com.thudo;
+package com.anonymous;
 
 import android.util.Log;
 

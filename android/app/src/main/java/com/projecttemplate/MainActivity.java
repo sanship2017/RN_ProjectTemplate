@@ -9,8 +9,8 @@ import android.view.KeyEvent;
 import com.facebook.common.references.SharedReference;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.thudo.FullLog;
-import com.thudo.HotUpdateManager;
+import com.anonymous.FullLog;
+import com.anonymous.HotUpdateManager;
 
 //class UpdateTask implements Runnable {
 //    Activity mActivity;

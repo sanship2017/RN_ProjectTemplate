@@ -1,4 +1,4 @@
-package com.thudo;
+package com.anonymous;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;

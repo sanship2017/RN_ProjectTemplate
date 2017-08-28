@@ -1,4 +1,4 @@
-package com.thudo;
+package com.anonymous;
 
 import android.content.Context;
 import android.graphics.Typeface;

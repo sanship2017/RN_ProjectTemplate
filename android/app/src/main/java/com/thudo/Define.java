@@ -1,4 +1,4 @@
-package com.thudo;
+package com.anonymous;
 
 /**
  * Created by phuongtq on 12/16/2015.
