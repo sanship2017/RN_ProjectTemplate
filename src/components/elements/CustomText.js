@@ -7,7 +7,7 @@ var Themes = require('../../Themes');
 
 
 class CustomText extends React.Component {
-  defaultProps = {
+  static defaultProps = {
   };
   rotate=new Animated.Value(0);
   translateX=new Animated.Value(0);
