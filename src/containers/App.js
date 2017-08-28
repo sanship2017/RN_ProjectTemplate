@@ -15,7 +15,8 @@ import {
   Platform,
   Dimensions,
   InteractionManager,
-  UIManager
+  UIManager,
+  StyleSheet
 } from 'react-native';
 // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -517,7 +518,7 @@ var App = React.createClass({
     }else{
       content = (
         <RouterWithRedux
-            sceneStyle={Themes.current.screen.appBackground}
+            sceneStyle={StyleSheet.flatten(Themes.current.screen.appBackground)}
             navigationBarStyle={Themes.current.screen.NavBar}
             backAndroidHandler={()=>{}}>
           <Scene key="root">
