@@ -7,7 +7,7 @@ import {
   NetInfo,
   DeviceEventEmitter,
   ToastAndroid,
-  BackAndroid,
+  BackHandler,
   AppState,
   NativeAppEventEmitter,
   PushNotificationIOS,
@@ -425,7 +425,7 @@ var App = React.createClass({
       // }
     });
     //key
-    BackAndroid.addEventListener('hardwareBackPress',
+    BackHandler.addEventListener('hardwareBackPress',
        () => {
          // must update
          appState = self.props.appState;
@@ -446,21 +446,23 @@ var App = React.createClass({
            return true;
          }
          else if (!(appState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING)) {
-           if (navigator.currentScreen.name !== 'HomeScreen' && navigator.currentScreen.name !== 'TemplateScreen') {
-             if(Actions.pop()) {
-               return true;
-             }else{
-              //  RNIntent.moveTaskToBack();
-              //  return true;
-              // dispatch(UserActions_MiddleWare.signout())
-              // .then(()=>{
-                RNIntent.exit();
-              // })
-              // .catch(()=>{
-              //   RNIntent.exit();
-              // })
-               return true;
-             }
+           if (Actions.currentScene !== 'HomeScreen' && Actions.currentScene !== 'TemplateScreen') {
+             Actions.pop()
+
+            //  if(Actions.pop()) {
+            //    return true;
+            //  }else{
+            //   //  RNIntent.moveTaskToBack();
+            //   //  return true;
+            //   // dispatch(UserActions_MiddleWare.signout())
+            //   // .then(()=>{
+            //     RNIntent.exit();
+            //   // })
+            //   // .catch(()=>{
+            //   //   RNIntent.exit();
+            //   // })
+            //    return true;
+            //  }
            }
            else{
             //  if (globalVariableManager.SCTVScrollableTabBarContainer &&
