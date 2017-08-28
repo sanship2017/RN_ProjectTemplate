@@ -51,7 +51,7 @@ var Util = require('./Util/Util');
         // }),
         );
       this.store = createStore(todoApp, enhancer);
-
+      // console.disableYellowBox = true;
       Define.init(()=>{
         persistStore(this.store, {storage: AsyncStorage,whitelist:[]},
               ()=>{this.setState({loading:false});}
@@ -75,4 +75,3 @@ var Util = require('./Util/Util');
 
 
   AppRegistry.registerComponent('ProjectTemplate', () => ProjectTemplate);
-
