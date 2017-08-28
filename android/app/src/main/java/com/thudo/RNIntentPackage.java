@@ -41,10 +41,6 @@ public class RNIntentPackage implements ReactPackage {
         return modules;
     }
 
-    @Override
-    public List<Class<? extends JavaScriptModule>> createJSModules() {
-        return new ArrayList();
-    }
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {

@@ -109,7 +109,6 @@ class SecondScreen extends Screen{
  */
 function selectActions(state) {
   return {
-    navigator: state.Navigator,
   }
 }
 

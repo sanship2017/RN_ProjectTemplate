@@ -43,13 +43,17 @@ var Default ={
     },
     bodyViewWrap:{
       // justifyContent: 'flex-start',
-      top: Define.constants.navBarHeight,bottom:0,right:0,left:0,
+      // top: Define.constants.navBarHeight,
+      top:0,
+      bottom:0,right:0,left:0,
       // marginTop:X*0.2,
       position: 'absolute',
       ...StyleConfig.default.shadownStyle,
     },
     bodyView:{
-      top: Define.constants.navBarHeight,bottom:0,right:0,left:0,position: 'absolute',
+      // top: Define.constants.navBarHeight,
+      top:0,
+      bottom:0,right:0,left:0,position: 'absolute',
       backgroundColor: 'transparent',
     },
     marginTopWrap:{

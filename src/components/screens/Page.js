@@ -10,6 +10,7 @@ import {
 
 // import { connect } from 'react-redux';
 var Spinner = require('react-native-spinkit');
+var {Actions} = require( 'react-native-router-flux');
 //action
 
 //components
@@ -50,11 +51,11 @@ export default class Page extends ReactComponent{
   }
   shouldComponentUpdate(nextProps){
     let ret = true;
-    if (nextProps.tabView.tabFocus !== nextProps.tabIndex || nextProps.navigator.currentScreen.name !== nextProps.currentScreenName) {
+    if (nextProps.tabView.tabFocus !== nextProps.tabIndex || Actions.currentScene !== nextProps.currentScreenName) {
       ret = false;
     }
     Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+nextProps.currentScreenName+':'+ret,
-                (!nextProps.navigator || nextProps.currentScreenName==='UNKNOWN')?Debug.level.WARNING:null);
+                ( nextProps.currentScreenName==='UNKNOWN')?Debug.level.WARNING:null);
     return ret;
   }
   renderPageContent(){} // implement by child

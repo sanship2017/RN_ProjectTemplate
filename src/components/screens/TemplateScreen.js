@@ -113,7 +113,6 @@ class TemplateScreen extends Screen{
  */
 function selectActions(state) {
   return {
-    navigator: state.Navigator,
   }
 }
 

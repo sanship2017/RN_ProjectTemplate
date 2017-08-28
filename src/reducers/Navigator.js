@@ -11,12 +11,14 @@ var Debug = require('../Util/Debug');
  */
 function Navigator(state ={
       stack: [],
-      currentScreen:{},
+      currentScreen:{
+        name : 'HomeScreen'
+      },
       navigating:false,
       dstScreenName:'',
     } , action) {
 
-  // Debug.log(action)
+  Debug.log('Navigator',action)
   var stateTemp =state;
   switch (action.type) {
     case ActionConst.FOCUS:{

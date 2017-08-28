@@ -10,6 +10,7 @@ import {
 
 // import { connect } from 'react-redux';
 var Spinner = require('react-native-spinkit');
+var {Actions} = require( 'react-native-router-flux');
 //action
 
 //components
@@ -57,12 +58,11 @@ class Screen extends ReactComponent{
   }
   shouldComponentUpdate(nextProps:Object){
     let ret = true;
-    var {navigator} = nextProps;
-    if (navigator.currentScreen.name !== this.constructor.componentName) {
+
+    if (Actions.currentScene !== this.constructor.componentName) {
       ret=false;
     }
-    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret,
-        !nextProps.navigator? Debug.level.WARNING:null);
+    Debug.log(this.constructor.componentName + ':shouldComponentUpdate:'+ret);
 
     return ret;
   }

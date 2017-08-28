@@ -66,15 +66,15 @@ class TemplatePage extends Page{
   renderPageContent(){
     var {dispatch} = this.props;
     var content = null;
-    content =(
-      <Include.ScrollView
-          refreshing={false}
-          onRefresh={this.onRefresh}
-          onGetMore={this.onGetMore}
-          >
-        <Include.Text>Content</Include.Text>
-      </Include.ScrollView>
-    )
+    // content =(
+    //   <Include.ScrollView
+    //       refreshing={false}
+    //       onRefresh={this.onRefresh}
+    //       onGetMore={this.onGetMore}
+    //       >
+    //     <Include.Text>Content</Include.Text>
+    //   </Include.ScrollView>
+    // )
     return content;
   }
 }
@@ -87,7 +87,6 @@ class TemplatePage extends Page{
  */
 function selectActions(state) {
   return {
-    navigator:state.Navigator
   }
 }
 

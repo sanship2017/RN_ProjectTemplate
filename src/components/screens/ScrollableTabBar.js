@@ -32,7 +32,7 @@ class ScrollableTabBar extends ReactComponent{
     {})
     this.renderTabOption = this.renderTabOption.bind(this);
   }
-  renderTabOption(name, page) {    
+  renderTabOption(name, page) {
     // var isTabActive = this.props.activeTab === page;
     var style ;
     var styleText={};
@@ -59,7 +59,8 @@ class ScrollableTabBar extends ReactComponent{
     return (
       <ButtonWrap key={page} onPress={() => this.props.goToPage(page)} >
         <View style={style}>
-          <TextAnimated style={[ Themes.current.text.tabbarTitle,styleText,{color:color}]}>{name}</TextAnimated>
+          {/*<TextAnimated style={[ Themes.current.text.tabbarTitle,styleText,{color:color}]}>{name}</TextAnimated>*/}
+          <Include.Text style={[ Themes.current.text.tabbarTitle,styleText]}>{name}</Include.Text>
         </View>
       </ButtonWrap>
     );
@@ -104,9 +105,9 @@ class ScrollableTabBar extends ReactComponent{
           }
         }}
        style={[ Themes.current.tabbar.tabsWrapNoShadow, {borderColor:'#2b2b2b',borderBottomWidth:1},this.props.backgroundColor?{backgroundColor : this.props.backgroundColor}:null,this.props.style]}>
-        <Animated.View style={[Themes.current.tabbar.underlineWrap,tabBackGroundWrapStyle , {left}]}>
+        {/*<Animated.View style={[Themes.current.tabbar.underlineWrap,tabBackGroundWrapStyle , {left}]}>
           <View style={[Themes.current.tabbar.underline ,tabBackGroundStyle]}/>
-        </Animated.View>
+        </Animated.View>*/}
         <View style={Themes.current.tabbar.tabs2}>
           {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
         </View>

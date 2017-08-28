@@ -53,10 +53,10 @@ var Define = {
     X : (widthScreen<heightScreen? widthScreen : heightScreen)/ ((screenSizeByInch<7)?9.25:12) ,
 
     // serverAddr :'http://sctvserver.ddns.net', // http://123.30.235.201:9697  //
-    serverAddr :'http://gate.tv247.vn:9696/',  // production // http://123.30.235.63:9696/
+    serverAddr :'',  // production // http://123.30.235.63:9696/
     // serverAddr:'http://123.30.235.201:34746',
     // serverAddr :'http://192.168.3.151:8080',
-    getMsisdnAddr:'http://tv247.vn/getMsisdn',
+    
     font:PlatformConfig.font,
     fontBold:PlatformConfig.fontBold,
     dataBase:'database.db',
@@ -80,7 +80,7 @@ var Define = {
     debugStyle:false,
     review:false,
     debugTrackerLogLength:166,
-    logLevel:10,  // must be 10 when release
+    logLevel:0,  // must be 10 when release
     funnyMode:false,
   },
   config:{
