@@ -2,7 +2,7 @@ package com.anonymous;
 
 import android.util.Log;
 
-import com.mkpsmarthome.BuildConfig;
+import com.projecttemplate.BuildConfig;
 
 public class FullLog {
     public final static boolean DEBUG = true;

@@ -29,6 +29,7 @@ import com.anonymous.HotUpdateManager;
 import com.anonymous.HotUpdatePackage;
 import com.anonymous.RNBridgeReloaderPackage;
 import com.anonymous.RNIntentPackage;
+import com.burnweb.rnpermissions.RNPermissionsPackage;  // <--- import
 
 import java.util.Arrays;
 import java.util.List;
@@ -139,8 +140,8 @@ public class MainApplication extends Application implements ReactApplication {
           new OrientationPackage(),
           new SensorManagerPackage(),
           new RNSpinkitPackage(),
-          new RNIntentPackage()
-          new RNPermissionsPackage(),
+          new RNIntentPackage(),
+          new RNPermissionsPackage()
       );
     }
   };
