@@ -41,7 +41,7 @@ var ButtonWrap = React.createClass({
   render:function(){
     var self=this;
 
-    if (!self.props.onPress) {
+    if (!self.props.onPress && !self.props.onLongPress && !self.props.onPressIn && !self.props.onPressOut) {
       return self.props.children
     }
 
@@ -72,6 +72,29 @@ var ButtonWrap = React.createClass({
           self.props.onPress();
         }
       }
+
+      props.onLongPress = (event)=>{
+        Debug.log('ButtonWrap:onLongPress',Debug.level.DATA_USER_TRACKER);
+        if (self.props.onLongPress) {
+          self.props.onLongPress(event);
+        }
+      }
+      props.onPressIn = (event)=>{
+        Debug.log('ButtonWrap:onPressIn',Debug.level.DATA_USER_TRACKER);
+        if (self.props.onPressIn) {
+          self.props.onPressIn(event);
+        }
+      }
+      props.onPressOut = (event)=>{
+        Debug.log('ButtonWrap:onPressOut',Debug.level.DATA_USER_TRACKER);
+        if (self.props.onPressOut) {
+          self.props.onPressOut(event);
+        }
+      }
+
+      props.delayLongPress = self.props.delayLongPress
+      props.delayPressIn = self.props.delayPressIn
+      props.delayPressOut = self.props.delayPressOut
 
       // Debug.log('ButtonWrap:childrenType:'+ self.props.children.type.displayName)
       if (self.props.children.type.displayName !== 'RCTView' &&  self.props.children.type.displayName !== 'View') {

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 
 import React from 'react';
 var {
@@ -8,7 +9,8 @@ var {
   InteractionManager
 } = require('react-native');
 import * as Animatable from 'react-native-animatable';
-var _ = require('lodash');
+
+var {Actions} = require( 'react-native-router-flux');
 var Orientation = require('react-native-orientation');
 //
 
@@ -206,7 +208,7 @@ class PopupActions{
         if(Platform.OS === 'android') {
           Orientation.unlockAllOrientations();
         }
-        var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
+        var currentScreenName = Actions.currentScene;
         self.renderStack[group][self.renderStack[group].length-1].direction = null;
         InteractionManager.runAfterInteractions(() => {
           self.renderStack[group][self.renderStack[group].length-1].objRef.transitionTo({
@@ -432,7 +434,7 @@ class PopupActions{
         if (element.info.videoMotion && element.info.videoPopupState=== 'FULLSCREEN' && force<10) {
           Orientation.unlockAllOrientations();
           globalVariableManager.rootView.hideContent(false);
-          var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
+          var currentScreenName = Actions.currentScene;
           //if (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen') {
           //  self.moveVideoPopup('NORMAL',VIDEO_GROUP);
           //}else{
@@ -701,7 +703,7 @@ class PopupActions{
                 InteractionManager.runAfterInteractions(() => {
                   self.movePopupIn(group)
                   .then(()=>{
-                    var currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
+                    var currentScreenName = Actions.currentScene;
                     var currentDirect = globalVariableManager.reduxManager.state.AppState.currentDirect;
                     // if (contentObject.info.videoMotion &&
                     //   ( (currentDirect===RDActionsTypes.APP_STATE_DIRECT_LIST.LANDSCAPE) || (self.getVideoPopupState()!=='FULLSCREEN' ) && (currentScreenName==='FilmDetailScreen' || currentScreenName==='ChannelScreen' ))
@@ -804,7 +806,7 @@ class PopupActions{
           //   return;
           //   if(contentObject.info.videoMotion) {
           //     const currentStateVideo = self.getVideoPopupState();
-          //     const currentScreenName = globalVariableManager.reduxManager.state.Navigator.currentScreen.name;
+          //     const currentScreenName = Actions.currentScene;
           //     const heightStatusBar = (currentScreenName === 'FilmDetailScreen' || currentScreenName === 'ChannelScreen') ? Define.constants.navBarHeight : 0;
           //
           //     const addBottom = 50;

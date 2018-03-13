@@ -19,6 +19,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import devTools from 'remote-redux-devtools'
 import { autoRehydrate, persistStore } from 'redux-persist'
+import createSensitiveStorage from "redux-persist-sensitive-storage";
 
 //
 
@@ -33,7 +34,7 @@ var Util = require('./Util/Util');
   globalVariableManager.init();
   Util.enableDebug();
   var App = require('./containers/App');
-  var todoApp = require('./reducers');
+  var reducers = require('./reducers');
 
     // variable
 
@@ -50,12 +51,19 @@ var Util = require('./Util/Util');
         //   name: 'ProjectTemplate', realtime: true ,port:8000
         // }),
         );
-      this.store = createStore(todoApp, enhancer);
+      this.store = createStore(reducers, enhancer);
       // console.disableYellowBox = true;
       Define.init(()=>{
-        persistStore(this.store, {storage: AsyncStorage,whitelist:[]},
+        // persistStore(this.store, {storage: AsyncStorage,whitelist:[]},
+        //       ()=>{this.setState({loading:false});}
+        //     )
+
+        persistStore(this.store, { storage: createSensitiveStorage({
+                keychainService: "myKeychain",
+                sharedPreferencesName: "mySharedPrefs"
+              }) ,whitelist:['User']},
               ()=>{this.setState({loading:false});}
-            )
+        );
       })
     }
 

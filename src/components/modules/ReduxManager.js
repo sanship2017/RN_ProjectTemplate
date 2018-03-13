@@ -16,6 +16,10 @@ class ReduxManager{
     self.dispatch=dispatch;
     self.state=state;
   }
+  setDispatch(dispatch){
+    var self = this;
+    self.dispatch=dispatch;
+  }
   setState(state){
     var self = this;
     self.state=state;

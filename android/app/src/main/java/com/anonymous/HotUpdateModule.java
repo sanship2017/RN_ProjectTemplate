@@ -42,28 +42,34 @@ public class HotUpdateModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void checkUpdate(String url_, Promise promise_){
-        try {
-            HotUpdateManager.getInstance().checkUpdate(url_);
-            boolean mandatory = HotUpdateManager.getInstance().getMandatory();
-            String description = HotUpdateManager.getInstance().getDescription();
-            WritableMap map = Arguments.createMap();
+    public void checkUpdate(final String url_,final Promise promise_){
+      Runnable r = new Runnable() {
+          public void run() {
+            try {
+                HotUpdateManager.getInstance().checkUpdate(url_);
+                boolean mandatory = HotUpdateManager.getInstance().getMandatory();
+                String description = HotUpdateManager.getInstance().getDescription();
+                WritableMap map = Arguments.createMap();
 
-            map.putInt("currentNativeVersion", HotUpdateManager.getInstance().getNativeVersion());
-            map.putDouble("currentHybridVersion", HotUpdateManager.getInstance().getHybridVersion());
+                map.putInt("currentNativeVersion", HotUpdateManager.getInstance().getNativeVersion());
+                map.putDouble("currentHybridVersion", HotUpdateManager.getInstance().getHybridVersion());
 
-//            map.putInt("requireNativeVersion", HotUpdateManager.getInstance().getRequireNativeVersion());
-            map.putDouble("newHybridVersion", HotUpdateManager.getInstance().getNewHybridVersion());
-            map.putString("newHybridVersionUrl", HotUpdateManager.getInstance().getNewHybridVersionUrl());
+    //            map.putInt("requireNativeVersion", HotUpdateManager.getInstance().getRequireNativeVersion());
+                map.putDouble("newHybridVersion", HotUpdateManager.getInstance().getNewHybridVersion());
+                map.putString("newHybridVersionUrl", HotUpdateManager.getInstance().getNewHybridVersionUrl());
 
-            map.putBoolean("mandatory", mandatory );
-            map.putString("description", description );
+                // map.putBoolean("mandatory", mandatory );
+                map.putString("description", description );
 
-            promise_.resolve(map);
-        }
-        catch(Exception e){
-            promise_.reject(e);
-        }
+                promise_.resolve(map);
+            }
+            catch(Exception e){
+                promise_.reject(e);
+            }
+          }
+      };
+      new Thread(r).start();
+
     }
 
     @ReactMethod
@@ -115,21 +121,28 @@ public class HotUpdateModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void update( Promise promise_){
-        try {
+    public void update(final Promise promise_){
+        Runnable r = new Runnable() {
+            public void run() {
+              try {
 
-            HotUpdateManager.getInstance().update();
+                  HotUpdateManager.getInstance().update();
 
-            WritableMap map = Arguments.createMap();
-//            map.putInt("currentNativeVersion", HotUpdateManager.getInstance().getNativeVersion());
-//            map.putInt("currentHybridVersion", HotUpdateManager.getInstance().getHybridVersion());
+                  WritableMap map = Arguments.createMap();
+  //            map.putInt("currentNativeVersion", HotUpdateManager.getInstance().getNativeVersion());
+  //            map.putInt("currentHybridVersion", HotUpdateManager.getInstance().getHybridVersion());
 
 
-            promise_.resolve(map);
-        }
-        catch(Exception e){
-            promise_.reject(e);
-        }
+                  promise_.resolve(map);
+              }
+              catch(Exception e){
+                  promise_.reject(e);
+              }
+            }
+        };
+        new Thread(r).start();
+
+
     }
 
 }

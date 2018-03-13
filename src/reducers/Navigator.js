@@ -23,56 +23,65 @@ function Navigator(state ={
   switch (action.type) {
     case ActionConst.FOCUS:{
       stateTemp = Object.assign({}, state);
-      stateTemp.navigating = false;
-      stateTemp.currentScreen.name = action.scene.name;
-      Debug.log('Navigator:FOCUS : '+action.scene.name,Debug.level.USER_TRACKER);
+      // stateTemp.navigating = false;
+      stateTemp.currentScreen.name = action.routeName;
+
       return  stateTemp ;
+    }
+    case ActionConst.BLUR:{
+      // stateTemp = Object.assign({}, state);
+      // stateTemp.navigating = false;
+      // // stateTemp.currentScreen.name = action.scene.name;
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.PUSH:{
-      stateTemp = Object.assign({}, state);
-      stateTemp.navigating = true;
-      stateTemp.dstScreenName = action.key;
-      stateTemp.stack.push(action.key);
-      Debug.log('Navigator:PUSH : '+action.key,Debug.level.USER_TRACKER);
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      // stateTemp.navigating = true;
+      // // stateTemp.dstScreenName = action.key;
+      // // stateTemp.stack.push(action.key);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.JUMP:{
-      stateTemp = Object.assign({}, state);
-      Debug.log('Navigator:JUMP : '+action.key,Debug.level.USER_TRACKER);
-
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.REPLACE:{
-      stateTemp = Object.assign({}, state);
-      Debug.log('Navigator:REPLACE : '+action.key,Debug.level.USER_TRACKER);
-
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.BACK:{
-      stateTemp = Object.assign({}, state);
-      Debug.log('Navigator:BACK : '+action.key,Debug.level.USER_TRACKER);
-
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.BACK_ACTION:{
-      stateTemp = Object.assign({}, state);
-      stateTemp.stack.pop();
-      Debug.log('Navigator:BACK_ACTION : '+action.key,Debug.level.USER_TRACKER);
-      Debug.log2('Data:', action);
-
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      // stateTemp.stack.pop();
+      // Debug.log2('Data:', action);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.POP_TO:{
-      stateTemp = Object.assign({}, state);
-      Debug.log('Navigator:POP_TO : '+action.key,Debug.level.USER_TRACKER);
-
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
     case ActionConst.REFRESH:{
-      stateTemp = Object.assign({}, state);
-      Debug.log('Navigator:REFRESH : '+action.key,Debug.level.USER_TRACKER);
-
-      return  stateTemp ;
+      // stateTemp = Object.assign({}, state);
+      //
+      // return  stateTemp ;
+      return  state ;
     }
 
 

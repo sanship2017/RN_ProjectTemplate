@@ -16,7 +16,8 @@ import {
   Dimensions,
   InteractionManager,
   UIManager,
-  StyleSheet
+  StyleSheet,
+  StatusBar
 } from 'react-native';
 // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -24,9 +25,9 @@ import * as Animatable from 'react-native-animatable';
 import RNRestart from 'react-native-restart';
 import GiftedSpinner from 'react-native-gifted-spinner';
 import { connect } from 'react-redux'
-const SideMenu = require('react-native-side-menu');
+import SideMenu from 'react-native-side-menu';
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions} from 'react-native-router-flux'
-const RouterWithRedux = connect()(Router);
+// const RouterWithRedux = connect()(Router);
 var Orientation = require('react-native-orientation');
 var SensorManager = NativeModules.SensorManager;
 var Spinner = require('react-native-spinkit');
@@ -62,6 +63,7 @@ import ButtonWrap from '../components/elements/ButtonWrap'
 var {globalVariableManager} = require('../components/modules/GlobalVariableManager');
 var {PopupManager,popupActions,popupConst} = require('../components/popups/PopupManager');
 
+import LoadingView from '../components/elements/LoadingView'
 // var SCTVFilmsSideMenu = require('../components/elements/SCTVFilmsSideMenu');
 // screens
 import HomeScreen from '../components/screens/HomeScreen'
@@ -115,7 +117,7 @@ var App = React.createClass({
 
   handleAppStateChange:function(currentAppState){
     var self = this;
-    const { dispatch,state,navigator } = this.props;
+    const { dispatch,navigator } = this.props;
     Debug.log('handleAppStateChange ' + currentAppState , Debug.level.USER_TRACKER);
     var widthScreen = Dimensions.get('window').width;
     var heightScreen = Dimensions.get('window').height;
@@ -124,12 +126,19 @@ var App = React.createClass({
 
     switch (currentAppState) {
       case 'active':{
+        this.checkUpdate()
         break;
       }
       case 'background':{
+        if (globalVariableManager.needRestart) {
+          RNIntent.exit();
+        }
         break;
       }
       case 'inactive':{
+        if (globalVariableManager.needRestart) {
+          RNIntent.exit();
+        }
         break;
       }
       default:
@@ -148,6 +157,8 @@ var App = React.createClass({
           key={currentTemp.componentName}
           title={currentTemp.componentName}
           component={current}
+          onEnter={(scene)=>{
+          }}
           //backButtonImage={Define.assets.Menu.icon_back}
           {...currentTemp.sceneConfig}
 
@@ -213,6 +224,42 @@ var App = React.createClass({
     })
 
   },
+  processUpdateInfo: function(arg){
+    Debug.log('processUpdateInfo');
+    var self = this;
+
+  },
+  checkUpdate:function(){
+    if (Platform.OS === 'android') {
+      setTimeout(()=>{
+        RNHotUpdate.checkUpdate(Define.constants.serverAddr+'/update-release')
+        .then((arg)=>{
+          Debug.log('checkUpdate:done',arg);
+          RNHotUpdate.update()
+          .then((arg)=>{
+            console.log('')
+          })
+          .catch((e)=>{
+            Debug.log(e,Debug.level.ERROR)
+          })
+        })
+        .catch((err)=>{Debug.log2('checkUpdate:err',err,Debug.level.ERROR);})
+
+        // RNHotUpdate.getCheckUpdateInfo()
+
+      })
+
+    }
+  },
+  getVersion:function(){
+    if (Platform.OS === 'android') {
+      RNHotUpdate.getVersion()
+      .then((arg)=>{
+        Define.config.currentHybridVersion = arg.currentHybridVersion
+        Define.config.currentNativeVersion = arg.currentNativeVersion
+      })
+    }
+  },
   preProcessWhenStartDone:false,
   preProcessWhenStart : function(){
     Debug.log('preProcessWhenStart');
@@ -223,12 +270,8 @@ var App = React.createClass({
 
     // GcmAndroid.requestPermissions();
 
-    RNHotUpdate.getCheckUpdateInfo()
-      .then((arg)=>{
-        Debug.log('getCheckUpdateInfo:done');
-        // self.processUpdateInfo(arg);
-      })
-      .catch((err)=>{Debug.log2('getCheckUpdateInfo:err',err,Debug.level.ERROR);})
+    this.checkUpdate()
+    this.getVersion()
 
 
     //  get config
@@ -258,16 +301,16 @@ var App = React.createClass({
   },
   handleAppOrientation:function(specificOrientationIn){
     var self = this;
-    var { dispatch,state,appState} = this.props;
+    var { dispatch} = this.props;
     var specificOrientation = specificOrientationIn;
     Debug.log2('specificOrientation',specificOrientation,Debug.level.USER_TRACKER);
     let shouldUpdateVideoPopup = true;
     // iOS only
     if(specificOrientation === 'PORTRAITUPSIDEDOWN') {
-      Debug.log2('currentDirect', appState.currentDirect);
-      if(appState.currentDirect===RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.LANDSCAPE) {
+      Debug.log2('currentDirect', globalVariableManager.reduxManager.state.AppState.currentDirect);
+      if(globalVariableManager.reduxManager.state.AppState.currentDirect===RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.LANDSCAPE) {
         specificOrientation = 'PORTRAIT';
-      } else if(appState.currentDirect===RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.UNKNOWN) {
+      } else if(globalVariableManager.reduxManager.state.AppState.currentDirect===RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST.UNKNOWN) {
         if(Define.constants.widthScreen < Define.constants.heightScreen) {
           return;
         } else {
@@ -305,7 +348,7 @@ var App = React.createClass({
 
     Define.constants.availableHeightScreen = Platform.OS === 'ios' ? Define.constants.heightScreen : Define.constants.heightScreen- Define.constants.heightOfStatusBarAndroid;
     Themes.init();
-    if (specificOrientation !== appState.currentDirect) {
+    if (specificOrientation !== globalVariableManager.reduxManager.state.AppState.currentDirect) {
       dispatch(RDActions.AppState.setDirectOnRequest(RDActionsTypes.AppState.constants.APP_STATE_DIRECT_LIST[specificOrientation]))
     }
 
@@ -339,10 +382,13 @@ var App = React.createClass({
   },
   componentWillMount : function(){
     var self = this;
-    var { dispatch,state,appState} = this.props;
+    var { dispatch} = this.props;
     // regis
     globalVariableManager.deepLinkManager.setRootView(self);
-    globalVariableManager.reduxManager.setDispatchAndState(dispatch,state);
+    globalVariableManager.reduxManager.setDispatch(dispatch);
+
+    dispatch(RDActions.AppState.preSetState())
+
     globalVariableManager.rootView = self;
 
     if (!Define.constants.debug) {
@@ -385,6 +431,19 @@ var App = React.createClass({
         });
       });
     }
+
+
+    //
+    this.reducerCreate = params => {
+      const defaultReducer = new Reducer(params);
+      return (state, action) => {
+        setTimeout(()=>{
+            dispatch(action)
+        })
+        return defaultReducer(state, action);
+      };
+    };
+
     // events
     NetInfo.addEventListener('change',(connectionInfo)=>{
       Debug.log('Connection state change: ' + connectionInfo,Debug.level.USER_TRACKER); // NONE , WIFI, MOBILE
@@ -399,6 +458,15 @@ var App = React.createClass({
     });
     DeviceEventEmitter.addListener('HotUpdateManager:checkUpdateDone', (arg) => {
       Debug.log2('HotUpdateManager:checkUpdateDone', arg,Debug.level.USER_TRACKER);
+      if (arg.newHybridVersion > arg.currentHybridVersion) {
+        RNHotUpdate.update()
+        .then((arg)=>{
+          console.log('')
+        })
+        .catch((e)=>{
+          Debug.log(e,Debug.level.ERROR)
+        })
+      }
     });
     DeviceEventEmitter.addListener('HotUpdateManager:download', (ev) => {
       Debug.log2('HotUpdateManager:download', ev,Debug.level.USER_TRACKER);
@@ -420,6 +488,7 @@ var App = React.createClass({
       Debug.log2('HotUpdateManager:updateDone', arg,Debug.level.USER_TRACKER);
       if (Platform.OS==='android') {
         ToastAndroid.show('Update completed', ToastAndroid.SHORT)
+        globalVariableManager.needRestart = true;
       }
       // if (!self.processUpdateInfoDone ) {
       //     self.processUpdateInfo(arg);
@@ -429,7 +498,6 @@ var App = React.createClass({
     BackHandler.addEventListener('hardwareBackPress',
        () => {
          // must update
-         appState = self.props.appState;
          var {navigator } = self.props;
         //  clearTimeout(globalVariableManager.hideContentTimeput);
          if (self.hideContentState) {
@@ -446,10 +514,10 @@ var App = React.createClass({
            self.drawSideMenu(false);
            return true;
          }
-         else if (!(appState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING)) {
+         else if (!(globalVariableManager.reduxManager.state.AppState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING)) {
            if (Actions.currentScene !== 'HomeScreen' && Actions.currentScene !== 'TemplateScreen') {
-             Actions.pop()
-
+            Actions.pop()
+             return true;
             //  if(Actions.pop()) {
             //    return true;
             //  }else{
@@ -511,25 +579,58 @@ var App = React.createClass({
   },
   render:function(){
     var self= this;
-    const { dispatch,state,appState} = this.props;
+    const { dispatch,} = this.props;
     var content;
-    if (appState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING) {
+    if (globalVariableManager.reduxManager.state.AppState.currentState === RDActionsTypes.AppState.constants.APP_STATE_LIST.LOADING) {
       content=<View/>
     }else{
+      // disableGestures={self.isDisableSideMenu()}
+
+      // <SideMenu
+      //     ref={(sideMenu)=>{this.sideMenu=sideMenu;}}
+      //     onChange={(state)=>{
+      //       Debug.log('SCTVFilmsSideMenu:'+state,Debug.level.USER_TRACKER)
+      //       globalVariableManager.sideMenuMoving = false;
+      //       self.sideMenuState=state;
+      //       if (state) {
+      //         popupActions.popAllPopup(0,true,0);
+      //         // popupActions.popAllPopup(0,true,1);
+      //
+      //         self.updateSideMenu();
+      //
+      //         // if (user.userInfo.signinState) {
+      //         //   InteractionManager.runAfterInteractions(() => {
+      //         //     dispatch(UserActions_MiddleWare.getProfile());
+      //         //   })
+      //         // }
+      //       } else {
+      //         DismissKeyboard();
+      //       }
+      //     }}
+      //     onMove={()=>{
+      //       globalVariableManager.sideMenuMoving = true;
+      //     }}
+      //     openMenuOffset={Themes.current.factor.openSideMenuOffset}
+      //     isOpen={self.sideMenuState}
+      //
+      //     menu={self.renderSideMenu()}>
+
       content = (
-        <RouterWithRedux
+        <Router
+            createReducer={this.reducerCreate}
             sceneStyle={StyleSheet.flatten(Themes.current.screen.appBackground)}
             navigationBarStyle={Themes.current.screen.NavBar}
             backAndroidHandler={()=>{}}>
           <Scene key="root">
             {self.screenList}
           </Scene>
-        </RouterWithRedux>
+        </Router>
       )
     }
 
     return(
       <View renderToHardwareTextureAndroid={true} style={Themes.current.screen.appBackground}>
+        {Platform.OS === 'android' ? null: <StatusBar hidden={true} />}
         <Animatable.View
           onStartShouldSetResponderCapture={()=>{
             if (self.hideContentState) {
@@ -542,6 +643,7 @@ var App = React.createClass({
           {content}
         </Animatable.View>
         <PopupManager rootView={self}/>
+        <LoadingView/>
       </View>
 
     )
@@ -554,6 +656,9 @@ var App = React.createClass({
       StatusBarAndroid.setHexColor(Themes.current.factor.backgroundColor);
      }
 
+     InteractionManager.runAfterInteractions(() => {
+       self.preProcessWhenStart();
+     })
 
     //  // util connected
     //  if (globalVariableManager.socketConnection.getConnectState()) {

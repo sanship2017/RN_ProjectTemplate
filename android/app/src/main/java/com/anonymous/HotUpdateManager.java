@@ -10,9 +10,10 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.projecttemplate.R;
+import com.mkpsmarthome.R;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,6 +25,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -67,6 +70,7 @@ public class HotUpdateManager {
 //    private long _nativeVersionGet =0;
     private long _hybridVersionGet =0;
     private String _hybridVersionNameGet ="";
+    private String _hybridFileNameGet ="";
     private boolean _mandatoryGet =false;
     private String _descriptionGet ="";
     private String _downloadUrlGet ="";
@@ -89,7 +93,7 @@ public class HotUpdateManager {
         long hybridVersion = getHybridVersion();
         currentHybridVersion = hybridVersion;
         if (hybridVersion!=0){
-            avaiableBundlePath = getPathBundleFile()+"/"+ Long.toString(hybridVersion);
+            avaiableBundlePath = getPathBundleFile()+"/"+ Integer.toString(getNativeVersion()) +"-"+Long.toString(hybridVersion);
         }
         if (avaiableBundlePath != null) {
             File bundleDownloadFile = new File(avaiableBundlePath);
@@ -180,15 +184,20 @@ public class HotUpdateManager {
         for (int i=0; i < bundle.length; i++)
         {
             FullLog.d("FileName:" + bundle[i].getName());
-            long bundleVersion = Long.parseLong(bundle[i].getName());
-            if (lastestBundle <=bundleVersion) lastestBundle = bundleVersion;
+            String[] separated = bundle[i].getName().split("\\-");
+            if (separated.length == 2 && separated[0].equals(Integer.toString(getNativeVersion()))){
+              long bundleVersion = Long.parseLong(separated[1]);
+              if (lastestBundle <=bundleVersion) lastestBundle = bundleVersion;
+            }
+
+
         }
 
-        // find max
-        long binaryResourcesModifiedTime = getBinaryResourcesModifiedTime();
-        if(lastestBundle < binaryResourcesModifiedTime){
-            lastestBundle = binaryResourcesModifiedTime;
-        }
+        //// find max
+        // long binaryResourcesModifiedTime = getBinaryResourcesModifiedTime();
+        // if(lastestBundle < binaryResourcesModifiedTime){
+        //     lastestBundle = binaryResourcesModifiedTime;
+        // }
         FullLog.d(" lastestBundle : " + lastestBundle);
         return lastestBundle;
     }
@@ -226,15 +235,17 @@ public class HotUpdateManager {
                 JSONObject obj = new JSONObject(strFileContents);
                 FullLog.d(obj.toString());
                 // check native version
-                JSONObject result = obj.getJSONObject("result");
-                JSONObject data = result.getJSONObject("data");
+                // JSONObject result = obj.getJSONObject("result");
+                JSONArray dataArray = obj.getJSONArray("data");
+                JSONObject data = dataArray.getJSONObject(0);
 //                _nativeVersionGet = data.getInt("nativeVersion");
-                _hybridVersionNameGet = data.getString("hybridVersion");
-                _hybridVersionGet = data.getLong("createdAt");
+                _hybridFileNameGet = data.getString("file");
+                _hybridVersionGet = data.getLong("hybridVersion");
+
                 _mandatoryGet = true;
                 _descriptionGet = data.getString("description");
                 String updateServerStatic = _context.getResources().getString(R.string.update_server_static);
-                _downloadUrlGet = updateServerStatic + "/" + _hybridVersionNameGet ;
+                _downloadUrlGet = updateServerStatic + "/" + _hybridFileNameGet ;
 
                 if ((_hybridVersionGet>getHybridVersion())){
                     ret = _hybridVersionGet;
@@ -306,7 +317,7 @@ public class HotUpdateManager {
         String description = getDescription();
         double hybridVersion = getHybridVersion();
         double newHybridVersion  = getNewHybridVersion();
-        
+
 
         if (_reactInstanceManager != null) {
             if (_reactInstanceManager.getCurrentReactContext()!= null) {
@@ -430,7 +441,7 @@ public class HotUpdateManager {
 
             if (haveBundle) {
                 FullLog.d(" copy bundleTempFile  ");
-                File bundleDownloadFile = new File(getPathBundleFile() + "/" + Long.toString(getNewHybridVersion()));
+                File bundleDownloadFile = new File(getPathBundleFile() + "/" + getNativeVersion() + "-" + Long.toString(getNewHybridVersion()));
                 File bundleFileToSave = new File(getPathBundleTempFile()+"/"+Define.ASSETS_BUNDLE_TEMP_UNZIP_DIR + "/" + bundleFileName);
                 FullLog.d("bundle file to save " + bundleFileToSave.getAbsolutePath());
                 copy(bundleFileToSave, bundleDownloadFile);

@@ -89,11 +89,13 @@ class Screen extends ReactComponent{
     }
     return(content)
   }
-  componentDidMount(){
+  componentDidMount(noRefresh = false){
     super.componentDidMount();
     InteractionManager.runAfterInteractions(() => {
       this.setState({loading:false});
-      this.onRefresh();
+      if (!noRefresh) {
+        this.onRefresh();
+      }
     });
   }
 }

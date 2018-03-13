@@ -105,7 +105,7 @@ class DefaultPopup extends Popup{
         <ButtonWrap onPress={()=>{
             onPressPopup();
           }}>
-          <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.default.shadownStyle,  ...self.props.style}}>
+          <View style={{backgroundColor:'#fff',padding:5,margin:10,borderRadius:4,...StyleConfig.default.shadownStyle,  ...self.props.style}}>
             <View style={[Themes.current.popup.titleWrap, {paddingLeft: 20, paddingRight: 20}]}>
               <Include.Text style={Themes.current.text.popupTitle}>{title}</Include.Text>
               {closeButton}
@@ -124,7 +124,7 @@ class DefaultPopup extends Popup{
     }
     else{
       return(
-        <View style={{backgroundColor:'#fff',padding:5,margin:5,borderRadius:4,...StyleConfig.default.shadownStyle, ...self.props.style}}>
+        <View style={{backgroundColor:'#fff',padding:5,margin:10,borderRadius:4,...StyleConfig.default.shadownStyle, ...self.props.style}}>
 
           <View style={[Themes.current.popup.titleWrap, {paddingLeft: 20, paddingRight: 20}]}>
             <Include.Text style={Themes.current.text.popupTitle}>{title}</Include.Text>

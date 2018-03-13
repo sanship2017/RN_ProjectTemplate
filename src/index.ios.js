@@ -7,13 +7,19 @@ import React,{Component}  from 'react';
 import {
   AppRegistry,
   StyleSheet,
-  NativeModules
+  NativeModules,
+  StatusBar,
+  View
 } from 'react-native';
 
  var RNFS = require('react-native-fs');
-import { createStore,applyMiddleware  } from 'redux';
+import { createStore,applyMiddleware ,compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import devTools from 'remote-redux-devtools'
+import { autoRehydrate, persistStore } from 'redux-persist'
+import createSensitiveStorage from "redux-persist-sensitive-storage";
+
 //
 var Define = require('./Define');
 var Debug = require('./Util/Debug');
@@ -69,10 +75,9 @@ if (!Define.constants.debug) {
 globalVariableManager.init();
 
 var App = require('./containers/App');
-var todoApp = require('./reducers');
+var reducers = require('./reducers');
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-var store = createStoreWithMiddleware(todoApp);
 // variable
 const styles = StyleSheet.create({
   container: {
@@ -99,7 +104,22 @@ class ProjectTemplate extends Component {
     this.state = {
         loading: true,
     };
-    Define.init(()=>{this.setState({loading:false})})
+    const enhancer = compose(
+        applyMiddleware(thunk),
+        autoRehydrate(),
+        // devTools({
+        //   name: 'ProjectTemplate', realtime: true ,port:8000
+        // }),
+        );
+    this.store = createStore(reducers, enhancer);
+    Define.init(()=>{
+      persistStore(this.store, { storage: createSensitiveStorage({
+                keychainService: "myKeychain",
+                sharedPreferencesName: "mySharedPrefs"
+              }) ,whitelist:['User']},
+              ()=>{this.setState({loading:false});}
+        );
+    })
   }
 
   render() {
@@ -107,7 +127,7 @@ class ProjectTemplate extends Component {
       return (<View/>)
     }else{
       return (
-          <Provider store={store}>
+          <Provider store={this.store}>
             <App/>
           </Provider>
         )

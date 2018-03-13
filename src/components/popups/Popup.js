@@ -4,7 +4,7 @@ var _ = require('lodash')
 import React  from 'react';
 import {
   // View,
-  // InteractionManager
+  InteractionManager
 } from 'react-native';
 
 
@@ -42,12 +42,14 @@ export default class Popup extends ReactComponent{
     // videoMotion: false,
   }
   static containerStyle={}
-  // constructor(props){
-  //   super(props);
-    // this.state={
-    //   loading:true,
-    // }
-  // }
+  constructor(props){
+    super(props);
+    this.state={
+      loading:true,
+    }
+    this.onRefresh = this.onRefresh.bind(this);
+    this.onGetMore = this.onGetMore.bind(this);
+  }
   onRefresh(){
     Debug.log(this.constructor.name + ':onRefresh',Debug.level.USER_TRACKER);
   }
@@ -83,9 +85,9 @@ export default class Popup extends ReactComponent{
   }
   componentDidMount(){
     super.componentDidMount()
-    // InteractionManager.runAfterInteractions(() => {
+    InteractionManager.runAfterInteractions(() => {
     //   this.setState({loading:false});
-    //   this.onRefresh();
-    // });
+      this.onRefresh();
+    });
   }
 }

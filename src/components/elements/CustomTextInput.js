@@ -70,6 +70,7 @@ class CustomTextInput extends ReactComponent{
         ...props} = this.props;
 
     Object.assign(props, {
+      autoCapitalize: 'none',
       onChangeText : this._onChangeText.bind(this),
       onFocus:this._onFocus.bind(this),
       onBlur:this._onBlur.bind(this),

@@ -61,7 +61,7 @@ var RectButton = React.createClass({
             :
             null
           }
-          <View  style={[{alignSelf:'flex-start',paddingHorizontal:5},self.props.contentStyle ]}>
+          <View  style={[{alignSelf:'center',paddingHorizontal:5,alignItems:'center'},self.props.contentStyle ]}>
             {self.props.children}
             <Include.Text numberOfLines={1} custom={true} style={[{color:'#FFF',marginLeft:5,fontSize:13},self.props.textStyle]}>{self.props.text}</Include.Text>
           </View>

@@ -80,11 +80,13 @@ export default class Page extends ReactComponent{
     }
     return(content)
   }
-  componentDidMount(){
+  componentDidMount(noOnRefresh = false){
     super.componentDidMount()
     InteractionManager.runAfterInteractions(() => {
       this.setState({loading:false});
-      this.onRefresh();
+      if (!noOnRefresh) {
+        this.onRefresh();
+      }      
     });
   }
 }

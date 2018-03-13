@@ -85,18 +85,18 @@ public class MainApplication extends Application implements ReactApplication {
 
     HotUpdateManager.getInstance().init(this.getApplicationContext());
 
-    if (!BuildConfig.DEBUG) {
-      new UpdateTask(this.getApplicationContext()).execute();
-    }
+    // if (!BuildConfig.DEBUG) {
+    //   new UpdateTask(this.getApplicationContext()).execute();
+    // }
     // FacebookSdk.sdkInitialize(getApplicationContext());
     // If you want to use AppEventsLogger to log events.
     // AppEventsLogger.activateApp(this);
 
-    if (!BuildConfig.DEBUG) {
-      while(!HotUpdateManager.getInstance().getState()){
-        SystemClock.sleep(100);
-      }
-    }
+    // if (!BuildConfig.DEBUG) {
+    //   while(!HotUpdateManager.getInstance().getState()){
+    //     SystemClock.sleep(100);
+    //   }
+    // }
     super.onCreate();
     HotUpdateManager.getInstance().initReact(getReactNativeHost().getReactInstanceManager());
   }
@@ -130,15 +130,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-              new RNBridgeReloaderPackage(),
-              new RNFSPackage(),
-              new RNDeviceInfo(),
-              new StatusBarPackage(),
-              new ExtraDimensionsPackage(),
-              new OrientationPackage(),
-              new SensorManagerPackage(),
-              new RNSpinkitPackage(),
-              new RNIntentPackage()
+          new HotUpdatePackage(),
+          new RNBridgeReloaderPackage(),
+          new RNFSPackage(),
+          new RNDeviceInfo(),
+          new StatusBarPackage(),
+          new ExtraDimensionsPackage(),
+          new OrientationPackage(),
+          new SensorManagerPackage(),
+          new RNSpinkitPackage(),
+          new RNIntentPackage()
+          new RNPermissionsPackage(),
       );
     }
   };
